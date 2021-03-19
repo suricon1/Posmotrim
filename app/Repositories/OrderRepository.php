@@ -14,7 +14,7 @@ class OrderRepository extends CoreRepository
 
     public function get($id): Model
     {
-        $order = $this->model()->find($id);
+        $order = $this->modelName()->find($id);
         if (!$order) {
             throw new \RuntimeException('Заказ не существует.');
         }

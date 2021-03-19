@@ -37,6 +37,7 @@ class ProductsController extends AppController
     public function create()
     {
         return view('admin.vinograd.product.create', [
+            'productsAll'     => getArray(Product::orderBy('name')->pluck('name', 'id')->all()),
             'categorys' => Category::orderBy('name')->pluck('name', 'id')->all(),
             'countrys' => Country::orderBy('name')->pluck('name', 'id')->all(),
             'selections' => Selection::orderBy('name')->pluck('name', 'id')->all()
@@ -45,6 +46,7 @@ class ProductsController extends AppController
 
     public function store(ProductRequest $request)
     {
+        //dd($request->all());
         try {
             $product = Product::add($request);
 
@@ -63,10 +65,11 @@ class ProductsController extends AppController
     public function edit($id)
     {
         return view('admin.vinograd.product.edit', [
-            'product' => Product::with('adminModifications')->find($id),
-            'categorys' => Category::orderBy('name')->pluck('name', 'id')->all(),
-            'countrys' => Country::orderBy('name')->pluck('name', 'id')->all(),
-            'selections' => Selection::orderBy('name')->pluck('name', 'id')->all(),
+            'product'       => Product::with('adminModifications')->find($id),
+            'productsAll'   => getArray(Product::orderBy('name')->pluck('name', 'id')->all()),
+            'categorys'     => Category::orderBy('name')->pluck('name', 'id')->all(),
+            'countrys'      => Country::orderBy('name')->pluck('name', 'id')->all(),
+            'selections'    => Selection::orderBy('name')->pluck('name', 'id')->all(),
             'modifications' => ModificationProps::orderBy('name')->pluck('name', 'id')->all()
         ]);
     }

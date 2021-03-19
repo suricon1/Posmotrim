@@ -31,7 +31,7 @@ abstract class CoreRepository
     /**
      * @return Model|\Illuminate\Foundation\Application|mixed
      */
-    protected function model()
+    protected function modelName()
     {
         return clone $this->model;
     }

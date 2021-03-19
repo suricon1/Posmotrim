@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="product-content">
-        <h2><a href="{{route('vinograd.product', ['slug' => $product->slug])}}">{{$product->name}}</a></h2>
+        <h4><a href="{{route('vinograd.product', ['slug' => $product->slug])}}">{{$product->name}}</a></h4>
         <div class="product-price">
             <div class="price-box">
 

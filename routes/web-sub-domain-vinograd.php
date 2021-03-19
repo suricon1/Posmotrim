@@ -132,7 +132,6 @@ Route::get('/clear', function() {
 //    Artisan::call('currency:exchange');
 //    return "Обноваление курса валют.";
 //});
-
 /*
 Route::get('/artisan/{cmd}', function($cmd) {
     $cmd = trim(str_replace("-",":", $cmd));

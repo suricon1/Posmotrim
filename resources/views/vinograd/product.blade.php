@@ -115,7 +115,7 @@
                     <div class="single-product-quantity">
                         <ul class="list-group">
                             <h3>У нас в продаже</h3>
-                            @forelse($product->getModifications() as $modification)
+                            @forelse($product->modifications as $modification)
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <span style="max-width: 50%;"><strong>{{$modification->property->name}}</strong> - {{currency($modification->price)}} {{signature()}}<br>
                                     В наличии <strong>{{$modification->quantity}}</strong> шт.</span>
@@ -222,199 +222,43 @@
         </div>
     </div>
 </div>
-<!--Product Description Review Area Start-->
-<!--Also Like Product Start-->
-{{--<div class="also-like-product">--}}
-{{--    <div class="container">--}}
-{{--        <div class="row">--}}
-{{--            <!--Section Title Start-->--}}
-{{--            <div class="col-12">--}}
-{{--                <div class="section-title text-center mb-35">--}}
-{{--                    <h3>Вам может понравиться…</h3>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <!--Section Title End-->--}}
-{{--        </div>--}}
-{{--        <div class="row">--}}
-{{--            <div class="product-slider-active">--}}
-{{--                <div class="col-md-3 col-lg-3 col-sm-4 col-xs-12">--}}
-{{--                    <!--Single Product Start-->--}}
-{{--                    <div class="single-product mb-25">--}}
-{{--                        <div class="product-img img-full">--}}
-{{--                            <a href="single-product.html">--}}
-{{--                                <img src="/site/img/product/product1.jpg" alt="">--}}
-{{--                            </a>--}}
-{{--                            <div class="product-action">--}}
-{{--                                <ul>--}}
-{{--                                    <li><a href="single-product.html#open-modal" data-toggle="modal" title="Quick view"><i class="fa fa-search"></i></a></li>--}}
-{{--                                    <li><a href="single-product.html#" title="Whishlist"><i class="fa fa-heart-o"></i></a></li>--}}
-{{--                                    <li><a href="single-product.html#" title="Compare"><i class="fa fa-refresh"></i></a></li>--}}
-{{--                                </ul>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="product-content">--}}
-{{--                            <h2><a href="single-product.html">Eleifend quam</a></h2>--}}
-{{--                            <div class="product-price">--}}
-{{--                                <div class="price-box">--}}
-{{--                                    <span class="regular-price">$115.00</span>--}}
-{{--                                </div>--}}
-{{--                                <div class="add-to-cart">--}}
-{{--                                    <a href="single-product.html#">Add To Cart</a>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <!--Single Product End-->--}}
-{{--                </div>--}}
-{{--                <div class="col-md-3 col-lg-3 col-sm-4 col-xs-12">--}}
-{{--                    <!--Single Product Start-->--}}
-{{--                    <div class="single-product mb-25">--}}
-{{--                        <div class="product-img img-full">--}}
-{{--                            <a href="single-product.html">--}}
-{{--                                <img src="/site/img/product/product3.jpg" alt="">--}}
-{{--                            </a>--}}
-{{--                            <div class="product-action">--}}
-{{--                                <ul>--}}
-{{--                                    <li><a href="single-product.html#open-modal" data-toggle="modal" title="Quick view"><i class="fa fa-search"></i></a></li>--}}
-{{--                                    <li><a href="single-product.html#" title="Whishlist"><i class="fa fa-heart-o"></i></a></li>--}}
-{{--                                    <li><a href="single-product.html#" title="Compare"><i class="fa fa-refresh"></i></a></li>--}}
-{{--                                </ul>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="product-content">--}}
-{{--                            <h2><a href="single-product.html">Nulla sed stg</a></h2>--}}
-{{--                            <div class="product-price">--}}
-{{--                                <div class="price-box">--}}
-{{--                                    <span class="regular-price">$40.00</span>--}}
-{{--                                </div>--}}
-{{--                                <div class="add-to-cart">--}}
-{{--                                    <a href="single-product.html#">Add To Cart</a>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <!--Single Product End-->--}}
-{{--                </div>--}}
-{{--                <div class="col-md-3 col-lg-3 col-sm-4 col-xs-12">--}}
-{{--                    <!--Single Product Start-->--}}
-{{--                    <div class="single-product mb-25">--}}
-{{--                        <div class="product-img img-full">--}}
-{{--                            <a href="single-product.html">--}}
-{{--                                <img src="/site/img/product/product5.jpg" alt="">--}}
-{{--                            </a>--}}
-{{--                            <div class="product-action">--}}
-{{--                                <ul>--}}
-{{--                                    <li><a href="single-product.html#open-modal" data-toggle="modal" title="Quick view"><i class="fa fa-search"></i></a></li>--}}
-{{--                                    <li><a href="single-product.html#" title="Whishlist"><i class="fa fa-heart-o"></i></a></li>--}}
-{{--                                    <li><a href="single-product.html#" title="Compare"><i class="fa fa-refresh"></i></a></li>--}}
-{{--                                </ul>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="product-content">--}}
-{{--                            <h2><a href="single-product.html">Odio tortor consequat</a></h2>--}}
-{{--                            <div class="product-price">--}}
-{{--                                <div class="price-box">--}}
-{{--                                    <span class="regular-price">$90.00</span>--}}
-{{--                                </div>--}}
-{{--                                <div class="add-to-cart">--}}
-{{--                                    <a href="single-product.html#">Add To Cart</a>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <!--Single Product End-->--}}
-{{--                </div>--}}
-{{--                <div class="col-md-3 col-lg-3 col-sm-4 col-xs-12">--}}
-{{--                    <!--Single Product Start-->--}}
-{{--                    <div class="single-product mb-25">--}}
-{{--                        <div class="product-img img-full">--}}
-{{--                            <a href="single-product.html">--}}
-{{--                                <img src="/site/img/product/product7.jpg" alt="">--}}
-{{--                            </a>--}}
-{{--                            <div class="product-action">--}}
-{{--                                <ul>--}}
-{{--                                    <li><a href="single-product.html#open-modal" data-toggle="modal" title="Quick view"><i class="fa fa-search"></i></a></li>--}}
-{{--                                    <li><a href="single-product.html#" title="Whishlist"><i class="fa fa-heart-o"></i></a></li>--}}
-{{--                                    <li><a href="single-product.html#" title="Compare"><i class="fa fa-refresh"></i></a></li>--}}
-{{--                                </ul>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="product-content">--}}
-{{--                            <h2><a href="single-product.html">Vulputate justo</a></h2>--}}
-{{--                            <div class="product-price">--}}
-{{--                                <div class="price-box">--}}
-{{--                                    <span class="regular-price">$70.00</span>--}}
-{{--                                </div>--}}
-{{--                                <div class="add-to-cart">--}}
-{{--                                    <a href="single-product.html#">Add To Cart</a>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <!--Single Product End-->--}}
-{{--                </div>--}}
-{{--                <div class="col-md-3 col-lg-3 col-sm-4 col-xs-12">--}}
-{{--                    <!--Single Product Start-->--}}
-{{--                    <div class="single-product mb-25">--}}
-{{--                        <div class="product-img img-full">--}}
-{{--                            <a href="single-product.html">--}}
-{{--                                <img src="/site/img/product/product9.jpg" alt="">--}}
-{{--                            </a>--}}
-{{--                            <div class="product-action">--}}
-{{--                                <ul>--}}
-{{--                                    <li><a href="single-product.html#open-modal" data-toggle="modal" title="Quick view"><i class="fa fa-search"></i></a></li>--}}
-{{--                                    <li><a href="single-product.html#" title="Whishlist"><i class="fa fa-heart-o"></i></a></li>--}}
-{{--                                    <li><a href="single-product.html#" title="Compare"><i class="fa fa-refresh"></i></a></li>--}}
-{{--                                </ul>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="product-content">--}}
-{{--                            <h2><a href="single-product.html">Ipsum imperdie</a></h2>--}}
-{{--                            <div class="product-price">--}}
-{{--                                <div class="price-box">--}}
-{{--                                    <span class="regular-price">$100.00</span>--}}
-{{--                                </div>--}}
-{{--                                <div class="add-to-cart">--}}
-{{--                                    <a href="single-product.html#">Add To Cart</a>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <!--Single Product End-->--}}
-{{--                </div>--}}
-{{--                <div class="col-md-3 col-lg-3 col-sm-4 col-xs-12">--}}
-{{--                    <!--Single Product Start-->--}}
-{{--                    <div class="single-product mb-25">--}}
-{{--                        <div class="product-img img-full">--}}
-{{--                            <a href="single-product.html">--}}
-{{--                                <img src="/site/img/product/product11.jpg" alt="">--}}
-{{--                            </a>--}}
-{{--                            <div class="product-action">--}}
-{{--                                <ul>--}}
-{{--                                    <li><a href="single-product.html#open-modal" data-toggle="modal" title="Quick view"><i class="fa fa-search"></i></a></li>--}}
-{{--                                    <li><a href="single-product.html#" title="Whishlist"><i class="fa fa-heart-o"></i></a></li>--}}
-{{--                                    <li><a href="single-product.html#" title="Compare"><i class="fa fa-refresh"></i></a></li>--}}
-{{--                                </ul>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="product-content">--}}
-{{--                            <h2><a href="single-product.html">Pellentesque position</a></h2>--}}
-{{--                            <div class="product-price">--}}
-{{--                                <div class="price-box">--}}
-{{--                                    <span class="regular-price">$90.00</span>--}}
-{{--                                </div>--}}
-{{--                                <div class="add-to-cart">--}}
-{{--                                    <a href="single-product.html#">Add To Cart</a>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <!--Single Product End-->--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--</div>--}}
-<!--Also Like Product End-->
+
+@if($similar)
+<div>
+    <div class="text-center mb-3">
+        <h2 class="m-auto">Похожие сорта винограда</h2>
+    </div>
+    <div class="row">
+        @foreach ($similar as $chunk)
+            <div class="col">
+                <div class="rc-product">
+                    <ul>
+                    @foreach ($chunk as $product)
+                        <li>
+                            <div class="rc-product-thumb img-full">
+                                <a href="{{route('vinograd.product', ['slug' => $product->slug])}}">
+                                    <img src="{{ asset($product->getImage('100x100')) }}" alt="{{ $product->name }} виноград">
+                                </a>
+                            </div>
+                            <div class="rc-product-content">
+                                <h6><a href="{{route('vinograd.product', ['slug' => $product->slug])}}">{{$product->name}}</a></h6>
+                                <div class="rc-product-price">
+                                @forelse($product->modifications as $modification)
+                                    <span><strong>{{$modification->property->name}}</strong> - {{currency($modification->price)}} {{signature()}}</span>
+                                @empty
+                                    <span class="text-danger">Нет в наличии</span>
+{{--                                        {!! config('main.empty_text_info') !!}--}}
+                                @endforelse
+                                </div>
+                            </div>
+                        </li>
+                    @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+@endif
 
 @endsection

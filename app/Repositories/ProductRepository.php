@@ -37,6 +37,32 @@ class ProductRepository
         return $products;
     }
 
+    public function getSimilarOnChunks($props)
+    {
+        if(!array_key_exists('similar', $props) || !$props['similar']){
+            return false;
+        }
+
+        $products = Product::
+            select('slug', 'name')
+            ->with(['modifications.property' => function ($query) {
+                $query->select('name');
+            }])
+            ->with(['modifications' => function ($query) {
+                $query->select('price');
+                $query->where('quantity', '>=', 0);
+            }])
+            ->whereIn('id', $props['similar'])
+            ->get();
+
+        return [
+            //  Делим коллекцию на chunk
+            0 => $products->nth(3),
+            1 => $products->nth(3, 1),
+            2 => $products->nth(3, 2)
+        ];
+    }
+
     public function getProductsByCategoryJsonSerialize($request, $categorys)
     {
         foreach ($categorys as $category)

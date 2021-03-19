@@ -17,5 +17,6 @@ class ProductProps
         $this->flavor = $props->input('props.flavor');
         $this->frost = $props->input('props.frost');
         $this->flower = $props->input('props.flower');
+        $this->similar = $props->input('props.similar');
     }
 }

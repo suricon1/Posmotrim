@@ -1,8 +1,8 @@
 @extends('admin.layouts.layout')
 
-{{--@section('header')--}}
-    {{--<link rel="stylesheet" href="/css/select2.min.css">--}}
-{{--@endsection--}}
+@section('header')
+    <link rel="stylesheet" href="/css/select2.min.css">
+@endsection
 
 @section('title', 'Admin | Добавить сорт винограда')
 @section('key', 'Admin | Добавить сорт винограда')
@@ -224,6 +224,24 @@
                         <p>Модификации доступны при редактировании продукта</p>
                     </div>
                 </div>
+                <hr>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Похожие сорта</label>
+                            {{Form::select('props[similar][]',
+                              $productsAll,
+                              null,
+                              [
+                                  'class' => 'form-control select2',
+                                  'multiple'=>'multiple',
+                                  'data-placeholder'=>'Выбрать похожие сорта',
+                                  'style' => 'width: 100%'
+                              ])
+                            }}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -287,6 +305,7 @@
 
 @section('scripts')
     <script src="/js/multiUploadViewt.js" ></script>
+    <script src="/js/select2.full.min.js"></script>
 
     <script src="/js/ckeditor/ckeditor.js"></script>
     <script>

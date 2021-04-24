@@ -13,12 +13,15 @@
             <h3>Предварительные заказы <small>{!! $titleDate !!}</small></h3>
         @elseif (request('status') == 1)
             <h3>Новые заказы <small>{!! $titleDate !!}</small></h3>
+        @elseif (request('status') == 1)
+            <h3>Сформированные заказы <small>{!! $titleDate !!}</small></h3>
         @endif
         <div class="card">
             <div class="card-header">
                 <a href="{{route('dashboard.deliverys', array_merge(request()->query(), ['status' => '']))}}" class="btn btn-info">В выполненных заказах</a>
                 <a href="{{route('dashboard.deliverys', array_merge(request()->query(), ['status' => 1]))}}" class="btn btn-success">В новых заказах</a>
                 <a href="{{route('dashboard.deliverys', array_merge(request()->query(), ['status' => 7]))}}" class="btn btn-warning">В предварительных заказах</a>
+                <a href="{{route('dashboard.deliverys', array_merge(request()->query(), ['status' => 8]))}}" class="btn btn-default">В сформированных заказах</a>
 
                 <form action="?" method="GET">
                     <div class="input-group input-group-sm mt-3">

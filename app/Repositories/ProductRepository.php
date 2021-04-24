@@ -18,6 +18,18 @@ class ProductRepository
         return $product;
     }
 
+    public function getProductBySlug($slug): Product
+    {
+        return Product::
+            with('category:id,name,slug', 'country:id,name,slug', 'selection:id,name,slug', 'modifications.property')->
+//            with(['modifications' => function ($query) {
+//                $query->where('quantity', '>=', 0);
+//            }])->
+            where('slug', $slug)->
+            active()->
+            firstOrFail();
+    }
+
     public function getAllProducts()
     {
         return Product::with('modifications', 'category')->active()->orderBy('name')->get();
@@ -44,23 +56,21 @@ class ProductRepository
         }
 
         $products = Product::
-            select('slug', 'name')
-            ->with(['modifications.property' => function ($query) {
-                $query->select('name');
-            }])
-            ->with(['modifications' => function ($query) {
-                $query->select('price');
-                $query->where('quantity', '>=', 0);
-            }])
+            select('id', 'slug', 'name')
+            ->with('modifications.property')
             ->whereIn('id', $props['similar'])
+            ->active()
             ->get();
 
-        return [
+        return array_filter([
             //  Делим коллекцию на chunk
             0 => $products->nth(3),
             1 => $products->nth(3, 1),
             2 => $products->nth(3, 2)
-        ];
+        ], function($item) {
+            //  Возвращаем не пустые chunk
+            return $item->isNotEmpty();
+        });
     }
 
     public function getProductsByCategoryJsonSerialize($request, $categorys)

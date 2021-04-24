@@ -11,6 +11,7 @@ class Status
     const CANCELLED = 5;
     const CANCELLED_BY_CUSTOMER = 6;
     const PRELIMINARY = 7;
+    const FORMED = 8;
 
     public $value;
     public $created_at;

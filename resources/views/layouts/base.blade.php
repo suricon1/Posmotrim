@@ -50,17 +50,6 @@
 
     @yield('content')
 
-    <div class="container-fluid mb-4">
-        <div class="row">
-            <div class="col-md-6">
-                @include('components.reklama.yandex_bottom_1')
-            </div>
-            <div class="col-md-6">
-                @include('components.reklama.yandex_bottom_2')
-            </div>
-        </div>
-    </div>
-
     <footer>
         <div class="footer-container">
             @section('footer')

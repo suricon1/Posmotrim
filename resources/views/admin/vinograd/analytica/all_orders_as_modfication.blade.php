@@ -13,6 +13,8 @@
             <h2>Предварительные заказы <small>{!! $titleDate !!}</small></h2>
         @elseif (request('status') == 1)
             <h2>Новые заказы <small>{!! $titleDate !!}</small></h2>
+        @elseif (request('status') == 8)
+            <h2>Сформированные заказы <small>{!! $titleDate !!}</small></h2>
         @endif
         <div class="card">
             <div class="card-header">

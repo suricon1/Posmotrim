@@ -42,16 +42,14 @@ class VinogradController extends Controller
 
     public function product(LookService $service, $slug)
     {
-        $product = Product::with('category:id,name,slug', 'country:id,name,slug', 'selection:id,name,slug', 'modifications.property')->with(['modifications' => function ($query) {
-            $query->where('quantity', '>=', 0);
-        }])->where('slug', $slug)->active()->firstOrFail();
+        $product = $this->productRep->getProductBySlug($slug);
         $service->setCookieLook($product->id);   // Добавили в просмотренное
 
         return view('vinograd.product', [
             'product' => $product,
             'similar' => $this->productRep->getSimilarOnChunks($product->props),
             'comments' => Comment::getAllProductComments($product->id)
-            ]);
+        ]);
     }
 
     public function category(SortPostsRequest $request, $page = '')

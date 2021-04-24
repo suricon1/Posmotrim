@@ -174,3 +174,31 @@ if (! function_exists('formatPhone'))
     }
 }
 
+if (! function_exists('formatNameBySimilar'))
+{
+    //  Меняем:
+    //      Аркадия -> Аркадию
+    //      Бажена -> Бажену
+    //      Заря Несветая -> Зарю Несветую
+    //      Интрига Ранняя -> Интригу Раннюю
+    function formatNameBySimilar($string)
+    {
+        $pattern = [
+            '/^(.+)яя$/i',
+            '/^(.+)я$/i',
+            '/^(.+)а$/i',
+            '/^(.+)ая$/i'
+        ];
+        $replacement = [
+            '\1юю',
+            '\1ю',
+            '\1у',
+            '\1ую',
+        ];
+        $string = explode(" ", preg_replace('/^(.+)\s\(.+\)$/', '\1', $string));
+        $string = preg_replace($pattern, $replacement, $string);
+
+        return implode(" ", $string);
+    }
+}
+

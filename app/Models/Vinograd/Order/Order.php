@@ -46,7 +46,8 @@ class Order extends Model
             Status::COMPLETED => 'Выполнен',
             Status::CANCELLED => 'Отменен',
             Status::CANCELLED_BY_CUSTOMER => 'Отменен клиентом',
-            Status::PRELIMINARY => 'Предварительный'
+            Status::PRELIMINARY => 'Предварительный',
+            Status::FORMED => 'Сформирован'
         ];
     }
 

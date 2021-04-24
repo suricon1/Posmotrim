@@ -240,13 +240,14 @@
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modificationModal">Добавить модификацию</button>
                     </div>
                 </div>
+                <hr>
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
                             <label>Похожие сорта</label>
                             {{Form::select('props[similar][]',
                               $productsAll,
-                              old('props[similar]', $product->props['similar']),
+                              old('props[similar]', (array_key_exists('similar', $product->props)) ? $product->props['similar'] : null),
                               [
                                   'class' => 'form-control select2',
                                   'multiple'=>'multiple',

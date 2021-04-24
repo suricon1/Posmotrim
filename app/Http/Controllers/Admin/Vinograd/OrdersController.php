@@ -68,7 +68,7 @@ class OrdersController extends Controller
     public function setStatus(Request $request)
     {
         $this->validate($request, [
-            'status' =>  'required|in:1,2,3,4,5,6,7',
+            'status' =>  'required|in:1,2,3,4,5,6,7,8',
             'order_id' => 'required|exists:vinograd_orders,id'
         ]);
 

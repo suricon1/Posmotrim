@@ -16,10 +16,10 @@
 
     <div class="wishlist-area mb-110">
 
-        <div class="alert alert-primary mt-3 mb-3" role="alert">
-            <h3 class="alert-heading">Внимание, ассортимент еще будет расширяться!</h3>
+{{--        <div class="alert alert-primary mt-3 mb-3" role="alert">--}}
+{{--            <h3 class="alert-heading">Внимание, ассортимент еще будет расширяться!</h3>--}}
 {{--            <p>Обновление ассортимента будет происходить по мере укоренения черенков</p>--}}
-        </div>
+{{--        </div>--}}
 
         <h4 class="mb-4"><i class="fa fa-asterisk text-danger"></i> Если в поле Стоимость пусто, значит ни черенков ни саженцев этого сорта нет в наличии.</h4>
         <div class="table-content table-responsive">

@@ -144,10 +144,10 @@
         @endif
         <div class="shop-product">
 
-            <div class="alert alert-primary mt-3 mb-3" role="alert">
-                <h3 class="alert-heading">Внимание, ассортимент еще будет расширяться!</h3>
+{{--            <div class="alert alert-primary mt-3 mb-3" role="alert">--}}
+{{--                <h3 class="alert-heading">Внимание, ассортимент еще будет расширяться!</h3>--}}
 {{--                <p>Будет происходить обновление ассортимента</p>--}}
-            </div>
+{{--            </div>--}}
 
             <div id="grid">
 

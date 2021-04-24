@@ -224,13 +224,13 @@
 </div>
 
 @if($similar)
-<div>
+<div class="mb-4">
     <div class="text-center mb-3">
-        <h2 class="m-auto">Похожие сорта винограда</h2>
+        <h2 class="m-auto">Похожие на {{ formatNameBySimilar($product->name) }} сорта винограда</h2>
     </div>
     <div class="row">
         @foreach ($similar as $chunk)
-            <div class="col">
+            <div class="col-12 col-md-{{12 / count($similar)}}">
                 <div class="rc-product">
                     <ul>
                     @foreach ($chunk as $product)
@@ -244,10 +244,9 @@
                                 <h6><a href="{{route('vinograd.product', ['slug' => $product->slug])}}">{{$product->name}}</a></h6>
                                 <div class="rc-product-price">
                                 @forelse($product->modifications as $modification)
-                                    <span><strong>{{$modification->property->name}}</strong> - {{currency($modification->price)}} {{signature()}}</span>
+                                    <span><strong>{{$modification->property->name}}</strong> - {{currency($modification->price)}} {{signature()}}</span><br>
                                 @empty
                                     <span class="text-danger">Нет в наличии</span>
-{{--                                        {!! config('main.empty_text_info') !!}--}}
                                 @endforelse
                                 </div>
                             </div>

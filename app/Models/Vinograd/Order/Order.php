@@ -13,6 +13,12 @@ class Order extends Model
 {
     use Notifiable;
 
+    const ORDERED_LIST = [
+        Status::NEW,
+        Status::PRELIMINARY,
+        Status::FORMED
+    ];
+
     protected $table = 'vinograd_orders';
     public $timestamps = false;
     protected $fillable = [
@@ -208,7 +214,8 @@ class Order extends Model
 
     public function scopeTimeRange($query, $dateRange, $status)
     {
-        $data = !$status ? 'completed_at' : 'created_at';
+        $data = !isset($status) ? 'completed_at' : 'created_at';
+//        $data = !$status ? 'completed_at' : 'created_at';
         $query->where($data, '>=', $dateRange['from']);
         if($dateRange['to']){
             $query->where($data, '<=', $dateRange['to']);
@@ -223,6 +230,9 @@ class Order extends Model
 
     public function scopeWhereStatus($query, $status)
     {
+        if(is_array($status)){
+            return $query->whereIn('current_status', $status);
+        }
         return $status ? $query->where('current_status', $status) : $query->where('current_status', Status::COMPLETED);
     }
 
@@ -267,6 +277,8 @@ class Order extends Model
                 return 'danger';
             case Status::PRELIMINARY:
                 return 'warning';
+            case Status::FORMED:
+                return 'light';
             default:
                 return 'default';
         }

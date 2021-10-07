@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Dashboard;
 
-use App\UseCases\DashboardService;
+use App\UseCases\Dashboard\DashboardService;
 use Illuminate\Http\Request;
 use View;
 

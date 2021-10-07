@@ -7,7 +7,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
     Route::group(['prefix' => 'analytics', 'namespace' => 'Dashboard', 'as' => 'dashboard.'], function() {
         Route::get('/sorts', 'DashboardController@index')->name('sorts');
         Route::get('/orders_as_modification/{product_id}/{modification_id}/{price}', 'DashboardController@allOrdersAsModfication')->name('orders_as_modification');
+        Route::get('/ordereds_as_modification/{product_id}/{modification_id}/{price}', 'DashboardController@allOrderedsAsModfication')->name('ordereds_as_modification');
 
+        Route::get('/ordereds', 'OrderedsDashboardController@index')->name('ordereds');
         Route::get('/modifications', 'ModificationsDashboardController@index')->name('modifications');
         Route::get('/deliverys', 'DeliverysDashboardController@index')->name('deliverys');
     });

@@ -12,6 +12,7 @@ use App\Models\Vinograd\Order\OrderItem;
 use App\Models\Vinograd\Order\Status;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
+use App\UseCases\NumberToStringService;
 use App\UseCases\OrderService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -45,16 +46,6 @@ class OrdersController extends Controller
         [
             'orders' => $query->orderBy('current_status')->orderBy('id', 'desc')->paginate(30)->appends($request->all()),
             'currency' => Currency::all()->keyBy('code')->all()
-        ]);
-    }
-
-    public function print($id)
-    {
-        $order = Order::findOrFail($id);
-        return view('admin.vinograd.order.order_print', [
-            'order' => $order,
-            'items' => OrderItem::getOrderSortedByItem($order->id),
-            'currency' => Currency::where('code', $order->currency)->first()
         ]);
     }
 
@@ -254,10 +245,7 @@ class OrdersController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    public function update(Request $request, $id) {}
 
     public function destroy($id)
     {
@@ -278,6 +266,6 @@ class OrdersController extends Controller
             $order->customer['phone'] = $customer;
             $order->save();
         }
-        return "Обноваление телефонов заказчиков.";
+        return "Обновление телефонов заказчиков.";
     }
 }

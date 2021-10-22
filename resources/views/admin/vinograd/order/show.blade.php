@@ -156,10 +156,26 @@
 
                 <div class="row no-print">
                     <div class="col-12">
-                        <a href="{{route('orders.print', ['id' => $order->id])}}" target="_blank" class="btn btn-primary">
+                        <a href="{{route('orders.print.order', ['id' => $order->id])}}" target="_blank" class="btn btn-primary">
                             <i class="fa fa-print"></i>
                             Распечатать заказ
                         </a>
+                        @if($order->delivery['method_id'] == 2)
+                        <a href="{{route('orders.print.nalozhka_sticker', ['id' => $order->id])}}" target="_blank" class="btn btn-primary">
+                            <i class="fa fa-print"></i>
+                            Наложенный платеж бланк
+                        </a>
+                        <a href="{{route('orders.print.declared_sticker', ['id' => $order->id])}}" target="_blank" class="btn btn-primary">
+                            <i class="fa fa-print"></i>
+                            Объявленная ценность наклейка
+                        </a>
+                        @endif
+                        @if($order->delivery['method_id'] == 5)
+                        <a href="{{route('orders.print.small_package_sticker', ['id' => $order->id])}}" target="_blank" class="btn btn-primary">
+                            <i class="fa fa-print"></i>
+                            Мелкий пакет наклейка
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>

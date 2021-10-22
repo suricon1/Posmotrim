@@ -34,6 +34,13 @@ class ProductsController extends AppController
         ]);
     }
 
+    public function showByStatus($status)
+    {
+        return view('admin.vinograd.product.index', [
+            'products' => Product::with('category', 'adminModifications.property')->getByStatus($status)->get()
+        ]);
+    }
+
     public function create()
     {
         return view('admin.vinograd.product.create', [

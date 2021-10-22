@@ -82,6 +82,11 @@ class Product extends Model
         return $query->where('status', 0);
     }
 
+    public function scopeGetByStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
+
     public function scopeRipening($query, $request)
     {
         return $request->get('ripening_by')

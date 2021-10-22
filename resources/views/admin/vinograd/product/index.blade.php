@@ -13,13 +13,25 @@
 @section('content')
 
 <div class="col">
+
+    @if (request('status') === null)
+        <h2>Показаны все сорта из каталога</h2>
+    @elseif (request('status') == 0)
+        <h2>Показаны <span class="px-2 bg-success">только активные</span> сорта</h2>
+    @elseif (request('status') == 1)
+        <h2>Показаны <span class="px-2 bg-warning">только не активные</span> сорта</h2>
+    @endif
+
     <div class="card">
         <div class="card-header">
-            <div class="form-group">
-                <a href="{{route('products.create')}}" class="btn btn-success">Добавить виноград</a>
+            <a href="{{route('products.index')}}" class="btn btn-outline-dark btn-sm">Все</a>
+            <a href="{{route('products.show_by_status', ['status' => 0])}}" class="btn btn-success btn-sm">Активные</a>
+            <a href="{{route('products.show_by_status', ['status' => 1])}}" class="btn btn-warning btn-sm">Не активные</a>
+{{--                    <a href="{{route('show_by_status', ['status' => 7])}}" class="btn btn-danger btn-sm">Удаленные</a>--}}
+            <div class="card-tools">
+                <a href="{{route('products.create')}}" class="btn btn-outline-success btn-xs"><i class="fa fa-plus"></i></a>
             </div>
         </div>
-        <!-- /.card-header -->
         <div class="card-body table-responsive">
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
@@ -70,7 +82,6 @@
                 </tbody>
             </table>
         </div>
-        <!-- /.card-body -->
     </div>
 </div>
 

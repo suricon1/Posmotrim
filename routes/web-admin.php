@@ -33,6 +33,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
             '/mails' => 'MailsController'
         ]);
 
+        Route::get('/products/show_by_status/{status}', 'ProductsController@showByStatus')->name('products.show_by_status');
+
         Route::get('/categorys/create/{model}', 'CategorysController@create')->name('categorys.create');
         Route::get('/categorys/{id}/edit/{model}', 'CategorysController@edit')->name('categorys.edit');
 
@@ -57,7 +59,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
 
             Route::post('/admin_note_edit/{order_id}', 'OrdersController@adminNoteEdit')->name('admin.note.edit');
 
-            Route::get('/print/{id}', 'OrdersController@print')->name('print');
+            Route::group(['as' => 'print.'], function() {
+                Route::get('/print/{id}', 'OrderPrintsController@order')->name('order');
+                Route::get('/print/nalozhka_sticker/{id}', 'OrderPrintsController@nalozhkaSticker')->name('nalozhka_sticker');
+                Route::get('/print/declared_sticker/{id}', 'OrderPrintsController@declaredSticker')->name('declared_sticker');
+                Route::get('/print/small_package_sticker/{id}', 'OrderPrintsController@smallPackageSticker')->name('small_package_sticker');
+            });
         });
 
         Route::get('/products/toggle/{id}', 'ProductsController@toggle')->name('products.toggle');

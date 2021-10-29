@@ -15,7 +15,7 @@
     <div class="container-fluid p-0">
         <div class="row no-gutters">
             <div class="about-us-content">
-{{--                @include('components.reklama.vinograd_page_header')--}}
+                @include('components.reklama.vinograd_page_header')
                 <h1 class="mt-3">{{ $page->title }}</h1>
                 @if($page->slug == 'kalkulyator-shaptalizacii')
                     @include('vinograd.components._kalkulyator_shaptalizacii')

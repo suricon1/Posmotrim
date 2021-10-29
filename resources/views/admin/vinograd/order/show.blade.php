@@ -161,13 +161,17 @@
                             Распечатать заказ
                         </a>
                         @if($order->delivery['method_id'] == 2)
-                        <a href="{{route('orders.print.nalozhka_sticker', ['id' => $order->id])}}" target="_blank" class="btn btn-primary">
+                        <a href="{{route('orders.print.nalozhka_blanck', ['id' => $order->id])}}" target="_blank" class="btn btn-primary">
                             <i class="fa fa-print"></i>
                             Наложенный платеж бланк
                         </a>
+                        <a href="{{route('orders.print.nalozhka_sticker', ['id' => $order->id])}}" target="_blank" class="btn btn-primary">
+                            <i class="fa fa-print"></i>
+                            Наложенный платеж Наклейка
+                        </a>
                         <a href="{{route('orders.print.declared_sticker', ['id' => $order->id])}}" target="_blank" class="btn btn-primary">
                             <i class="fa fa-print"></i>
-                            Объявленная ценность наклейка
+                            По РБ без наложки наклейка
                         </a>
                         @endif
                         @if($order->delivery['method_id'] == 5)

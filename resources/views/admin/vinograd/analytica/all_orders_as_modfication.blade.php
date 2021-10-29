@@ -4,6 +4,12 @@
 @section('key', 'Admin | Dashboard')
 @section('desc', 'Admin | Dashboard')
 
+@section('header')
+    <link rel="stylesheet" href="/css/jquery.periodpicker.min.css">
+@endsection
+
+{{--@section('header-title', 'Dashboard')--}}
+
 @section('content')
     <div class="col">
         <h3>{{$title}} -</h3>
@@ -13,8 +19,6 @@
             <h2>Предварительные заказы <small>{!! $titleDate !!}</small></h2>
         @elseif (request('status') == 1)
             <h2>Новые заказы <small>{!! $titleDate !!}</small></h2>
-        @elseif (request('status') == 8)
-            <h2>Сформированные заказы <small>{!! $titleDate !!}</small></h2>
         @endif
         <div class="card">
             <div class="card-header">

@@ -27,10 +27,6 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    /**
-     * Метод изменения редиректа для незалогиненных юзеров мидлвером guest
-     *
-     */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         if ($request->expectsJson()) {

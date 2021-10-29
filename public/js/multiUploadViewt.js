@@ -186,15 +186,15 @@ $(document).on("click", ".modification-remove", function(e) {
         data: {
             modification_id: modification_id
         },
-        success: function (data){
-            if(data.succes){
+        success: function (data) {
+            if(data.succes)            {
                 parent.remove();
                 succes_list(data.succes);
             }
-            else if(data.errors){
+            else if(data.errors)            {
                 errors_list(data.errors);
             }
-            else{
+            else            {
                 errors_list('Неизвестная ошибка. Повторите попытку, пожалуйста!');
             }
         },

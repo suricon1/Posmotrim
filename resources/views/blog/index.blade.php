@@ -19,7 +19,7 @@
 @endsection
 
 @section('section-title')
-    @include('components.section-title', ['title' => isset($category) ? $category->title : 'Виноградарство Беларуси', 'page' => $page])
+    @include('components.section-title', ['title' => isset($category) ? $category->title : 'Виноградарство Беларуси'])
 @endsection
 
 @section('left-content')

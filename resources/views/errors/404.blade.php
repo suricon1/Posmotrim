@@ -20,8 +20,8 @@
                             <p>Страница не существует, удалена, или временно недоступна.</p>
                         </div>
                         <div class="search-error">
-                            <form action="{{ route('vinograd.search') }}" method="POST">
-                                <input name="search" id="search" placeholder="Что ищем...?" type="text" autocomplete="off" class=" who" required>
+                            <form action="404.html#">
+                                <input placeholder="Поиск по сайту ..." type="text">
                                 <button><i class="fa fa-search"></i></button>
                             </form>
                         </div>

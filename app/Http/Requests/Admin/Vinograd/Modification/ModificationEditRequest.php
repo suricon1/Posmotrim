@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Vinograd\Modification;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ModificationEditRequest extends FormRequest
 {

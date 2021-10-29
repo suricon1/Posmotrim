@@ -44,6 +44,36 @@ class DashboardService
             all();
     }
 
+    public function getSelectOrdersByNumbers($order_ids)
+    {
+        if (!$order_ids) return [];
+
+        return Order::
+        leftJoin('vinograd_order_items as items', function ($join) {
+            $join->on('vinograd_orders.id', '=', 'items.order_id');
+        })->
+        rightJoin('vinograd_products as prod', function ($join) {
+            $join->on('prod.id', '=', 'items.product_id');
+        })->
+        rightJoin('vinograd_product_modifications as prod_mod', function ($join) {
+            $join->on('prod_mod.id', '=', 'items.modification_id');
+        })->
+        rightJoin('vinograd_modifications as mod', function ($join) {
+            $join->on('mod.id', '=', 'prod_mod.modification_id');
+        })->
+        select(
+            'prod.name as product_name',
+            'mod.name as modification_name'
+        )->
+        selectRaw('SUM(`items`.`quantity`) as `allQuantity`')->
+        //whereStatus(Order::ORDERED_LIST)->
+        selectOrdersByNumbers($order_ids)->
+        groupBy('product_name', 'modification_name')->
+        get()->
+        groupBy('product_name')->
+        all();
+    }
+
     public function getAllOrdersAsModfication($dateRange, $status, $product_id, $modification_id, $price)
     {
         return Order::with('items')->
@@ -167,5 +197,17 @@ class DashboardService
             return 'с <strong>'. getRusDate($from, 'd %MONTH% Y, %DAYWEEK%') .'</strong> по <strong>сегодня</strong>';
         }
         return 'с <strong>'. getRusDate($from, 'd %MONTH% Y, %DAYWEEK%') .'</strong> по <strong>'. getRusDate($to, 'd %MONTH% Y, %DAYWEEK%') .'</strong>';
+    }
+
+    public function StringToArray($string)
+    {
+        $string = preg_replace('/[^0-9\s,.]/', '', $string);
+        $string = preg_split("/[\s,.]+/", $string);
+        return array_diff($string, ['', NULL, false]);
+    }
+
+    public function ArrayToString($array)
+    {
+        return $array ? implode(', ', $array) : null;
     }
 }

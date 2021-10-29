@@ -39,13 +39,13 @@
                         <!--Single Blog Start-->
                         <div class="single-blog">
                             <div class="blog-img img-full">
-                                <a href="{{ route('blog.post', ['alias'=>$post->slug]) }}">
+                                <a href="{{ route('site.article', ['alias'=>$post->slug]) }}">
                                     <img src="{{ $post->getImage() }}" alt="{{ $post->title }}">
                                 </a>
                             </div>
                             <div class="blog-content">
                                 <div class="post-date">01/12/2018</div>
-                                <h3 class="post-title"><a href="{{ route('blog.post', ['alias'=>$post->slug]) }}">{{ $post->title }}</a></h3>
+                                <h3 class="post-title"><a href="{{ route('site.article', ['alias'=>$post->slug]) }}">{{ $post->title }}</a></h3>
                                 <p class="post-description">
                                     @if($post->description)
                                         {!! $post->description !!}
@@ -88,13 +88,13 @@
                             <!--Single Blog Start-->
                             <div class="single-blog">
                                 <div class="blog-img img-full">
-                                    <a href="{{ route('blog.post', ['alias'=>$post->slug]) }}">
+                                    <a href="{{ route('site.article', ['alias'=>$post->slug]) }}">
                                         <img src="{{ $post->getImage() }}" alt="{{ $post->title }}">
                                     </a>
                                 </div>
                                 <div class="blog-content">
                                     <div class="post-date">01/12/2018</div>
-                                    <h3 class="post-title"><a href="{{ route('blog.post', ['alias'=>$post->slug]) }}">{{ $post->title }}</a></h3>
+                                    <h3 class="post-title"><a href="{{ route('site.article', ['alias'=>$post->slug]) }}">{{ $post->title }}</a></h3>
                                     <p class="post-description">
                                         @if($post->description)
                                             {!! $post->description !!}
@@ -166,7 +166,7 @@
                 <!--Section Title Start-->
                 <div class="col-12">
                     <div class="section-title text-center mb-35">
-                        <a href="#"><span>SwEmi - Украшения ручной работы</span></a>
+                        <a href="{{ route('svemi.index') }}"><span>SwEmi - Украшения ручной работы</span></a>
                         <h3>Рекомендуемое</h3>
                     </div>
                 </div>

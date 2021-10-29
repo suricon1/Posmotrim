@@ -6,12 +6,9 @@ use App\UseCases\ImageService;
 use App\UseCases\Size;
 use Illuminate\Support\Facades\Storage;
 
+
 trait GalleryServais
 {
-    /*  Переопределяем:
-     *  const DIR_GALERY_NAME - папка хранения фото галереи
-     */
-
     public function fitGallery()
     {
         if(!$this->imageList) {return;}

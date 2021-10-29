@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\Dashboard;
 
 use App\Models\Vinograd\Currency;
 use App\Models\Vinograd\Modification;
-use App\Models\Vinograd\Order\Order;
 use App\UseCases\Dashboard\DashboardService;
 use Illuminate\Http\Request;
 use View;
@@ -41,10 +40,5 @@ class DashboardController extends AppController
             'titleDate' => $service->getTitleDate($dateRange),
             'title' => $modification->product->name . ' ' . $modification->property->name
         ]);
-    }
-
-    public function allOrderedsAsModfication(Request $request, DashboardService $service, $product_id, $modification_id, $price)
-    {
-        return $this->allOrdersAsModfication($request, $service, $product_id, $modification_id, $price, Order::ORDERED_LIST);
     }
 }

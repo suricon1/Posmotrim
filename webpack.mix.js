@@ -18,9 +18,7 @@ mix
     .setPublicPath('public/build')
     .setResourceRoot('/build/')
     .js('resources/js/app.js', 'js')
-    //.js('resources/js/appAdmin.js', 'js')
     .sass('resources/sass/app.scss', 'css')
-    //.sass('resources/sass/appAdmin.scss', 'css')
     .version();
 
 mix.styles(
@@ -30,6 +28,5 @@ mix.styles(
         'resources/css/meanmenu.min.css',
         'resources/css/style.css',
         'resources/css/responsive.css',
-        'resources/css/toastr.min.css'
     ],
     'public/build/css/custom.css');

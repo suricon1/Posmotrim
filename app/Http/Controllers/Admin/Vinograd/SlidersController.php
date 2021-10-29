@@ -17,6 +17,11 @@ class SlidersController extends AppController
         View::share ('slider_active', ' active');
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         return view('admin.vinograd.slider.index', [
@@ -24,11 +29,22 @@ class SlidersController extends AppController
         ]);
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         return view('admin.vinograd.slider.create');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(SliderRequest $request)
     {
         $slider = Slider::add($request->all());
@@ -37,6 +53,12 @@ class SlidersController extends AppController
         return redirect()->route('sliders.index');
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
         return view('admin.vinograd.slider.edit', [
@@ -44,6 +66,13 @@ class SlidersController extends AppController
         ]);
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(SliderRequest $request, $id)
     {
         $slider = Slider::find($id);
@@ -53,6 +82,12 @@ class SlidersController extends AppController
         return redirect()->route('sliders.index');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
         Slider::find($id)->remove();

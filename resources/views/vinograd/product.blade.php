@@ -247,6 +247,7 @@
                                     <span><strong>{{$modification->property->name}}</strong> - {{currency($modification->price)}} {{signature()}}</span><br>
                                 @empty
                                     <span class="text-danger">Нет в наличии</span>
+{{--                                        {!! config('main.empty_text_info') !!}--}}
                                 @endforelse
                                 </div>
                             </div>

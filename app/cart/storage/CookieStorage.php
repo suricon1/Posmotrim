@@ -3,7 +3,7 @@
 namespace App\cart\storage;
 
 use App\cart\CartItem;
-use App\Models\Vinograd\Product;
+//use App\entities\Shop\Product\Product;
 
 class CookieStorage implements StorageInterface
 {
@@ -44,4 +44,4 @@ class CookieStorage implements StorageInterface
             'expire' => time() + $this->timeout,
         ]));
     }
-}
+} 

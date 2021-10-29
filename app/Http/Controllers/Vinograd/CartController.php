@@ -76,7 +76,11 @@ class CartController extends Controller
             $this->service->set($request->get('id'), $request->get('quantity'));
 
             return ($request->ajax())
-                ? $this->succes()
+                ? ['succes' => [
+                    'mini_cart' => view('vinograd.components.mini-cart', ['cart' => $this->service->getCart()])->render(),
+                    'cart' => view('vinograd.components._cart', ['cart' => $this->service->getCart()])->render()
+                    ]
+                ]
                 : redirect()->route('vinograd.cart.ingex')->with('status', 'Корзина обновлена!');
         } catch (\DomainException $e) {
             return ($request->ajax())
@@ -99,20 +103,16 @@ class CartController extends Controller
         try {
             $this->service->remove($request->get('id'));
             return ($request->ajax())
-                ? $this->succes()
+                ? ['succes' => [
+                    'mini_cart' => view('vinograd.components.mini-cart', ['cart' => $this->service->getCart()])->render(),
+                    'cart' => view('vinograd.components._cart', ['cart' => $this->service->getCart()])->render()
+                    ]
+                ]
                 : redirect()->back();
         } catch (\DomainException $e) {
             return ($request->ajax())
                 ? ['errors' => $e->getMessage()]
                 : back()->withErrors([$e->getMessage()]);
         }
-    }
-
-    private function succes()
-    {
-        return ['succes' => [
-            'mini_cart' => view('vinograd.components.mini-cart', ['cart' => $this->service->getCart()])->render(),
-            'cart' => view('vinograd.components._cart', ['cart' => $this->service->getCart()])->render()
-        ]];
     }
 }

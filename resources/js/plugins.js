@@ -1,3 +1,4 @@
+// Avoid `console` errors in browsers that lack a console.
 (function() {
     var method;
     var noop = function () {};
@@ -13,60 +14,62 @@
     while (length--) {
         method = methods[length];
 
+        // Only stub undefined methods.
         if (!console[method]) {
             console[method] = noop;
         }
     }
 }());
 
+// Place any jQuery/helper plugins in here.
 /*---------------------------------
     ajax-mail.js
 -----------------------------------*/
 $(function() {
-	var form = $('#contact-form');
-	// var formMessages = $('.form-messege');
 
+	// Get the form.
+	var form = $('#contact-form');
+
+	// Get the messages div.
+	var formMessages = $('.form-messege');
+
+	// Set up an event listener for the contact form.
 	$(form).submit(function(e) {
+		// Stop the browser from submitting the form.
 		e.preventDefault();
+
+		// Serialize the form data.
 		var formData = $(form).serialize();
 
+		// Submit the form using AJAX.
 		$.ajax({
 			type: 'POST',
 			url: $(form).attr('action'),
-            headers: {'X-CSRF-Token': $("input[name = '_token']").val()},
 			data: formData
 		})
-		.done(function(data) {
-            if(data.succes) {
-                succes_list(data.succes);
-                $('#contact-form input,#contact-form textarea').val('');
-            } else if(data.errors) {
-                errors_list(data.errors);
-            } else {
-                errors_list('Неизвестная ошибка. Повторите попытку, пожалуйста!');
-            }
+		.done(function(response) {
+			// Make sure that the formMessages div has the 'success' class.
+			$(formMessages).removeClass('error');
+			$(formMessages).addClass('success');
 
+			// Set the message text.
+			$(formMessages).text(response);
 
-			// $(formMessages).removeClass('error');
-			// $(formMessages).addClass('success');
-            //
-			// $(formMessages).text(response);
-			// $('#contact-form input,#contact-form textarea').val('');
+			// Clear the form.
+			$('#contact-form input,#contact-form textarea').val('');
 		})
-        .fail(function(xhr, ajaxOptions, thrownError) {
-            fail_list(xhr.responseText);
-            //console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        });
-		// .fail(function(data) {
-		// 	$(formMessages).removeClass('success');
-		// 	$(formMessages).addClass('error');
-        //
-		// 	if (data.responseText !== '') {
-		// 		$(formMessages).text(data.responseText);
-		// 	} else {
-		// 		$(formMessages).text('Oops! An error occured and your message could not be sent.');
-		// 	}
-		// });
+		.fail(function(data) {
+			// Make sure that the formMessages div has the 'error' class.
+			$(formMessages).removeClass('success');
+			$(formMessages).addClass('error');
+
+			// Set the message text.
+			if (data.responseText !== '') {
+				$(formMessages).text(data.responseText);
+			} else {
+				$(formMessages).text('Oops! An error occured and your message could not be sent.');
+			}
+		});
 	});
 });
 
@@ -93,7 +96,7 @@ $(document).on('click', '.open-modal', function (e) {
         url: "/ajax/singleProduct",
         data: {product_id: id},
         success: function (data) {
-            //console.log(data.succes);
+            console.log(data.succes);
             if(data.succes){
                 $("#open-modal").html(data.succes);
                 singleOwlCarousel();
@@ -422,7 +425,8 @@ function succes_list(data)
 $(function(){   //Живой поиск
     $('.who').bind("change keyup input click", function()
     {
-        if(this.value.length >= 3) {
+        if(this.value.length >= 3)
+        {
             $.ajax({
                 type: 'post',
                 url: "/search",
@@ -442,7 +446,9 @@ $(function(){   //Живой поиск
                     }
                 }
             });
-        } else {
+        }
+        else
+        {
             $(".search_result").html('');
         }
     });
@@ -451,87 +457,4 @@ $(function(){   //Живой поиск
     // {
     //     $(".who").blur(); //Убираем фокус с input
     // });
-});
-
-$(function () { //  Вывод статей сеткой либо списком
-    $('.grid-list').tooltip();
-    $('.wishlist-quantity-box').tooltip();
-    $('.search-box').tooltip();
-});
-
-/*
-======= Модальне окно предзаказа  =========
- */
-$('#preOrder').on('show.bs.modal', function (e) {
-    $.ajax({
-        type: "GET",
-        url: "/ajax/pre-order-form",
-        error: function () {
-            alert( "При выполнении запроса произошла ошибка :(" );
-        },
-        success: function (data) {
-            $("#pre-order-modal").html(data);
-        }
-    });
-});
-
-$(document).delegate("#pre-order", "click", function (e) {
-    e.preventDefault();
-
-    $("input[name='name']").removeClass("is-invalid");
-    $("#pre-order-form #name").html('');
-
-    $("input[name='email']").removeClass("is-invalid");
-    $("#pre-order-form #email").html('');
-
-    $("input[name='phone']").removeClass("is-invalid");
-    $("#pre-order-form #phone").html('');
-
-    $("textarea[name='message']").removeClass("is-invalid");
-    $("#pre-order-form #message").html('');
-
-    var url = $(this).attr('data-url');
-
-    $.ajax({
-        method: "POST",
-        data: $("form#pre-order-form").serialize(),
-        url: url,
-        headers: {'X-CSRF-Token': $("meta[name = 'csrf-token']").attr('content')}
-    })
-        .done(function(data) {
-            if(data.succes) {
-                $("#pre-order-modal .modal-body").hide(500);
-                setTimeout(function () {
-                    $("#pre-order-modal").html('<div class="alert alert-success m-3" style="display: none"><h3>Спасибо за заказ. В ближайшее время мы свяжемся с Вами для уточнения детелей.</h3></div>');
-                    $("#pre-order-modal .alert").show(500);
-                }, 500);
-                setTimeout(function () {
-                    $('#preOrder').modal('hide')
-                }, 4000);
-            }
-        })
-        .fail (function(xhr) {
-            data = jQuery.parseJSON(xhr.responseText);
-            if(data.errors) {
-                if (data.errors.name) {
-                    $("input[name='name']").addClass("is-invalid");
-                    $("#pre-order-form #name").html(data.errors.name);
-                }
-                if (data.errors.email) {
-                    $("input[name='email']").addClass("is-invalid");
-                    $("#pre-order-form #email").html(data.errors.email);
-                }
-                if (data.errors.phone) {
-                    $("input[name='phone']").addClass("is-invalid");
-                    $("#pre-order-form #phone").html(data.errors.phone);
-                }
-                if (data.errors.message) {
-                    $("textarea[name='message']").addClass("is-invalid");
-                    $("#pre-order-form #message").html(data.errors.message);
-                }
-            } else {
-                data.error = '<div class="alert alert-danger" id="error">Неизвестная ошибка. Повторите попытку, пожалуйста!</div>';
-                $("#pre-order-form").prepend(data.error);
-            }
-        });
 });

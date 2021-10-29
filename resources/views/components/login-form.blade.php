@@ -1,4 +1,3 @@
-{{--<form class="form-horizontal" method="POST" action="{{ route('login') }}" id="login">--}}
 <form class="form-horizontal" method="POST" action="{{ route('vinograd.login') }}" id="login">
     {{ csrf_field() }}
 
@@ -39,7 +38,6 @@
 
     <div class="form-group">
         <p class="text-center text-muted">Еще не зарегистрированы?</p>
-{{--        <p class="text-center text-muted"><a href="{{route('register.form')}}"><strong>Регистрация</strong></a>! Это легко и займет 1 минуту и дает вам доступ к расширенным функциям сайта!</p>--}}
         <p class="text-center text-muted"><a href="{{route('vinograd.register.form')}}"><strong>Регистрация</strong></a>! Это легко и займет 1 минуту и дает вам доступ к расширенным функциям сайта!</p>
     </div>
 </form>

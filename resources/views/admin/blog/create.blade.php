@@ -157,7 +157,7 @@
     <script src="/js/ckeditor/ckeditor.js"></script>
     <script>
         var editor = CKEDITOR.replace('content');
-        editor.config.height = '500px';
+        editor.config.height = '600px';
         var editor2 = CKEDITOR.replace('description');
 
         $('.select2').select2();

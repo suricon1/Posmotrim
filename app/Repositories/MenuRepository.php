@@ -17,11 +17,11 @@ class MenuRepository
 
     public function getMenu()
     {
-//        $data1 = json_decode(file_get_contents('http://www.nbrb.by/API/ExRates/Rates?Periodicity=0'));
+        //$data1 = json_decode(file_get_contents('http://www.nbrb.by/API/ExRates/Rates?Periodicity=0'));
 //        $USD = json_decode(file_get_contents('http://www.nbrb.by/API/ExRates/Rates/USD?ParamMode=2'));
 //        $EUR = json_decode(file_get_contents('http://www.nbrb.by/API/ExRates/Rates/EUR?ParamMode=2'));
 //        $RUB = json_decode(file_get_contents('http://www.nbrb.by/API/ExRates/Rates/RUB?ParamMode=2'));
-//        $BYN = json_decode(file_get_contents('http://www.nbrb.by/API/ExRates/Rates/BYN?ParamMode=2'));
+//        //$BYN = json_decode(file_get_contents('http://www.nbrb.by/API/ExRates/Rates/BYN?ParamMode=2'));
 //        //dd($data1[15]->Cur_Scale);
 //        //dd($data1, $USD, $RUB);
 //        $BYN = 25.5;

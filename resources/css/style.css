@@ -1113,20 +1113,6 @@ Common Style CSS
 	top: -6px;
 	z-index: 1;
 }
-.wishlist-quantity{
-    position: absolute;
-    background: #abd373;
-    height: 19px;
-    line-height: 19px;
-    width: 19px;
-    text-align: center;
-    border-radius: 100%;
-    color: #fff;
-    font-size: 12px;
-    left: 12px;
-    top: 10px;
-    z-index: 1;
-}
 .cart-title {
 	display: block;
 	font-size: 13px;
@@ -1267,20 +1253,17 @@ Common Style CSS
     border-color: #abd373;
     color: #fff;
 }
-.search-box,
-.wishlist-quantity-box{
+.search-box {
 	position: relative;
 }
-.search-box > a,
-.wishlist-quantity-box > a{
+.search-box > a {
 	font-size: 18px;
 	height: 62px;
 	line-height: 62px;
 	display: block;
 	color: #000;
 }
-.search-box:hover > a,
-.wishlist-quantity-box:hover > a{
+.search-box:hover > a{
     color: #abd373
 }
 .search-dropdown{
@@ -1902,7 +1885,7 @@ Common Style CSS
 	left: 45px;
 	-webkit-transform: translateY(-50%);
 	        transform: translateY(-50%);
-    /*background-image: url("../img/icon/slider-left.png");*/
+    background-image: url("../img/icon/slider-left.png");
 	background-repeat: no-repeat;
     font-size: 0;
 	width: 40px;
@@ -1913,10 +1896,10 @@ Common Style CSS
 	transition: all 0.3s ease-in-out;
 }
 .hero-slider.hero-slider-3 .owl-nav > div {
-	/*background-image: url("../img/icon/slider-left-hover.png") !important;*/
+	background-image: url("../img/icon/slider-left-hover.png") !important;
 }
 .hero-slider.hero-slider-3 .owl-nav > .owl-next{
-    /*background-image: url("../img/icon/slider-right-hover.png") !important;*/
+    background-image: url("../img/icon/slider-right-hover.png") !important;
 }
 .testimonial-active .owl-nav > div{
     left: 0;
@@ -1932,24 +1915,24 @@ Common Style CSS
 .testimonial-active .owl-nav > .owl-next {
 	right: 45px;
 	left: auto;
-    /*background-image: url("../img/icon/slider-right.png");*/
+    background-image: url("../img/icon/slider-right.png");
 }
 .testimonial-active .owl-nav > .owl-next{
     right: 0;
 }
 .hero-slider .owl-nav > div:hover,
 .testimonial-active .owl-nav > div:hover{
-    /*background-image: url("../img/icon/slider-left-hover.png");*/
+    background-image: url("../img/icon/slider-left-hover.png");
 }
 .hero-slider .owl-nav > .owl-next:hover,
 .testimonial-active .owl-nav > .owl-next:hover{
-    /*background-image: url("../img/icon/slider-right-hover.png");*/
+    background-image: url("../img/icon/slider-right-hover.png");
 }
 /*------------------------
     4. Feature Area CSS
 --------------------------*/
 .feature-history-area {
-	/*background-image: url("../img/bg/bg2.jpg");*/
+	background-image: url("../img/bg/bg2.jpg");
 	background-position: center center;
 	background-size: cover;
 	padding-top: 120px;
@@ -2206,7 +2189,7 @@ Common Style CSS
     color: #abd373;
 }
 .product-content {
-	padding: 20px 3px 25px 3px;
+	padding: 20px 15px 25px 15px;
 	text-align: center;
 }
 .product-content > h2 > a {
@@ -2248,14 +2231,11 @@ Common Style CSS
     border: none;
     border-radius: 0 !important;
 }
-.toolbar-short-area select{
-    height: 40px;
-}
 .price-box {
     color: #555;
     font-size: 14px;
     /*height: 30px;*/
-    /*line-height: 30px;*/
+    line-height: 30px;
     width: 100%;
     -webkit-transition: all .3s ease;
     transition: all .3s ease;
@@ -2413,7 +2393,7 @@ Common Style CSS
     margin: auto;
 }
 .product-countdown-area {
-	/*background-image: url(../img/bg/bg1.jpg);*/
+	background-image: url(../img/bg/bg1.jpg);
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -2578,7 +2558,7 @@ Common Style CSS
     position: relative;
 }
 .testimonial-img:before {
-    /*background: url(../img/icon/testimonial-icon.png) center center no-repeat;*/
+    background: url(../img/icon/testimonial-icon.png) center center no-repeat;
     bottom: 0;
     content: '';
     display: block;
@@ -2874,21 +2854,12 @@ h2.entry-title > a:hover {
 .blog_area article.blog_single {
 	text-align: center;
 }
-.blog-post-description img,
-.about-us-content img{
+.blog-post-description img{
     max-width: 100%;
 }
 .post-info .entry-summary > p {
 	margin-bottom: 27px;
 	text-align: justify;
-}
-.post-info .entry-summary > p > a,
-.about-us-content > p > a{
-    color: #007bff;
-}
-.post-info .entry-summary > p >a:hover,
-.about-us-content > p > a:hover {
-    text-decoration: underline;
 }
 .blog_single .readmore.button {
 	background: #434343 none repeat scroll 0 0;
@@ -3052,7 +3023,7 @@ h2.entry-title > a:hover {
 	font-size: 15px;
 	line-height: 25px;
 	color: #222;
-    /*text-align: left;*/
+    text-align: left;
 }
 .entry-summary.blog-post-description blockquote {
 	background: #f6f6f6;
@@ -3064,9 +3035,6 @@ h2.entry-title > a:hover {
 	margin: 40px 0 40px 40px;
 	padding: 30px 45px;
     text-align: left;
-}
-.entry-summary.blog-post-description > h2 {
-    margin: 30px;
 }
 .single-post-tag {
 	border-top: 1px solid #ebebeb;
@@ -3100,7 +3068,7 @@ h2.entry-title > a:hover {
 	color: #444;
 	text-transform: uppercase;
 	margin: 0;
-    /*height: 80px;*/
+    height: 80px;
     overflow: hidden;
 }
 .image {
@@ -4046,8 +4014,9 @@ li.right-menu .cat-mega-menu > li {
 }
 .categori-checkbox ul li a {
 	font-size: 13px;
-	margin-left: 10px;
+	margin-left: 24px;
 	font-weight: 400;
+	display: inline-block;
 	color: #555;
 }
 .categori-checkbox ul li a:hover{
@@ -4177,13 +4146,13 @@ li.right-menu .cat-mega-menu > li {
 }
 .rc-product-thumb {
 	float: left;
-	/*width: 30%;*/
+	width: 30%;
 }
 .rc-product-content {
 	float: left;
 	padding: 5px 0;
 	padding-left: 20px;
-	/*width: 70%;*/
+	width: 70%;
 }
 .rc-product-content > h6 {
 	color: #555;
@@ -4362,8 +4331,7 @@ li.right-menu .cat-mega-menu > li {
 .product-pagination > ul > li:last-child{
     margin-right: 0;
 }
-.product-pagination > ul > li > a,
-.product-pagination > ul > li > span{
+.product-pagination > ul > li > a {
 	background: #fff;
 	border: 1px solid #ededed;
 	color: #222;
@@ -4381,7 +4349,6 @@ li.right-menu .cat-mega-menu > li {
 	font-size: 20px;
 }
 .product-pagination > ul > li.active > a,
-.product-pagination > ul > li.active > span,
 .product-pagination > ul > li > a:hover {
 	background: #abd373;
 	border-color: #abd373;
@@ -4531,7 +4498,7 @@ max-width: none !important;
 	font-size: 14px;
 	line-height: 25px;
 	color: #666;
-	/*margin: 35px 0;*/
+	margin: 35px 0;
 }
 .stock {
 	color: #666666;
@@ -4723,7 +4690,7 @@ max-width: none !important;
 	bottom: -1px;
 	content: '';
 	display: block;
-	height: 2px;
+	height: 1px;
 	left: 50%;
 	position: absolute;
 	right: 50%;
@@ -6004,7 +5971,7 @@ a.ideas-btn:hover{
 }
 /*What We Do Area CSS */
 .service-bg-2 {
-	/*background-image: url(../img/bg/service-bg3.jpg);*/
+	background-image: url(../img/bg/service-bg3.jpg);
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -6052,7 +6019,7 @@ a.ideas-btn:hover{
 }
 /*our service area 3 css*/
 .section-title-img {
-	/*background-image: url(../img/bg/service-bg4.jpg);*/
+	background-image: url(../img/bg/service-bg4.jpg);
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -6325,7 +6292,7 @@ a.ideas-btn:hover{
 }
 /*social link css*/
 .social-link-area {
-	/*background-image: url(../img/bg/contact2-social.jpg);*/
+	background-image: url(../../img/contact2-social.jpg);
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -6786,15 +6753,4 @@ margin-bottom: 0;
 }
 .faq-accordion .link > li > a:hover{
     color: #abd373;
-}
-.special-field {
-    display:none;
-}
-.category-menu-list > ul > li > span{
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding-top: 8px;
-    font-size: 13px;
-    color: #555;
 }

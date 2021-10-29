@@ -8,7 +8,7 @@ class Modification extends Model
 {
     protected $table = 'vinograd_product_modifications';
     public $timestamps = false;
-    protected $fillable = ['price', 'quantity', 'product_id', 'modification_id'];
+    protected $fillable = [/*'name', */'price', 'quantity', 'product_id', 'modification_id'];
 
     public function product()
     {
@@ -24,6 +24,7 @@ class Modification extends Model
     {
         $modification = new static;
         $modification->fill($fields);
+        //$modification->name = ModificationProps::where('id', $id)->value('name'); // Временное решение, впоследствии удалить!
         $modification->save();
         return $modification;
     }

@@ -3,6 +3,9 @@
 return [
     'phone 1' => env('PHONE_1', false),
     'admin_email' => env('MAIL_FROM_ADDRESS', false),
+    'admin_name' => env('ADMIN_NAME', false),
+    'admin_index' => env('ADMIN_INDEX', false),
+    'admin_address' => env('ADMIN_ADDRESS', false),
 
     'tracking_post' => env('TRACKING_POST', false),
 

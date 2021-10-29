@@ -106,7 +106,7 @@ return [
     |
     */
 
-    'custom' => [
+    'custom'               => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
@@ -151,7 +151,7 @@ return [
         'name' => '<b>Имя</b>',
         'text' => '<b>Комментарий</b>',
         'email' => '<b>E-mail</b>',
-        'quantity' => '"количество"'
+        'quantity' => 'количество'
     ],
 
 ];

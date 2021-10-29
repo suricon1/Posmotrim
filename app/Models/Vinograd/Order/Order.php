@@ -236,6 +236,11 @@ class Order extends Model
         return $status ? $query->where('current_status', $status) : $query->where('current_status', Status::COMPLETED);
     }
 
+    public function scopeSelectOrdersByNumbers($query, $order_ids)
+    {
+        return $order_ids ? $query->whereIn('vinograd_orders.id', $order_ids) : $query;
+    }
+
     ########## Relationships ################
 
     public function user()

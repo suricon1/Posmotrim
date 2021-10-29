@@ -77,20 +77,20 @@ class AjaxController extends Controller
 
     public function gridList(GridListRequest $request)
     {
-        if ($request->get('category')){
-            $category = getModelName($request->get('model'))::where('id', $request->get('category'))->first();
-            $products = $this->productRep->getSortProductByModifications($request, '', $category);
-        }else{
-            $products = $this->productRep->getSortProductByModifications($request, '');
-        }
-        Cookie::queue('grid_list', $request->get('grid_list'), 86400);
+            if ($request->get('category')){
+                $category = getModelName($request->get('model'))::where('id', $request->get('category'))->first();
+                $products = $this->productRep->getSortProductByModifications($request, '', $category);
+            }else{
+                $products = $this->productRep->getSortProductByModifications($request, '');
+            }
+            Cookie::queue('grid_list', $request->get('grid_list'), 86400);
 
-        return ['succes' => view('vinograd.components.product-'.$request->get('grid_list').'-view', [
-            'category' => ($request->get('category')) ? $category : false,
-            'products' => $products,
-            'page' => $request->get('page'),
-            'param' => $this->productRep->getParams($request)
-        ])->render()];
+            return ['succes' => view('vinograd.components.product-'.$request->get('grid_list').'-view', [
+                'category' => ($request->get('category')) ? $category : false,
+                'products' => $products,
+                'page' => $request->get('page'),
+                'param' => $this->productRep->getParams($request)
+            ])->render()];
     }
 
     public function preOrderForm()

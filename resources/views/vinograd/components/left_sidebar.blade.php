@@ -8,9 +8,6 @@
             <a href="mailto:{{config('main.admin_email')}}?subject=Вопрос по винограду">{{config('main.admin_email')}}</a>
         </li>
         <li><a href="{{route('vinograd.contactForm')}}"><i class="fa fa-pencil"></i> Форма обратной связи</a></li>
-{{--        <li>--}}
-{{--            <a href="viber://chat?number=%2B375293100514" target="_top"><i class="fa fa-whatsapp"></i> Viber</a>--}}
-{{--        </li>--}}
     </ul>
 {{--    <div class="working-time">--}}
 {{--        <h3><strong>Working hours</strong></h3>--}}

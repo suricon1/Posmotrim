@@ -31,6 +31,7 @@ class WishlistController extends Controller
         } catch (\DomainException $e) {
             return back()->withErrors([$e->getMessage()]);
         }
+
     }
 
     public function deleteFromWishlist(Request $request)

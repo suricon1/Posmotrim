@@ -1,10 +1,10 @@
 @extends('admin.layouts.layout')
 
-@section('title', 'Admin | Заказ № ' . $order->id)
-@section('key', 'Admin | Заказ № ' . $order->id)
-@section('desc', 'Admin | Заказ № ' . $order->id)
+@section('title', 'Admin | Заказ № ' . $order->id . '. Печать наклейки мелкий пакет')
+@section('key', 'Admin | Заказ № ' . $order->id . '. Печать наклейки мелкий пакет')
+@section('desc', 'Admin | Заказ № ' . $order->id . '. Печать наклейки мелкий пакет')
 
-@section('header-title', 'Заказ № ' . $order->id)
+@section('header-title', 'Заказ № ' . $order->id . '. Печать наклейки мелкий пакет')
 
 @section('body-print', ' onload=window.print();')
 
@@ -39,8 +39,8 @@
                 Nom et adresse de l`expediteur<br>
                 Фамилия и адрес отправителя
             </p>
-            <span class="c11">{{$order->customer['name']}}</span><br>
-            <span class="c11">{{$order->delivery['index']}} {{$order->delivery['address']}}</span>
+            <span class="c11">{{config('main.admin_name')}}</span><br>
+            <span class="c11">{{config('main.admin_index')}} {{config('main.admin_address')}} тел:{{config('main.phone 1')}}</span>
         </div>
 
         <div class="col-7 pl-5">
@@ -65,9 +65,10 @@
         </div>
     </div>
 
-    <div class="row p-4" style="width: 71%; background-color: #ffffff; height: 150px">
+    <div class="row p-4" style="width: 71%; background-color: #ffffff; height: 172px">
         <div class="col-5 align-self-center">
-            (Место для наклеивания<br>таможенной декларации CN22)
+            (Место для наклеивания таможенной декларации CN22)<br>
+            Упаковано по желанию отправителя. Запрещенных вложений нет.
         </div>
         <div class="col-7">
             <p>
@@ -75,7 +76,8 @@
                 Фамилия и адрес получателя
             </p>
             <span class="c11">{{$order->customer['name']}}</span><br>
-            <span class="c11">{{$order->delivery['index']}} {{$order->delivery['address']}}</span>
+            <span class="c11">{{$order->delivery['index']}} {{$order->delivery['address']}} тел: {{$order->customer['phone']}}</span>
+            <p class="text-right">№ {{$order->id}}</p>
         </div>
     </div>
 @endsection

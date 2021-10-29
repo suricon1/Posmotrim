@@ -10,13 +10,6 @@ use Image;
 
 trait ImageServais
 {
-    /*  Переопределяем:
-     *  const DIR_CONTENT_IMAGE_NAME - папка хранения фото контента
-     *  const ORIGIN_IMAGE_NAME - название оригинального фото
-     *  const DEFAULT_IMAGE_NAME - Фото по умолчанию, при отсутствии возвратит null
-     *  const IMAGE_WATERMARK - Фото на Watermark
-     */
-
     public function getPath()
     {
         $className = strtolower(class_basename(self::class));

@@ -31,7 +31,7 @@
                                         <div class="search-box">
                                             <a href="index.html#"><i class="fa fa-search"></i></a>
                                             <div class="search-dropdown">
-                                                <form action="?" method="POST">
+                                                <form action="{{ route('search') }}" method="POST">
                                                     {{ csrf_field() }}
                                                     <input name="search" id="search" placeholder="Что ищем...?" type="text" autocomplete="off" class=" who">
                                                     {{--<input name="search" id="search" placeholder="Что ищем...?" value="" onblur="if(this.value==''){this.value='Search product...'}" onfocus="if(this.value=='Search product...'){this.value=''}" type="text">--}}
@@ -55,7 +55,7 @@
 
                                                     @guest
                                                         <li><a href="#" data-toggle="modal" data-target="#login-modal">Вход</a></li>
-                                                        <li><a href="#">Регистрация</a></li>
+                                                        <li><a href="{{ route('register') }}">Регистрация</a></li>
                                                     @else
                                                         <li><h4>{{ Auth::user()->name }}</h4></li>
                                                         @admin
@@ -67,13 +67,13 @@
                                                         {{--<li><a href="checkout.html">Checkout</a></li>--}}
 
                                                         <li>
-                                                            <a href="#"
+                                                            <a href="{{ route('logout') }}"
                                                                onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">
                                                                 Выход
                                                             </a>
 
-                                                            <form id="logout-form" action="#" method="POST" style="display: none;">
+                                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                                                 {{ csrf_field() }}
                                                             </form>
                                                         </li>
@@ -87,10 +87,10 @@
                                                             <ul>
                                                                 <li><a href="#">Добавить</a>
                                                                     <ul class="switcher-dropdown">
-{{--                                                                        <li><a target="_blank" href="{{route('posts.create')}}">Новый Пост</a></li>--}}
-{{--                                                                        <li><a target="_blank" href="{{route('countri.create')}}">Новую Страну</a></li>--}}
-{{--                                                                        <li><a target="_blank" href="{{route('city.create')}}">Новый Город</a></li>--}}
-{{--                                                                        <li><a target="_blank" href="{{route('tags.create')}}">Новый Тэг</a></li>--}}
+                                                                        <li><a target="_blank" href="{{route('posts.create')}}">Новый Пост</a></li>
+                                                                        <li><a target="_blank" href="{{route('countri.create')}}">Новую Страну</a></li>
+                                                                        <li><a target="_blank" href="{{route('city.create')}}">Новый Город</a></li>
+                                                                        <li><a target="_blank" href="{{route('tags.create')}}">Новый Тэг</a></li>
                                                                     </ul>
                                                                 </li>
                                                             </ul>

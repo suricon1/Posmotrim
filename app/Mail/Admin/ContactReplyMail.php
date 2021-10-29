@@ -27,4 +27,5 @@ class ContactReplyMail extends Mailable implements ShouldQueue
             ->subject('Re: '.config('app.name').'. Ответ на Ваше сообщение')
             ->markdown('admin.emails.contact_reply');
     }
+
 }

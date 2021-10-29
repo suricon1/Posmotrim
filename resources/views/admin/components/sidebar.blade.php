@@ -23,6 +23,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{route('dashboard.select_orders')}}" class="nav-link{{$dashboard_select_orders_active ?? ''}}">
+                        <p>Избранные заказы</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{route('dashboard.deliverys')}}" class="nav-link{{$dashboard_delivery_active ?? ''}}">
                         <p>Метод доставки</p>
                     </a>

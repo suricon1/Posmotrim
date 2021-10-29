@@ -1,10 +1,10 @@
 @extends('admin.layouts.layout')
 
-@section('title', 'Admin | Заказ № ' . $order->id)
-@section('key', 'Admin | Заказ № ' . $order->id)
-@section('desc', 'Admin | Заказ № ' . $order->id)
+@section('title', 'Admin | Распечатать заказ № ' . $order->id)
+@section('key', 'Admin | Распечатать заказ № ' . $order->id)
+@section('desc', 'Admin | Распечатать заказ № ' . $order->id)
 
-@section('header-title', 'Заказ № ' . $order->id)
+@section('header-title', 'Распечатать заказ № ' . $order->id)
 
 @section('body-print', ' onload=window.print();')
 
@@ -39,7 +39,7 @@
 
                     <div class="row">
                         <div class="col-12 table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-sm table-striped">
                                 <thead>
                                 <tr>
                                     <th>Название</th>

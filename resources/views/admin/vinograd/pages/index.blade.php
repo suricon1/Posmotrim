@@ -13,7 +13,7 @@
             <a href="{{route('pages.create')}}" class="btn btn-success">Добавить страницу</a>
         </div>
         <div class="table-responsive">
-            <table id="" class="table table-bordered table-striped">
+            <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th>Название</th>
@@ -57,7 +57,6 @@
             </table>
         </div>
         {{--{{$categorys->links('admin.components.pagination')}}--}}
-
     </div>
 
 @endsection

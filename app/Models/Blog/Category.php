@@ -60,9 +60,8 @@ class Category extends Model
 
     public function edit($fields)
     {
-        $this->update($fields);
-//        $this->fill($fields);
-//        $this->save();
+        $this->fill($fields);
+        $this->save();
     }
 
 }

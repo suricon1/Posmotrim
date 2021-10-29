@@ -38,7 +38,7 @@ class ModificationsController extends AppController
     public function edit($id)
     {
         return view('admin.vinograd.modification.edit', [
-            'modification' => ModificationProps::findOrFail($id)]);
+            'modification' => ModificationProps::find($id)]);
     }
 
     public function update(Request $request, $id)
@@ -50,14 +50,14 @@ class ModificationsController extends AppController
     {
         //  Проверить на использование
 
-        ModificationProps::findOrFail($id)->delete();
+        ModificationProps::find($id)->delete();
 
         return redirect()->route('modifications.index');
     }
 
     public function toggle($id)
     {
-        $page = ModificationProps::findOrFail($id);
+        $page = ModificationProps::find($id);
         $page->toggledsStatus();
 
         return redirect()->back();

@@ -3,7 +3,6 @@
 namespace App\Models\Vinograd;
 
 use App\Models\Vinograd\Order\Order;
-use App\UseCases\CurrencyService;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -25,10 +24,10 @@ class DeliveryMethod extends Model
         ];
     }
 
-//    public function orders()
-//    {
-//        return $this->hasMany(Order::class);
-//    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 
     public static function create(Request $request): self
     {
@@ -43,6 +42,12 @@ class DeliveryMethod extends Model
     {
         $this->fill($request->all());
         $this->save();
+
+//        $this->name = $name;
+//        $this->cost = $cost;
+//        $this->min_weight = $minWeight;
+//        $this->max_weight = $maxWeight;
+//        $this->sort = $sort;
     }
 
     public function remove()

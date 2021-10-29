@@ -3,8 +3,8 @@
 namespace App\Models\Vinograd;
 
 use App\Models\Blog\Post;
-use App\Models\Vinograd\User;
-use App\Models\Vinograd\UserComment;
+use App\Models\Site\User;
+use App\Models\Site\UserComment;
 use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;

@@ -27,7 +27,8 @@ class CheckoutController extends Controller
         if (!$this->cartService->getCart()->getItems()){
             return redirect()->route('vinograd.category')->withErrors(['error' => 'Корзина пуста.']);
         }
-        return view('vinograd.checkout.delivery', [
+        return view('vinograd.checkout.delivery',
+            [
                 'deliverys' => DeliveryMethod::all(),
                 'cart' => $this->cartService->getCart()
             ]);
@@ -52,17 +53,12 @@ class CheckoutController extends Controller
             $order = $this->service->checkout($request);
             $this->service->sendMail($order);
 
-            //$route = (Auth::user()) ? 'vinograd.cabinet.home' : 'vinograd.category';
-            return redirect()->
-                    route((Auth::user()) ? 'vinograd.cabinet.home' : 'vinograd.category')->
-                    with('status', 'Заказ сохранен. В ближайшее время мы с Вами свяжемся для уточнения деталей!');
+            if (Auth::user()){
+                return redirect()->route('vinograd.cabinet.home')->with('status', 'Заказ сохранен. В ближайшее время мы с Вами свяжемся для уточнения деталей!');
 
-//            if (Auth::user()){
-//                return redirect()->route('vinograd.cabinet.home')->with('status', 'Заказ сохранен. В ближайшее время мы с Вами свяжемся для уточнения деталей!');
-//
-//                //return view('cabinet.index', ['order' => $order])->with('status', 'Заказ сохранен. В ближайшее время мы с Вами свяжемся для уточнения деталей!');
-//            }
-//            return redirect()->route('vinograd.category')->with('status', 'Заказ сохранен. В ближайшее время мы с Вами свяжемся для уточнения деталей!');
+                //return view('cabinet.index', ['order' => $order])->with('status', 'Заказ сохранен. В ближайшее время мы с Вами свяжемся для уточнения деталей!');
+            }
+            return redirect()->route('vinograd.category')->with('status', 'Заказ сохранен. В ближайшее время мы с Вами свяжемся для уточнения деталей!');
 
         } catch (\DomainException $e) {
             return back()->withErrors([$e->getMessage()]);

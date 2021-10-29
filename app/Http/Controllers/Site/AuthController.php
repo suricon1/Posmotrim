@@ -9,10 +9,17 @@ use App\Mail\Auth\VerifyMail;
 use App\Models\Site\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
-use Mail;
+use Illuminate\Contracts\Mail\Mailer;
 
 class AuthController extends Controller
 {
+    private $mailer;
+
+    public function __construct(Mailer $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     public function registerForm()
     {
     	return view('site.auth.register');
@@ -21,7 +28,7 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $user = User::add($request->all());
-        Mail::to($user->email)->send(new VerifyMail($user));
+        $this->mailer->to($user->email)->send(new VerifyMail($user));
         event(new Registered($user));
 
         return redirect()->route('login')

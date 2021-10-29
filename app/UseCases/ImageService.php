@@ -35,6 +35,7 @@ class ImageService
         if($watermark && $this->width > 300){
             $img->insert(storage_path('app/public/pics/') . $watermark, 'bottom-right', 0, 0);     //Наложение водяного знака
         }
+        //return;
         $img->save($savePath, 70);
         $img->destroy();
     }
@@ -47,6 +48,7 @@ class ImageService
 
     public function routeImageSave($fromPath, $savePath, $watermark = false)
     {
+        //dd(storage_path('app/public/') . $fromPath, $savePath, storage_path('app/public/') . $savePath);
         //$this->saveImage(public_path() .'/'. $fromPath, public_path() .'/'. $savePath);
         $this->saveImage(storage_path('app/public/') . $fromPath, storage_path('app/public/') . $savePath, $watermark);
     }

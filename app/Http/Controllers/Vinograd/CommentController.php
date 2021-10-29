@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\CommentPostUserMail;
 use App\Notifications\CommentProductUserMail;
 use Auth;
+use Html;
 use Mail;
 
 class CommentController extends Controller

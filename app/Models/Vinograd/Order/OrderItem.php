@@ -27,7 +27,9 @@ class OrderItem extends Model
         $item = new static;
         $item->order_id = $order_id;
         $item->product_id = $modification->product->id;
+        //$item->product_name = $modification->product->name;
         $item->modification_id = $modification->id;
+        //$item->modification_name = $modification->name;
         $item->price = $price;
         $item->quantity = $quantity;
         return $item;

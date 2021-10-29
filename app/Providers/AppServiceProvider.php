@@ -5,6 +5,9 @@ namespace App\Providers;
 use App\cart\Cart;
 use App\cart\cost\calculator\SimpleCost;
 use App\cart\storage\SessionStorage;
+use App\Models\Vinograd\Category;
+use App\Models\Vinograd\Country;
+use App\Models\Vinograd\Selection;
 use App\Models\Blog\Category as BlogCategory;
 use App\Models\Vinograd\Comment;
 use App\Models\Vinograd\Contact;
@@ -18,6 +21,7 @@ use App\UseCases\CartService;
 use App\UseCases\LookService;
 use Auth;
 use Illuminate\Support\ServiceProvider;
+use URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('categorys_blog_menu', BlogCategory::active()->pluck('name', 'slug')->all());
             $view->with('pages', Page::active()->orderBy('sort')->pluck('name', 'slug')->all());
             $view->with('cart', $service->getCart());
-            $view->with('currency', realCurr() ? Currency::where('code', '<>', realCurr()->code)->get() : Currency::all());
+            $view->with('currency', Currency::where('code', '<>', realCurr()->code)->get());
             $view->with('userWishlistItemsCount', Auth::user() ? WishlistItem::userWishlistItemsCount(Auth::user()->id) : false);
         });
 

@@ -49,7 +49,7 @@ class VinogradController extends Controller
             'product' => $product,
             'similar' => $this->productRep->getSimilarOnChunks($product->props),
             'comments' => Comment::getAllProductComments($product->id)
-        ]);
+            ]);
     }
 
     public function category(SortPostsRequest $request, $page = '')

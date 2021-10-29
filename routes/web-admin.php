@@ -7,11 +7,16 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
     Route::group(['prefix' => 'analytics', 'namespace' => 'Dashboard', 'as' => 'dashboard.'], function() {
         Route::get('/sorts', 'DashboardController@index')->name('sorts');
         Route::get('/orders_as_modification/{product_id}/{modification_id}/{price}', 'DashboardController@allOrdersAsModfication')->name('orders_as_modification');
-        Route::get('/ordereds_as_modification/{product_id}/{modification_id}/{price}', 'DashboardController@allOrderedsAsModfication')->name('ordereds_as_modification');
+        Route::get('/ordereds_as_modification/{product_id}/{modification_id}/{price}', 'OrderedsDashboardController@allOrderedsAsModfication')->name('ordereds_as_modification');
 
         Route::get('/ordereds', 'OrderedsDashboardController@index')->name('ordereds');
+        Route::get('/select_orders', 'SelectOrdersController@selectOrdersByNumbers')->name('select_orders');
         Route::get('/modifications', 'ModificationsDashboardController@index')->name('modifications');
         Route::get('/deliverys', 'DeliverysDashboardController@index')->name('deliverys');
+
+        Route::group(['as' => 'print.'], function() {
+            Route::get('/print/{ids}', 'SelectOrdersController@selectOrders')->name('select_orders');
+        });
     });
 
     Route::group(['prefix'=>'vinograd','namespace'=>'Vinograd'], function()
@@ -61,6 +66,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
 
             Route::group(['as' => 'print.'], function() {
                 Route::get('/print/{id}', 'OrderPrintsController@order')->name('order');
+                Route::get('/print/nalozhka_blanck/{id}', 'OrderPrintsController@nalozhkaBlanck')->name('nalozhka_blanck');
                 Route::get('/print/nalozhka_sticker/{id}', 'OrderPrintsController@nalozhkaSticker')->name('nalozhka_sticker');
                 Route::get('/print/declared_sticker/{id}', 'OrderPrintsController@declaredSticker')->name('declared_sticker');
                 Route::get('/print/small_package_sticker/{id}', 'OrderPrintsController@smallPackageSticker')->name('small_package_sticker');

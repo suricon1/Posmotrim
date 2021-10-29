@@ -4,6 +4,7 @@ namespace App\Models\Blog;
 
 use App\Models\Meta;
 use App\Models\Site\User;
+use App\Models\Traits\GalleryServais;
 use App\Models\Traits\ImageServais;
 use App\Models\Vinograd\Comment;
 use Auth;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    use Sluggable, ImageServais;
+    use Sluggable, ImageServais, GalleryServais;
 
     const IS_DRAFT = 0;
     const IS_PUBLIC = 1;
@@ -89,7 +90,7 @@ class Post extends Model
             : $query->orderBy('id', 'desc');
     }
 
-//=======================================
+//============ Actions ===========================
     public static function add($fields)
     {
         $post = new static;
@@ -116,6 +117,7 @@ class Post extends Model
         $this->deleteImages();
         $this->delete();
     }
+//============ End Actions ===========================
 
     public function setTags($ids)
     {

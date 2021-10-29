@@ -49,10 +49,10 @@ return [
             'driver' => 'session',
             'provider' => 'admin',
         ],*/
-        'svemi' => [  //  Регистрация из разных таблиц базы
-            'driver' => 'session',
-            'provider' => 'svemi',
-        ],
+//        'svemi' =>[  //  Регистрация из разных таблиц базы
+//            'driver' => 'session',
+//            'provider' => 'svemi',
+//        ],
     ],
 
     /*
@@ -80,11 +80,11 @@ return [
         /*'admin' => [  //  Регистрация из разных таблиц базы
             'driver' => 'eloquent',
             'model' => App\Models\Admin\User::class,
+        ],
+        'svemi' => [  //  Регистрация из разных таблиц базы
+            'driver' => 'eloquent',
+            'model' => App\Models\Svemi\User::class,
         ],*/
-//        'svemi' => [  //  Регистрация из разных таблиц базы
-//            'driver' => 'eloquent',
-//            'model' => App\Models\Svemi\User::class,
-//        ],
 
         // 'users' => [
         //     'driver' => 'database',

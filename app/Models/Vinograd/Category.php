@@ -11,7 +11,7 @@ class Category extends Model
     use Sluggable, ImageServais;
 
     const DIR_CONTENT_IMAGE_NAME = 'content';
-    const IMAGE_WATERMARK = 'img/logo/logo_vinograd.png';
+    const IMAGE_WATERMARK =    'img/logo/logo_vinograd.png';
 
     const ULTRA_EARLY = 1;
     const VERY_EARLY = 2;

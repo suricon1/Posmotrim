@@ -49,18 +49,53 @@
         </a>
     </div>
 
-{{--<div  id="app">--}}
-{{--    @php--}}
-{{--        $data = [--}}
-{{--        ['id' => 1, 'name' => 'Admin'],--}}
-{{--        ['id' => 2, 'name' => 'Truehero'],--}}
-{{--        ['id' => 3, 'name' => 'Truecoder'],--}}
-{{--    ];--}}
-{{--    @endphp--}}
-
-{{--    <example-component :data='@json($products)' />--}}
-
-{{--</div>--}}
+{{--    <!--Feature Area Start-->--}}
+{{--    <div class="feature-area mt-4">--}}
+{{--        <div class="container">--}}
+{{--            <div class="row">--}}
+{{--                <div class="col-lg-4 col-md-6">--}}
+{{--                    <!--Single Feature Start-->--}}
+{{--                    <div class="single-feature mb-35">--}}
+{{--                        <div class="feature-icon">--}}
+{{--                            <span class="fa fa-rocket"></span>--}}
+{{--                        </div>--}}
+{{--                        <div class="feature-content">--}}
+{{--                            <h3>Бесплатно доставим</h3>--}}
+{{--                            <p>При заказе от 50р по Минску и от 200р по району</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <!--Single Feature End-->--}}
+{{--                </div>--}}
+{{--                <div class="col-lg-4 col-md-6">--}}
+{{--                    <!--Single Feature Start-->--}}
+{{--                    <div class="single-feature mb-35">--}}
+{{--                        <div class="feature-icon">--}}
+{{--                            <span class="fa fa-phone"></span>--}}
+{{--                        </div>--}}
+{{--                        <div class="feature-content">--}}
+{{--                            <h3>Гарантия качества</h3>--}}
+{{--                            <p>все предложенные сорта мы выращиваем самостоятельно и тщательно следим за маркировкой</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <!--Single Feature End-->--}}
+{{--                </div>--}}
+{{--                <div class="col-lg-4 col-md-6">--}}
+{{--                    <!--Single Feature Start-->--}}
+{{--                    <div class="single-feature mb-35">--}}
+{{--                        <div class="feature-icon">--}}
+{{--                            <span class="fa fa-repeat"></span>--}}
+{{--                        </div>--}}
+{{--                        <div class="feature-content">--}}
+{{--                            <h3>Консультации</h3>--}}
+{{--                            <p>на нашем Ютуб канале вы найдете все необходимую информацию по уходу за виноградом в доступном виде</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <!--Single Feature End-->--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--    <!--Feature Area End-->--}}
 
 @endsection
 

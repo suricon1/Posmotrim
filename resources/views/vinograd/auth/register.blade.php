@@ -25,7 +25,6 @@
             <h2>Register</h2>
         </div>
         <div class="register-form">
-{{--            {!! Form::open(['route' => 'register']) !!}--}}
             {!! Form::open(['route' => 'vinograd.register']) !!}
                 <div class="form-fild">
                     <p><label>Имя <span class="required">*</span></label></p>

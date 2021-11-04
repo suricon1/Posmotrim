@@ -5,9 +5,6 @@ namespace App\Providers;
 use App\cart\Cart;
 use App\cart\cost\calculator\SimpleCost;
 use App\cart\storage\SessionStorage;
-use App\Models\Vinograd\Category;
-use App\Models\Vinograd\Country;
-use App\Models\Vinograd\Selection;
 use App\Models\Blog\Category as BlogCategory;
 use App\Models\Vinograd\Comment;
 use App\Models\Vinograd\Contact;
@@ -21,7 +18,6 @@ use App\UseCases\CartService;
 use App\UseCases\LookService;
 use Auth;
 use Illuminate\Support\ServiceProvider;
-use URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,10 +28,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(CartService $service)
     {
-
-        //$this->app['request']->server->set('HTTPS', true);
-        //URL::forceScheme('https');
-
         view()->composer('layouts.vinograd-left', function($view) use ($service) {
             $view->with('categorys', ProductRepository::getAllCategorysOfCountProducts());
             $view->with('categorys_blog_menu', BlogCategory::active()->pluck('name', 'slug')->all());
@@ -88,8 +80,8 @@ class AppServiceProvider extends ServiceProvider
     private function adminSidebar()
     {
         view()->composer('admin.components.sidebar', function($view) {
-            $view->with('new_orders', Order::where('current_status', Status::NEW)->count());
-            $view->with('pre_orders', Order::where('current_status', Status::PRELIMINARY)->count());
+            //$view->with('new_orders', Order::where('current_status', Status::NEW)->count());
+            //$view->with('pre_orders', Order::where('current_status', Status::PRELIMINARY)->count());
             $view->with('new_contact', Contact::where('mark_as_read', 1)->count());
             $view->with('new_comment_product', Comment::getNewCommentsCount('product_id'));
             $view->with('new_comment_post', Comment::getNewCommentsCount('post_id'));

@@ -308,4 +308,22 @@ class OrderService
             $modification->save();
         }
     }
+
+    public function quantityOrders ()
+    {
+        $res = Order::
+            select('current_status AS status')->
+            selectRaw('COUNT(current_status) AS quantity_orders')->
+            whereNotIn('current_status', [Status::COMPLETED, Status::CANCELLED, Status::CANCELLED_BY_CUSTOMER])->
+            groupBy('status')->
+            get()->
+            pluck('quantity_orders', 'status')->
+            toArray();
+
+        return array_replace(
+            array_map(function() {
+                return 0;
+            }, Order::statusList()),
+            $res);
+    }
 }

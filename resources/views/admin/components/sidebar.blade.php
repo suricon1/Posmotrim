@@ -117,11 +117,14 @@
                 <i class="nav-icon fa fa-circle-thin"></i>
                 <p>
                     Заказы
-                    @if($pre_orders)
-                    <span class="badge badge-warning right">{{$pre_orders}}</span>
+                    @if($quantity_orders[statusPreliminare()])
+                    <span class="badge badge-warning right">{{$quantity_orders[statusPreliminare()]}}</span>
                     @endif
-                    @if($new_orders)
-                    <span class="badge badge-success right">{{$new_orders}}</span>
+                    @if($quantity_orders[statusNew()])
+                    <span class="badge badge-success right">{{$quantity_orders[statusNew()]}}</span>
+                    @endif
+                    @if($quantity_orders[statusFormed()])
+                        <span class="badge badge-light right" style="right: 4.5rem;">{{$quantity_orders[statusFormed()]}}</span>
                     @endif
                 </p>
             </a>
@@ -135,8 +138,7 @@
         <li class="nav-item has-treeview{{$messages_open ?? ''}}">
             <a href="{{route('mails.index')}}" class="nav-link{{$messages_active ?? ''}}">
                 <i class="nav-icon fa fa-circle-thin"></i>
-                <p>
-                    Сообщения
+                <p>Сообщения
                     @if($new_contact)
                     <span class="badge badge-danger right">{{$new_contact}}</span>
                     @endif

@@ -54,7 +54,13 @@
                         <h4>Показать заказы:</h4>
                         <a href="{{route('orders.index')}}" class="btn btn-outline-dark btn-sm">Все</a>
                         @foreach(statusList() as $status => $name)
-                            {{ Html::linkRoute('orders.index.status', $name, ['status' => $status], ['class' => 'btn-sm btn btn-' . statusColor($status)]) }}
+                            <a href="{{route('orders.index.status', ['status' => $status])}}" class="btn-sm btn btn-{{statusColor($status)}}">
+                                {{$name}}
+                                @if($quantity_orders[$status])
+                                    <span class="badge badge-light">{{$quantity_orders[$status]}}</span>
+                                @endif
+                            </a>
+{{--                            {{ Html::linkRoute('orders.index.status', $name, ['status' => $status], ['class' => 'btn-sm btn btn-' . statusColor($status)]) }}--}}
                         @endforeach
                     </div>
                     <div class="col-3">

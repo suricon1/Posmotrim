@@ -33,8 +33,8 @@ class OrderPrintsController extends Controller
         $order = Order::findOrFail($id);
         return view('admin.vinograd.order.print.nalozhka_blanck', [
             'order' => $order,
-            'costToString' => $service->numberToRussian($order->cost),
-            'costFormat' => $service->numberToCostFormat($order->cost)
+            'costToString' => $service->numberToRussian($order->getTotalCost()),
+            'costFormat' => $service->numberToCostFormat($order->getTotalCost())
         ]);
     }
 
@@ -43,8 +43,8 @@ class OrderPrintsController extends Controller
         $order = Order::findOrFail($id);
         return view('admin.vinograd.order.print.nalozhka_sticker', [
             'order' => $order,
-            'costToString' => $service->numberToRussian($order->cost),
-            'costFormat' => $service->numberToCostFormat($order->cost)
+            'costToString' => $service->numberToRussian($order->getTotalCost()),
+            'costFormat' => $service->numberToCostFormat($order->getTotalCost())
         ]);
     }
 
@@ -53,8 +53,8 @@ class OrderPrintsController extends Controller
         $order = Order::findOrFail($id);
         return view('admin.vinograd.order.print.declared_sticker', [
             'order' => $order,
-            'costToString' => $service->numberToRussian($order->cost),
-            'costFormat' => $service->numberToCostFormat($order->cost)
+            'costToString' => $service->numberToRussian($order->getTotalCost()),
+            'costFormat' => $service->numberToCostFormat($order->getTotalCost())
         ]);
     }
 
@@ -63,8 +63,8 @@ class OrderPrintsController extends Controller
         $order = Order::findOrFail($id);
         return view('admin.vinograd.order.print.small_package_sticker', [
             'order' => $order,
-            'costToString' => $service->numberToRussian($order->cost),
-            'costFormat' => $service->numberToCostFormat($order->cost)
+            'costToString' => $service->numberToRussian($order->getTotalCost()),
+            'costFormat' => $service->numberToCostFormat($order->getTotalCost())
         ]);
     }
 

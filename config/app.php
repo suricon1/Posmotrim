@@ -182,6 +182,8 @@ return [
         // Main
         App\Providers\QueueServiceProvider::class,
         App\Providers\CacheServiceProvider::class,
+        App\Providers\HTTPSServiceProvider::class,
+        App\Providers\VariableServiceProvider::class,
 
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,

@@ -202,3 +202,27 @@ if (! function_exists('formatNameBySimilar'))
     }
 }
 
+if (! function_exists('statusNew'))
+{
+    function statusNew()
+    {
+        return \App\Models\Vinograd\Order\Status::NEW;
+    }
+}
+
+if (! function_exists('statusPreliminare'))
+{
+    function statusPreliminare()
+    {
+        return \App\Models\Vinograd\Order\Status::PRELIMINARY;
+    }
+}
+
+if (! function_exists('statusFormed'))
+{
+    function statusFormed()
+    {
+        return \App\Models\Vinograd\Order\Status::FORMED;
+    }
+}
+

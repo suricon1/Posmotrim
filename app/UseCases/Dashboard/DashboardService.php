@@ -11,19 +11,7 @@ class DashboardService
 
     public function getCompletedOrdersItemsArray($dateRange, $status)
     {
-        return Order::
-            leftJoin('vinograd_order_items as items', function ($join) {
-                $join->on('vinograd_orders.id', '=', 'items.order_id');
-            })->
-            rightJoin('vinograd_products as prod', function ($join) {
-                $join->on('prod.id', '=', 'items.product_id');
-            })->
-            rightJoin('vinograd_product_modifications as prod_mod', function ($join) {
-                $join->on('prod_mod.id', '=', 'items.modification_id');
-            })->
-            rightJoin('vinograd_modifications as mod', function ($join) {
-                $join->on('mod.id', '=', 'prod_mod.modification_id');
-            })->
+        return $this->RawJoin()->
             select(
                 'prod.name as product_name',
                 'mod.name as modification_name',
@@ -48,30 +36,18 @@ class DashboardService
     {
         if (!$order_ids) return [];
 
-        return Order::
-        leftJoin('vinograd_order_items as items', function ($join) {
-            $join->on('vinograd_orders.id', '=', 'items.order_id');
-        })->
-        rightJoin('vinograd_products as prod', function ($join) {
-            $join->on('prod.id', '=', 'items.product_id');
-        })->
-        rightJoin('vinograd_product_modifications as prod_mod', function ($join) {
-            $join->on('prod_mod.id', '=', 'items.modification_id');
-        })->
-        rightJoin('vinograd_modifications as mod', function ($join) {
-            $join->on('mod.id', '=', 'prod_mod.modification_id');
-        })->
-        select(
-            'prod.name as product_name',
-            'mod.name as modification_name'
-        )->
-        selectRaw('SUM(`items`.`quantity`) as `allQuantity`')->
-        //whereStatus(Order::ORDERED_LIST)->
-        selectOrdersByNumbers($order_ids)->
-        groupBy('product_name', 'modification_name')->
-        get()->
-        groupBy('product_name')->
-        all();
+        return $this->RawJoin()->
+            select(
+                'prod.name as product_name',
+                'mod.name as modification_name'
+            )->
+            selectRaw('SUM(`items`.`quantity`) as `allQuantity`')->
+            //whereStatus(Order::ORDERED_LIST)->
+            selectOrdersByNumbers($order_ids)->
+            groupBy('product_name', 'modification_name')->
+            get()->
+            groupBy('product_name')->
+            all();
     }
 
     public function getAllOrdersAsModfication($dateRange, $status, $product_id, $modification_id, $price)
@@ -113,27 +89,27 @@ class DashboardService
                         'cost' => $item->sum('cost'),
                         'allQuantity' => $item->sum('allQuantity')
                     ];
-                })->
-                all();
+                })->all();
             if(count($data)){
                 $array[$delivery->name] = $data;
             }
         }
-        return  $array;
+        return $array;
     }
 
     private function getRawData($dateRange, $status)
     {
-        return Order::
-            leftJoin('vinograd_order_items as items', function ($join) {
-                $join->on('vinograd_orders.id', '=', 'items.order_id');
-            })->
-            rightJoin('vinograd_product_modifications as prod_mod', function ($join) {
-                $join->on('prod_mod.id', '=', 'items.modification_id');
-            })->
-            rightJoin('vinograd_modifications as mod', function ($join) {
-                $join->on('mod.id', '=', 'prod_mod.modification_id');
-            })->
+//        return Order::
+//            leftJoin('vinograd_order_items as items', function ($join) {
+//                $join->on('vinograd_orders.id', '=', 'items.order_id');
+//            })->
+//            rightJoin('vinograd_product_modifications as prod_mod', function ($join) {
+//                $join->on('prod_mod.id', '=', 'items.modification_id');
+//            })->
+//            rightJoin('vinograd_modifications as mod', function ($join) {
+//                $join->on('mod.id', '=', 'prod_mod.modification_id');
+//            })->
+        return $this->RawJoin()->
             select(
                 'mod.name as name',
                 'items.price as price'
@@ -146,6 +122,23 @@ class DashboardService
             timeRange($dateRange, $status)->
             groupBy('name', 'price')->
             orderByDesc('allQuantity');
+    }
+
+    private function RawJoin ()
+    {
+        return Order::
+        leftJoin('vinograd_order_items as items', function ($join) {
+            $join->on('vinograd_orders.id', '=', 'items.order_id');
+        })->
+        rightJoin('vinograd_products as prod', function ($join) {
+            $join->on('prod.id', '=', 'items.product_id');
+        })->
+        rightJoin('vinograd_product_modifications as prod_mod', function ($join) {
+            $join->on('prod_mod.id', '=', 'items.modification_id');
+        })->
+        rightJoin('vinograd_modifications as mod', function ($join) {
+            $join->on('mod.id', '=', 'prod_mod.modification_id');
+        });
     }
 
     public function getTotalCostCompletedOrders($dateRange, $status)

@@ -117,8 +117,9 @@ class OrderService
         {
             $order = Order::with('items')->find($order_id);
             $modification = Modification::with('product')->find($request->modification_id);
-
-            $modification->checkout($request->quantity, $pre);
+            if(!$pre){
+                $modification->checkout($request->quantity);
+            }
             if (!$modification->save()) {
                 throw new \RuntimeException('Saving error.');
             }
@@ -283,14 +284,20 @@ class OrderService
 
     public static function setStatus($order_id, $status, $track_code = null)
     {
-        $order = Order::find($order_id);
-        $order->addStatus($status);
-        $order->setTrackCode($track_code);
-        $order->save();
+        return DB::transaction(function () use ($order_id, $status, $track_code) {
+            $order = Order::find($order_id);
+            $order->addStatus($status);
+            $order->setTrackCode($track_code);
+            $order->save();
 
-        if ($order->isCancelled() || $order->isCancelledByCustomer()) {
-            self::returnQuantity($order);
-        }
+            if ($order->isCancelled() || $order->isCancelledByCustomer()) {
+                self::returnQuantity($order);
+                self::returnInStock($order);
+            }
+            if ($order->isPaid() || $order->isSent() || $order->isCompleted()) {
+                self::checkoutInStock($order);
+            }
+        });
     }
 
     public function setTrackCode($order_id, $track_code)
@@ -306,6 +313,34 @@ class OrderService
             $modification = Modification::find($item->modification_id);
             $modification->returnQuantity($item->quantity);
             $modification->save();
+        }
+    }
+
+    public static function returnInStock ($order)
+    {
+        $flag = array_filter($order->statuses_json, function($ar) {
+            return $ar['value'] == Status::PAID OR $ar['value'] == Status::SENT;
+        });
+        if($flag){
+            foreach ($order->items as $item){
+                $modification = Modification::find($item->modification_id);
+                $modification->returnInStock($item->quantity);
+                $modification->save();
+            }
+        }
+    }
+
+    public static function checkoutInStock($order)
+    {
+        $flag = array_filter($order->statuses_json, function($ar) use ($order) {
+            return $ar['value'] !== $order->current_status AND in_array($ar['value'], Order::SOLD_LIST);
+        });
+        if(!$flag){
+            foreach ($order->items as $item){
+                $modification = Modification::find($item->modification_id);
+                $modification->checkoutInStock($item->quantity);
+                $modification->save();
+            }
         }
     }
 
@@ -325,5 +360,36 @@ class OrderService
                 return 0;
             }, Order::statusList()),
             $res);
+    }
+
+    public static function getInStockItemsCount($date)
+    {
+        return self::RawJoin()->
+            select(
+                'prod.id as product_id',
+                'mod.id as modification_id'
+            )->
+            selectRaw('`prod_mod`.`in_stock` - SUM(`items`.`quantity`) as `availability`')->
+            where('created_at', '<=', $date)->
+            whereIn('current_status', [1, 8])->
+            groupBy('product_id', 'modification_id', 'prod_mod.in_stock')->
+            get();
+    }
+
+    public static function RawJoin ()
+    {
+        return Order::
+            leftJoin('vinograd_order_items as items', function ($join) {
+                $join->on('vinograd_orders.id', '=', 'items.order_id');
+            })->
+            rightJoin('vinograd_products as prod', function ($join) {
+                $join->on('prod.id', '=', 'items.product_id');
+            })->
+            rightJoin('vinograd_product_modifications as prod_mod', function ($join) {
+                $join->on('prod_mod.id', '=', 'items.modification_id');
+            })->
+            rightJoin('vinograd_modifications as mod', function ($join) {
+                $join->on('mod.id', '=', 'prod_mod.modification_id');
+            });
     }
 }

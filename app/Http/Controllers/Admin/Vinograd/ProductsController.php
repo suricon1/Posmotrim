@@ -118,7 +118,7 @@ class ProductsController extends AppController
     public function modificationAdd(ModificationRequest $request)
     {
         try {
-            $modification = Modification::create($request->all(), $request->modification_id);
+            $modification = Modification::create($request->all());
 
             return ($request->ajax())
                 ? ['succes' => view('admin.vinograd.product._modification-input-item', ['modification' => $modification])->render()]
@@ -132,10 +132,10 @@ class ProductsController extends AppController
     {
         try {
             $modification = Modification::find($request->modification_id);
-            $modification->edit($request->price, $request->quantity);
+            $modification->edit($request->price, $request->correct);
 
             return ($request->ajax())
-                ? ['succes' => 'Модификация обновлена!']
+                ? ['succes' => 'Модификация обновлена!', 'modification' => $modification]
                 : redirect()->back();
         } catch (\Exception $e) {
             return ['errors' => $e->getMessage()];

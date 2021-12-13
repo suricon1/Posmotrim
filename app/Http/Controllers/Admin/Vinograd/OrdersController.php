@@ -69,9 +69,12 @@ class OrdersController extends Controller
                 'order' => $order
             ]);
         }
-
-        OrderService::setStatus($request->order_id, $request->status);
-        return redirect()->back();
+        try {
+            OrderService::setStatus($request->order_id, $request->status);
+            return redirect()->back();
+        } catch  (\RuntimeException $e) {
+            return redirect()->route('orders.show', $order->id)->withErrors([$e->getMessage()]);
+        }
     }
 
     public function sentStatusMail(Request $request, OrderService $service, $order_id)
@@ -87,11 +90,13 @@ class OrdersController extends Controller
                 'order' => $order
             ])->withErrors($v);
         }
-
-        OrderService::setStatus($order_id, Status::SENT, $request->track_code);
-        $service->sendCodeMail($order, $request->track_code);
-
-        return redirect()->route('orders.show', $order_id);
+        try {
+            OrderService::setStatus($order_id, Status::SENT, $request->track_code);
+            $service->sendCodeMail($order, $request->track_code);
+            return redirect()->route('orders.show', $order_id);
+        } catch  (\RuntimeException $e) {
+            return redirect()->route('orders.show', $order->id)->withErrors([$e->getMessage()]);
+        }
     }
 
     public function create(OrderService $service)
@@ -103,12 +108,12 @@ class OrdersController extends Controller
 
     public function store(Request $request){}
 
-    public function show(OrderService $service, $id)
+    public function show($id)
     {
         $order = Order::findOrFail($id);
         return view('admin.vinograd.order.show', [
             'order' => $order,
-            'items' => OrderItem::getOrderSortedByItem($order->id),
+            'items' => OrderItem::getOrderSortedByItems($order),
             'statusesList' => OrderService::getOrderStasusesList($order),
             'currency' => Currency::where('code', $order->currency)->first(),
             'currencys' => Currency::orderBy('code')->pluck('name', 'code')->all()
@@ -122,7 +127,7 @@ class OrdersController extends Controller
             $orderRep->isCompleted($order);
             return view('admin.vinograd.order.edit', [
                 'order' => $order,
-                'items' => OrderItem::getOrderSortedByItem($order->id),
+                'items' => OrderItem::getOrderSortedByItems($order),
                 'products' => $productRep->getSortProductByModifications($request, '', null, 200),
                 'deliverys' => DeliveryMethod::pluck('name', 'id')->all()
             ]);

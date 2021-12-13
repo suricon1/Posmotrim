@@ -21,7 +21,6 @@
     @elseif (request('status') == 1)
         <h2>Показаны <span class="px-2 bg-warning">только не активные</span> сорта</h2>
     @endif
-
     <div class="card">
         <div class="card-header">
             <a href="{{route('products.index')}}" class="btn btn-outline-dark btn-sm">Все</a>
@@ -32,7 +31,6 @@
                 <a href="{{route('products.create')}}" class="btn btn-outline-success btn-xs"><i class="fa fa-plus"></i></a>
             </div>
         </div>
-        <!-- /.card-header -->
         <div class="card-body table-responsive">
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
@@ -40,7 +38,7 @@
                     <th>ID</th>
                     <th>Название</th>
                     <th>Категория</th>
-                    <th>Алиас</th>
+{{--                    <th>Алиас</th>--}}
                     <th>Цены и количество</th>
                     <th>Картинка</th>
                     <th>Действия</th>
@@ -52,8 +50,8 @@
                         <td>{{$product->id}}</td>
                         <td>{{$product->name}}</td>
                         <td>{{$product->getCategory()}}</td>
-                        <td>{{$product->slug}}</td>
-                        <td>
+{{--                        <td>{{$product->slug}}</td>--}}
+                        <td style="padding: 5px; min-width: 250px">
                             @foreach($product->adminModifications as $modification)
                                 @include('admin.vinograd.product._modification-input-item', ['modification' => $modification])
                             @endforeach
@@ -83,7 +81,6 @@
                 </tbody>
             </table>
         </div>
-        <!-- /.card-body -->
     </div>
 </div>
 

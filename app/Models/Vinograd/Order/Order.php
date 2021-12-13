@@ -2,9 +2,8 @@
 
 namespace App\Models\Vinograd\Order;
 
-use App\Models\Site\User;
-use App\Models\Vinograd\DeliveryMethod;
 use App\Models\Vinograd\Product;
+use App\Models\Vinograd\User;
 use Html;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -17,6 +16,12 @@ class Order extends Model
         Status::NEW,
         Status::PRELIMINARY,
         Status::FORMED
+    ];
+
+    const SOLD_LIST = [
+        Status::PAID,
+        Status::SENT,
+        Status::COMPLETED
     ];
 
     protected $table = 'vinograd_orders';
@@ -164,6 +169,11 @@ class Order extends Model
     public function isTrackCode(): bool
     {
         return $this->track_code !== null;
+    }
+
+    public function isCreatedByAdmin(): bool
+    {
+        return in_array($this->user_id, [2, 3, 4]);
     }
 
     public function addStatus($value): void

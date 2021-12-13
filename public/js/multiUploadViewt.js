@@ -106,25 +106,19 @@ $(function() {
         var formData = new FormData(this);
         $.ajax({
             url: $(this).attr('action'),
-            //headers: {'X-CSRF-Token': $("input[name = '_token']").val()},
             type: 'POST',
             data: formData,
             async: true,
             success: function (data) {
                 console.log(data);
-                if(data.succes)
-                {
-                    //console.log(data.succes);
+                if(data) {
                     $(data.succes).appendTo('.modification');
                     $('#modificationModal').modal('hide');
                 }
-                else if(data.errors)
-                {
+                else if(data.errors) {
                     errors_list(data.errors);
                 }
-                else
-                {
-                    //console.log(data);
+                else {
                     errors_list('Неизвестная ошибка. Повторите попытку, пожалуйста!');
                 }
             },
@@ -142,10 +136,10 @@ $(function() {
 
 $(document).on("click", ".modification-update", function(e) {
 
-    var parent = $(this).parents('.input-group');
-    var price = parent.children('input[name="price"]').val();
-    var quantity = parent.children('input[name="quantity"]').val();
-    var modification_id = parent.children('input[name="modification_id"]').val();
+    var parent = $(this).parents('.form-group');
+    var price = parent.find('input[name="price"]').val();
+    var correct = parent.find('input[name="correct"]').val();
+    var modification_id = parent.find('input[name="modification_id"]').val();
 
     $.ajax({
         url: $(this).attr('data-url'),
@@ -154,16 +148,18 @@ $(document).on("click", ".modification-update", function(e) {
         data: {
             modification_id: modification_id,
             price: price,
-            quantity: quantity
+            correct: correct
         },
         success: function (data) {
-            if(data.succes)            {
+            if(data.succes) {
+                $("#modification_" + modification_id + "_quantity").text(data.modification.quantity);
+                $("#modification_" + modification_id + '_price').text(data.modification.price);
                 succes_list(data.succes);
             }
-            else if(data.errors)            {
+            else if(data.errors) {
                 errors_list(data.errors);
             }
-            else            {
+            else {
                 errors_list('Неизвестная ошибка. Повторите попытку, пожалуйста!');
             }
         },

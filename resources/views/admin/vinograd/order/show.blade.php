@@ -19,7 +19,12 @@
 
     <div class="card card-outline card-primary">
         <div class="card-header border-transparent">
-            <h3 class="card-title">Заказ № {{$order->id}}</h3>
+            <h3 class="card-title">
+                @if($order->isCreatedByAdmin())
+                    <span class="fa fa-check text-danger"></span>
+                @endif
+                Заказ № {{$order->id}}
+            </h3>
             <div class="card-tools">
                 <div class="btn-group" id="nav">
                     @if(!$order->isCompleted())
@@ -67,7 +72,7 @@
                     <div class="col-12 table-responsive">
                         <table class="table table-striped">
                             <thead>
-                            <tr>
+                            <tr class="ba">
                                 <th>Название</th>
                                 <th>Кол-во</th>
                                 <th>Цена за шт.</th>
@@ -76,7 +81,7 @@
                             </thead>
                             <tbody>
                             @foreach ($items as $item)
-                                <tr>
+                                <tr class="{{$item->availability < 0 ? 'table-danger' : ''}}">
                                     <td>
                                         <strong>{{$item->product_name}}</strong><br>
                                         {{$item->modification_name}}

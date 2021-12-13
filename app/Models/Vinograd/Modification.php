@@ -8,7 +8,7 @@ class Modification extends Model
 {
     protected $table = 'vinograd_product_modifications';
     public $timestamps = false;
-    protected $fillable = [/*'name', */'price', 'quantity', 'product_id', 'modification_id'];
+    protected $fillable = ['product_id', 'modification_id', 'price', 'quantity'];
 
     public function product()
     {
@@ -20,19 +20,23 @@ class Modification extends Model
         return $this->belongsTo(ModificationProps::class, 'modification_id');
     }
 
-    public static function create($fields, $id)
+    public static function create($fields)
     {
         $modification = new static;
         $modification->fill($fields);
-        //$modification->name = ModificationProps::where('id', $id)->value('name'); // Временное решение, впоследствии удалить!
+        $modification->in_stock = $fields['quantity'];
         $modification->save();
         return $modification;
     }
 
-    public function edit($price, $quantity)
+    public function edit($price, $correct)
     {
         $this->price = $price;
-        $this->quantity = $quantity;
+        $this->quantity = $this->quantity + $correct;
+        if ($this->quantity < 0){
+            throw new \DomainException('Колличество товара не может быть меньше 0!');
+        }
+        $this->in_stock = $this->in_stock + $correct;
         $this->save();
     }
 
@@ -41,9 +45,9 @@ class Modification extends Model
         $this->delete();
     }
 
-    public function checkout($quantity, $pre)
+    public function checkout($quantity)
     {
-        if (!$pre && $quantity > $this->quantity) {
+        if ($quantity > $this->quantity) {
             throw new \DomainException($this->product->name.' - '.$this->property->name.'.<br>Вы заказываете слишком много! В наличии только '.$this->quantity.' шт.');
         }
         $this->quantity -= $quantity;
@@ -54,18 +58,21 @@ class Modification extends Model
         $this->quantity += $quantity;
     }
 
+    public function returnInStock($quantity) // Применять если отменяется заказ со статусом отправлен или оплачен
+    {
+        $this->in_stock += $quantity;
+    }
+
+    public function checkoutInStock($quantity)
+    {
+        if ($quantity > $this->in_stock) {
+            throw new \RuntimeException($this->product->name.' - '.$this->property->name.'.<br>Наличие товара уходит в минус. Необходимо откорректировать наличие товара.');
+        }
+        $this->in_stock -= $quantity;
+    }
+
     public function isIdEqualTo($id)
     {
         return $this->id == $id;
     }
-//
-//    public function priceCurrency($value)
-//    {
-//        return CurrencyService::Currency()->price($value);
-//    }
-//
-//    public function signature()
-//    {
-//        return CurrencyService::Currency()->sign();
-//    }
 }

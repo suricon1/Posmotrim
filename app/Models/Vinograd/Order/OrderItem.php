@@ -4,13 +4,14 @@ namespace App\Models\Vinograd\Order;
 
 use App\Models\Vinograd\Modification;
 use App\Models\Vinograd\Product;
+use App\UseCases\OrderService;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
 {
     protected $table = 'vinograd_order_items';
     public $timestamps = false;
-    protected $fillable = ['order_id', 'product_id', 'modification_id', 'price', 'quantity'];
+    protected $fillable = ['order_id', 'product_id', 'modification_id', 'price', 'quantity', 'availability'];
 
     public function product()
     {
@@ -27,9 +28,7 @@ class OrderItem extends Model
         $item = new static;
         $item->order_id = $order_id;
         $item->product_id = $modification->product->id;
-        //$item->product_name = $modification->product->name;
         $item->modification_id = $modification->id;
-        //$item->modification_name = $modification->name;
         $item->price = $price;
         $item->quantity = $quantity;
         return $item;
@@ -45,7 +44,27 @@ class OrderItem extends Model
         OrderItem::where('order_id', $id)->delete();
     }
 
-    public static function getOrderSortedByItem ($id)
+    public static function getOrderSortedByItems ($order)
+    {
+        $items = self::getOrderItems($order);
+
+        if (!in_array($order->current_status, [1, 8])) {
+            return $items;
+        }
+
+        $in_stock_items = OrderService::getInStockItemsCount($order->created_at);
+        return $items->map(function ($item) use ($in_stock_items) {
+            $item->availability = (
+                $in_stock_items->
+                where('product_id', $item->product_id)->
+                where('modification_id', $item->modification_id)->
+                first()
+            )->availability;
+            return $item;
+        });
+    }
+
+    public static function getOrderItems ($order)
     {
         return self::
         leftJoin('vinograd_products as prod', function ($join) {
@@ -59,11 +78,14 @@ class OrderItem extends Model
         })->
         select(
             'prod.name as product_name',
+            'prod.id as product_id',
             'mod.name as modification_name',
+            'mod.id as modification_id',
             'vinograd_order_items.price as price',
             'vinograd_order_items.quantity as quantity'
         )->
-        where('order_id', $id)->
+        selectRaw('1 as `availability`')->
+        where('order_id', $order->id)->
         orderBy('product_name')->
         get();
     }

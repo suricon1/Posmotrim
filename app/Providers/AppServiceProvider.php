@@ -50,10 +50,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //$this->app->singleton('App\Repositories\PostRepository', function () {
-            //return new PostRepository(new RegionRepository());
-        //});
-
         $this->app->singleton(Cart::class, function () {
             return new Cart(new SessionStorage('cart'), new SimpleCost());
         });
@@ -80,8 +76,6 @@ class AppServiceProvider extends ServiceProvider
     private function adminSidebar()
     {
         view()->composer('admin.components.sidebar', function($view) {
-            //$view->with('new_orders', Order::where('current_status', Status::NEW)->count());
-            //$view->with('pre_orders', Order::where('current_status', Status::PRELIMINARY)->count());
             $view->with('new_contact', Contact::where('mark_as_read', 1)->count());
             $view->with('new_comment_product', Comment::getNewCommentsCount('product_id'));
             $view->with('new_comment_post', Comment::getNewCommentsCount('post_id'));

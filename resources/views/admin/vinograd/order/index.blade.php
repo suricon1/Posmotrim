@@ -89,7 +89,12 @@
                     <tbody>
                     @foreach($orders as $order)
                         <tr>
-                            <td>{{$order->id}}</td>
+                            <td>
+                                {{$order->id}}
+                                @if($order->isCreatedByAdmin())
+                                    <span class="fa fa-check text-danger"></span>
+                                @endif
+                            </td>
                             <td>{{$order->delivery['method_name']}}</td>
                             <td>{{getRusDate($order->created_at)}}</td>
                             <td>{{$order->completed_at}}</td>

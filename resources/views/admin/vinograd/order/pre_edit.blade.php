@@ -12,6 +12,9 @@
 
 @section('content')
     <div class="col-12">
+        <h4 class="text-danger">
+            Внимание! Предварительные заказы автоматически переводятся в новые 1 июня и 1 ноября.
+        </h4>
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Заказанные позиции</h3>

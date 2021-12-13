@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\CurrencyExchange;
+use App\Console\Commands\StatusChange;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,8 @@ class Kernel extends ConsoleKernel
         //'App\Console\Commands\SitemapVinograd',
         'App\Console\Commands\Queues',
         'App\Console\Commands\YandexMetricAPI',
-        CurrencyExchange::class
+        CurrencyExchange::class,
+        StatusChange::class
     ];
 
     protected function schedule(Schedule $schedule)
@@ -30,6 +32,11 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('currency:exchange')->daily();
         //$schedule->command('currency:exchange')->everyMinute();
+
+        $schedule->command('status:change')->cron('* * 1 10 *'); //   Переводим предварительные заказы в новые
+        $schedule->command('status:change')->cron('* * 1 4 *'); //   Переводим предварительные заказы в новые
+
+        // 0 0 1 1 * Выполнение команды каждый год 1-го января в 00:00:
 
         //  Cron=/opt/php73/bin/php /home/user1209858/www/vinograd-minsk.by/artisan schedule:run >> /dev/null 2>&1
         //  php %sitedir%\vinograd\artisan schedule:run --для локального сервера

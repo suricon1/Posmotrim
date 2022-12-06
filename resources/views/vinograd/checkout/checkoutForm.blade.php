@@ -74,7 +74,7 @@
                     <h3>Доставка<br><small>{{$delivery->name}}</small></h3>
                     <div class="row">
 
-                        @if($delivery->isPostal() || $delivery->isPostalRussian())
+                        @if($delivery->isMailed())
                         <div class="col-md-12">
                             <div class="checkout-form-list">
                                 <label>Фамилия Имя Отчество (Необходимо для заполнения почтовой формы) <span class="required">*</span></label>

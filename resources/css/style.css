@@ -1113,6 +1113,20 @@ Common Style CSS
 	top: -6px;
 	z-index: 1;
 }
+.wishlist-quantity {
+    position: absolute;
+    background: #abd373;
+    height: 19px;
+    line-height: 19px;
+    width: 19px;
+    text-align: center;
+    border-radius: 100%;
+    color: #fff;
+    font-size: 12px;
+    left: 12px;
+    top: 10px;
+    z-index: 1
+}
 .cart-title {
 	display: block;
 	font-size: 13px;
@@ -1253,17 +1267,17 @@ Common Style CSS
     border-color: #abd373;
     color: #fff;
 }
-.search-box {
+.search-box, .wishlist-quantity-box {
 	position: relative;
 }
-.search-box > a {
+.search-box > a, .wishlist-quantity-box > a {
 	font-size: 18px;
 	height: 62px;
 	line-height: 62px;
 	display: block;
 	color: #000;
 }
-.search-box:hover > a{
+.search-box:hover > a, .wishlist-quantity-box:hover > a{
     color: #abd373
 }
 .search-dropdown{
@@ -4331,7 +4345,8 @@ li.right-menu .cat-mega-menu > li {
 .product-pagination > ul > li:last-child{
     margin-right: 0;
 }
-.product-pagination > ul > li > a {
+.product-pagination > ul > li > a,
+.product-pagination>ul>li.active>span {
 	background: #fff;
 	border: 1px solid #ededed;
 	color: #222;
@@ -4349,7 +4364,8 @@ li.right-menu .cat-mega-menu > li {
 	font-size: 20px;
 }
 .product-pagination > ul > li.active > a,
-.product-pagination > ul > li > a:hover {
+.product-pagination > ul > li > a:hover,
+.product-pagination>ul>li.active>span {
 	background: #abd373;
 	border-color: #abd373;
 	color: #fff;

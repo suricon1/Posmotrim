@@ -46,11 +46,12 @@
 
     <div class="shop-layout">
         <div class="shop-topbar-wrapper d-md-flex justify-content-md-between align-items-center">
-            <div class="grid-list-option">
+            <div class="grid-list-option align-items-center">
                 <ul class="nav">
                     <li>
                         <span class="{{$grid_list == 'grid' ? 'active ' : ''}}grid-list grid"
-                              data-grid-list="grid" data-url="{{route('vinograd.ajax.grid-list')}}"
+                              data-grid-list="grid"
+                              data-url="{{route('vinograd.ajax.grid-list')}}"
                               data-category="{{$category ? $category->id : ''}}"
                               data-page="{{$page}}"
                               data-toggle="tooltip"
@@ -58,11 +59,11 @@
                               data-model="{{$category ? $category->category_field : ''}}"
                               title="Сетка"
                         >
-                            <i class="fa fa-th-large"></i>
+                            <i class="fa fa-th"></i>
                         </span>
                     </li>
                     <li>
-                        <span class="{{$grid_list == 'list' ? 'active ' : ''}}grid-list list"
+                        <span class="{{$grid_list === 'list' ? 'active ' : ''}}grid-list list"
                               data-grid-list="list"
                               data-url="{{route('vinograd.ajax.grid-list')}}"
                               data-category="{{$category ? $category->id : ''}}"
@@ -72,17 +73,46 @@
                               data-model="{{$category ? $category->category_field : ''}}"
                               title="Список"
                         >
+                            <i class="fa fa-th-large"></i>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="{{$grid_list === 'small_list' ? 'active ' : ''}}grid-list small_list"
+                              data-grid-list="small_list"
+                              data-url="{{route('vinograd.ajax.grid-list')}}"
+                              data-category="{{$category ? $category->id : ''}}"
+                              data-page="{{$page}}"
+                              data-toggle="tooltip"
+                              data-placement="top"
+                              data-model="{{$category ? $category->category_field : ''}}"
+                              title="Таблица"
+                        >
                             <i class="fa fa-th-list"></i>
                         </span>
+                    </li>
+                    <li class="ml-2">
+                        {{Form::select('example_length',
+                            [
+                                21 => 21,
+                                42 => 42,
+                                64 => 64
+                            ],
+                            Cookie::get('example_length'),
+                            [
+                                'class' => 'form-control',
+                                'data-url' => route('vinograd.ajax.example-length')
+                            ])
+                        }}
                     </li>
                 </ul>
             </div>
             <div class="toolbar-short-area d-md-flex align-items-center">
                 <form action="?" method="GET">
                     <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="">Показать:</span>
-                        </div>
+{{--                        <div class="input-group-prepend">--}}
+{{--                            <span class="input-group-text" id="">Показать:</span>--}}
+{{--                            <span class="input-group-text"><i class="fa fa-sort"></i></span>--}}
+{{--                        </div>--}}
                         {{Form::select('ripening_by',
                             $ripening,
                             request('ripening_by'),
@@ -91,9 +121,10 @@
                                 'placeholder' => 'все сроки созревания'
                             ])
                         }}
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="">Сортировать по:</span>
-                        </div>
+{{--                        <div class="input-group-prepend">--}}
+{{--                            <span class="input-group-text" id="">Сортировать по:</span>--}}
+{{--                            <span class="input-group-text"><i class="fa fa-sort"></i></span>--}}
+{{--                        </div>--}}
                         {{Form::select('order_by',
                             $sort,
                             request('order_by'),
@@ -109,17 +140,12 @@
                 </form>
             </div>
         </div>
-        <div class="single-feature d-flex flex-row-reverse p-2">
-            <div class="feature-content ml-3">
-                <a href="https://www.youtube.com/channel/UC5-E2vxUNeMUqAYSDCFO23w" target="_blank" rel="nofollow">
-                    <span class="fa-stack fa-lg text-success">
-                      <i class="fa fa-circle-thin fa-stack-2x"></i>
-                      <i class="fa fa-youtube fa-stack-1x text-danger"></i>
-                    </span>
-                    Наш YouTube канал
-                </a>
-            </div>
 
+{{--        <div class="alert alert-warning" role="alert">--}}
+{{--            По техническим причинам <strong>корзина</strong> временно не работает. По всем вопросам обращайтесь на Email сайта: <a href="mailto:{{config('main.admin_email')}}?subject=Вопрос по винограду"><u>{{config('main.admin_email')}}</u></a>, или в <a href="{{route('vinograd.contactForm')}}"><u>форму обратной связи</u></a>.--}}
+{{--        </div>--}}
+
+        <div class="single-feature d-flex flex-row-reverse p-2">
             <div class="feature-content ml-3">
                 <a href="{{route('vinograd.page', ['slug' => 'nashi-cherenki'])}}">
                     <span class="fa-stack fa-lg text-success">
@@ -129,16 +155,17 @@
                     Такие черенки мы продаем
                 </a>
             </div>
-{{--            <div class="feature-content ml-3">--}}
-{{--                <a href="#">--}}
-{{--                    <span class="fa-stack fa-lg text-success">--}}
-{{--                      <i class="fa fa-circle-thin fa-stack-2x"></i>--}}
-{{--                      <i class="fa fa-info fa-stack-1x"></i>--}}
-{{--                    </span>--}}
-{{--                    Такие саженцы мы продаем--}}
-{{--                </a>--}}
-{{--            </div>--}}
+            <div class="feature-content ml-3">
+                <a href="{{route('vinograd.page', ['slug' => 'nashi-sazhency-vinograda'])}}">
+                    <span class="fa-stack fa-lg text-success">
+                      <i class="fa fa-circle-thin fa-stack-2x"></i>
+                      <i class="fa fa-info fa-stack-1x"></i>
+                    </span>
+                    Такие саженцы мы продаем
+                </a>
+            </div>
         </div>
+
         @if(request('ripening_by'))
             <h2 class="mb-4 mt-4 text-center">Показаны сорта: {{\App\Models\Vinograd\Category::getRipeningName(request('ripening_by'))}} - дней вегетации</h2>
         @endif
@@ -151,7 +178,7 @@
 
             <div id="grid">
 
-                @include('vinograd.components.product-'. $grid_list .'-view', ['products' => $products])
+                @include('vinograd.components.product-'. $grid_list .'-view', ['products' => $products, 'param' => $param])
 
             </div>
             <div class="product-pagination">

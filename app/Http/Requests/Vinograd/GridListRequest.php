@@ -17,7 +17,7 @@ class GridListRequest extends JsonFormRequest
         return [
             'grid_list' => [
                 'required',
-                Rule::in(['grid', 'list']),
+                Rule::in(['grid', 'list', 'small_list']),
             ],
             'category' => 'nullable|integer',
             'page' => 'nullable|integer',

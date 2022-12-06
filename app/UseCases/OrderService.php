@@ -8,12 +8,16 @@ use App\Models\Vinograd\Modification;
 use App\Models\Vinograd\Order\CustomerData;
 use App\Models\Vinograd\Order\DeliveryData;
 use App\Models\Vinograd\Order\Order;
+use App\Models\Vinograd\Order\OrderCorrespondence;
 use App\Models\Vinograd\Order\OrderItem;
 use App\Models\Vinograd\Order\Status;
 use App\Notifications\OrderCustomerMail;
 use App\Notifications\OrderReplyCustomerMail;
 use App\Notifications\SendCodeMail;
+use App\Repositories\CorrespondenceRepository;
 use App\Repositories\DeliveryMethodRepository;
+use App\Repositories\ItemRepository;
+use App\Repositories\ModificationRepository;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\UserRepository;
@@ -26,23 +30,35 @@ class OrderService
 {
     private $cart;
     private $orders;
+    private $statusService;
+    private $items;
+    private $modifications;
     private $products;
     private $users;
     private $deliveryMethods;
+    private $correspondence;
 
     public function __construct(
         Cart $cart,
         OrderRepository $orders,
+        StatusService $statusService,
+        ItemRepository $items,
+        ModificationRepository $modifications,
         ProductRepository $products,
         UserRepository $users,
-        DeliveryMethodRepository $deliveryMethods
+        DeliveryMethodRepository $deliveryMethods,
+        CorrespondenceRepository $correspondence
     )
     {
         $this->cart = $cart;
         $this->orders = $orders;
+        $this->statusService = $statusService;
+        $this->items = $items;
+        $this->modifications = $modifications;
         $this->products = $products;
         $this->users = $users;
         $this->deliveryMethods = $deliveryMethods;
+        $this->correspondence = $correspondence;
     }
 
     public function createNewOrder($status = Status::NEW)
@@ -61,6 +77,22 @@ class OrderService
         return $order;
     }
 
+    public function remove ($id)
+    {
+        $order = Order::find($id);
+        return DB::transaction(function() use ($order)
+        {
+            $this->statusService->remove($order);
+            foreach ($order->items as $item) {
+                $this->items->remove($item);
+            }
+            foreach ($order->correspondences as $correspondence) {
+                $this->correspondence->remove($correspondence);
+            }
+            $this->orders->remove($order);
+        });
+    }
+
     public function checkout($request): Order
     {
         return DB::transaction(function() use ($request)
@@ -76,7 +108,6 @@ class OrderService
                     $request->input('delivery.address')
                 ),
                 new CustomerData(
-                    //$this->orders->formatPhone($request->input('customer.phone')),
                     $request->input('customer.phone'),
                     $request->input('customer.name'),
                     $request->input('customer.email')
@@ -91,9 +122,7 @@ class OrderService
             {
                 $modification = $item->getModification();
                 $modification->checkout($item->getQuantity(), false);
-                if (!$modification->save()) {
-                    throw new \RuntimeException('Saving error.');
-                }
+                $this->modifications->save($modification);
 
                 $orderItem = OrderItem::create(
                     $order->id,
@@ -101,9 +130,7 @@ class OrderService
                     $item->getPrice(),
                     $item->getQuantity()
                 );
-                if (!$orderItem->save()) {
-                    throw new \RuntimeException('Saving error.');
-                }
+                $this->items->save($orderItem);
             }
 
             $this->cart->clear();
@@ -118,10 +145,8 @@ class OrderService
             $order = Order::with('items')->find($order_id);
             $modification = Modification::with('product')->find($request->modification_id);
             if(!$pre){
-                $modification->checkout($request->quantity);
-            }
-            if (!$modification->save()) {
-                throw new \RuntimeException('Saving error.');
+                $modification->checkout($request->quantity, false);
+                $this->modifications->save($modification);
             }
 
             $order->cost += $request->quantity * $modification->price;
@@ -131,9 +156,7 @@ class OrderService
             foreach ($order->items as $item){
                 if($item->modification_id == $modification->id){
                     $item->quantity += $request->quantity;
-                    if (!$item->save()) {
-                        throw new \RuntimeException('Saving error.');
-                    }
+                    $this->items->save($item);
                     return;
                 }
             }
@@ -145,9 +168,7 @@ class OrderService
                 $modification->price,
                 $request->quantity
             );
-            if (!$orderItem->save()) {
-                throw new \RuntimeException('Saving error.');
-            }
+            $this->items->save($orderItem);
         });
     }
 
@@ -162,41 +183,38 @@ class OrderService
                         return;
                     }
 
-                    //  Уменьшаем
-                    if ($item->quantity > $request->quantity){
-                        $item->modification->returnQuantity($item->quantity - $request->quantity);
-                    }
-                    //  Добавляем
-                    elseif($item->quantity < $request->quantity){
-                        $item->modification->checkout($request->quantity - $item->quantity, $pre);
+                    if(!$pre) {
+                        //  Уменьшаем
+                        if ($item->quantity > $request->quantity) {
+                            $item->modification->returnQuantity($item->quantity - $request->quantity);
+                        } //  Добавляем
+                        elseif ($item->quantity < $request->quantity) {
+                            $item->modification->checkout($request->quantity - $item->quantity, false);
+                        }
                     }
 
                     $item->quantity = $request->quantity;
 
-                    if (!$item->modification->save()) {
-                        throw new \RuntimeException('Saving error.');
-                    }
-                    if (!$item->save()) {
-                        throw new \RuntimeException('Saving error.');
-                    }
+                    $this->modifications->save($item->modification);
+                    $this->items->save($item);
                     return $this->newOrderCost($order, 0);
                 }
             }
         });
     }
 
-    public function deleteItem(Request $request, $order_id)
+    public function deleteItem(Request $request, $order_id, $pre = false)
     {
-        return DB::transaction(function() use ($request, $order_id)
+        return DB::transaction(function() use ($request, $order_id, $pre)
         {
             $order = Order::with('items')->find($order_id);
             foreach ($order->items as $item){
                 if($item->id == $request->item_id){
-                    $item->modification->returnQuantity($item->quantity);
-                    if (!$item->modification->save()) {
-                        throw new \RuntimeException('Saving error.');
+                    if(!$pre) {
+                        $item->modification->returnQuantity($item->quantity);
+                        $this->modifications->save($item->modification);
                     }
-                    $item->delete();
+                    $this->items->remove($item);
                     return $this->newOrderCost($order, $request->item_id);
                 }
             }
@@ -210,39 +228,38 @@ class OrderService
             return $item['price'] * $item['quantity'];
         }, $order->items->toArray()));
 
-        //  Удалить заказ при отсутствии товаров
-//        if ($order->cost == 0){
-//            $order->delete();
-//            return false;
-//        }
-
         $this->orders->save($order);
         return true;
     }
 
     public function deliveryUpdate(Request $request, $order)
     {
-        $delivery = $this->deliveryMethods->get($request->input('delivery.method'));
+        return DB::transaction(function() use ($request, $order)
+        {
+            $delivery = $this->deliveryMethods->get($request->input('delivery.method'));
 
-        $order->delivery = new DeliveryData(
-            $delivery,
-            ($request->has('delivery.index')) ? $request->input('delivery.index') : $order->delivery['index'],
-            ($request->has('delivery.address')) ? $request->input('delivery.address') : $order->delivery['address']
-        );
-        $order->customer = new CustomerData(
-            $request->input('customer.phone'),
-            //$this->orders->formatPhone($request->input('customer.phone')),
-            $request->input('customer.name'),
-            $request->input('customer.email')
-        );
-        $this->orders->save($order);
+            $order->delivery = new DeliveryData(
+                $delivery,
+                ($request->has('delivery.index')) ? $request->input('delivery.index') : $order->delivery['index'],
+                ($request->has('delivery.address')) ? $request->input('delivery.address') : $order->delivery['address']
+            );
+            $order->customer = new CustomerData(
+                $request->input('customer.phone'),
+                $request->input('customer.name'),
+                $request->input('customer.email')
+            );
+            $this->orders->save($order);
+        });
     }
 
     public function adminNoteEdit(Request $request, $order_id)
     {
-        $order = Order::find($order_id);
-        $order->admin_note = $request->admin_note;
-        $this->orders->save($order);
+        return DB::transaction(function() use ($request, $order_id)
+        {
+            $order = Order::find($order_id);
+            $order->admin_note = $request->admin_note;
+            $this->orders->save($order);
+        });
     }
 
     public function sendMail($order)
@@ -266,10 +283,37 @@ class OrderService
         return $order->notify(new OrderReplyCustomerMail($order, $request));
     }
 
+    public function saveCorrespondence($orderId, $message)
+    {
+        OrderCorrespondence::create([
+            'created_at' => time(),
+            'message' => $message,
+            'order_id' => $orderId
+        ]);
+    }
+
+    public static function getOtherOrders($order)
+    {
+        $query = Order::where('id', '<>', $order->id);
+        $query->where(function ($query) use ($order) {
+            if ($order->customer['email']) {
+                $query->where('customer', 'like', '%' . $order->customer['email'] . '%');
+            }
+            if ($order->customer['phone']) {
+                $query->orWhere('customer', 'like', '%' . preg_replace("/[^\d]/", '', $order->customer['phone']) . '%');
+            }
+        });
+        $orders = $query->orderBy('id', 'desc')->get();
+        return $orders->isNotEmpty() ? $orders : false;
+    }
+
     public static function getOrderStasusesList($order)
     {
         if ($order->isCancelled() || $order->isCancelledByCustomer() || $order->isCompleted()){
             return null;
+        }
+        if ($order->isPreliminsry()) {
+            return [Status::NEW => 'Новый'];
         }
 
         $array = $order::statusList();
@@ -282,66 +326,24 @@ class OrderService
         return $array;
     }
 
-    public static function setStatus($order_id, $status, $track_code = null)
+    public static function getArrayStasusesList($orders)
     {
-        return DB::transaction(function () use ($order_id, $status, $track_code) {
-            $order = Order::find($order_id);
-            $order->addStatus($status);
-            $order->setTrackCode($track_code);
-            $order->save();
-
-            if ($order->isCancelled() || $order->isCancelledByCustomer()) {
-                self::returnQuantity($order);
-                self::returnInStock($order);
-            }
-            if ($order->isPaid() || $order->isSent() || $order->isCompleted()) {
-                self::checkoutInStock($order);
-            }
-        });
+        $statuses = [];
+        foreach ($orders as $order)
+        {
+            $statuses[$order->id] = self::getOrderStasusesList($order);
+        }
+        return$statuses;
     }
 
     public function setTrackCode($order_id, $track_code)
     {
-        $order = Order::find($order_id);
-        $order->setTrackCode($track_code);
-        $order->save();
-    }
-
-    public static function returnQuantity($order)
-    {
-        foreach ($order->items as $item){
-            $modification = Modification::find($item->modification_id);
-            $modification->returnQuantity($item->quantity);
-            $modification->save();
-        }
-    }
-
-    public static function returnInStock ($order)
-    {
-        $flag = array_filter($order->statuses_json, function($ar) {
-            return $ar['value'] == Status::PAID OR $ar['value'] == Status::SENT;
+        return DB::transaction(function () use ($order_id, $track_code)
+        {
+            $order = Order::find($order_id);
+            $order->setTrackCode($track_code);
+            $this->orders->save($order);
         });
-        if($flag){
-            foreach ($order->items as $item){
-                $modification = Modification::find($item->modification_id);
-                $modification->returnInStock($item->quantity);
-                $modification->save();
-            }
-        }
-    }
-
-    public static function checkoutInStock($order)
-    {
-        $flag = array_filter($order->statuses_json, function($ar) use ($order) {
-            return $ar['value'] !== $order->current_status AND in_array($ar['value'], Order::SOLD_LIST);
-        });
-        if(!$flag){
-            foreach ($order->items as $item){
-                $modification = Modification::find($item->modification_id);
-                $modification->checkoutInStock($item->quantity);
-                $modification->save();
-            }
-        }
     }
 
     public function quantityOrders ()

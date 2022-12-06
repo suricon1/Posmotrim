@@ -23,4 +23,13 @@ class PostRequest extends FormRequest
             'slug'        => ['nullable', 'string', 'max:255', Rule::unique('vinograd_posts')->ignore($this->post)]
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'image.mimes'      => 'Фото должно быть форматов: jpg, jpeg, png.',
+            'image.dimensions' => 'Размер Фото должен быть не более:  900 px x 600 px.',
+            'image.max' => 'Максимальный вес Фото должен быть не более 500кб'
+        ];
+    }
 }

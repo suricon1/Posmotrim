@@ -48,8 +48,25 @@
         </div>
     </div>
 
-    @yield('category-content')
+{{--    <div class="about-us-area-2">--}}
+{{--        <div class="container">--}}
+{{--            <div class="row">--}}
+{{--                <div class="col-md-12">--}}
+{{--                    <div class="about-us-content-2">--}}
+{{--                        <div class="alert alert-success" role="alert">--}}
+{{--                            <h4 class="alert-heading">Закон "О селекции и семеноводстве"</h4>--}}
+{{--                            <p>--}}
+{{--                                В связи с действием Закона <strong>"О селекции и семеноводстве сельскохозяйственных растений"</strong> черенки и саженцы винограда мы раздаём на <strong>безвозмездной</strong> основе.<br>--}}
+{{--                                Суммы, указанные на нашем сайте, мы просим лишь за упаковку.--}}
+{{--                            </p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
+    @yield('category-content')
     @include('vinograd.components.look-product')
 
 @endsection

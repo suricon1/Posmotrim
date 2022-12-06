@@ -5,7 +5,8 @@
             <h5 class="card-title">
                 <i class="right fa fa-angle-right"></i>
                 {{$modification->property->name}}:
-                <span class="text-danger" id="modification_{{$modification->id}}_quantity">{{$modification->quantity}}</span> шт -
+                <span class="text-danger" id="modification_{{$modification->id}}_quantity">{{$modification->quantity}}</span>/
+                <span class="text-danger" id="modification_{{$modification->id}}_in_stock">{{$modification->in_stock}}</span> шт -
                 <span class="text-danger" id="modification_{{$modification->id}}_price">{{$modification->price}}</span> руб
             </h5>
         </button>

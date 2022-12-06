@@ -66,7 +66,7 @@ class AppServiceProvider extends ServiceProvider
     private function siteSidebar()
     {
         view()->composer('vinograd.components.left_sidebar', function($view) {
-            $view->with('featured', ProductRepository::getFeatured());
+            //$view->with('featured', ProductRepository::getFeatured());
             $view->with('countrys', ProductRepository::getAllCountrysOfCountProducts());
             $view->with('selections', ProductRepository::getAllSelectionsOfCountProducts());
         });

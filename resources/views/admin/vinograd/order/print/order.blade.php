@@ -129,21 +129,21 @@
                     </div>
                 </div>
             </div>
-            @if($order->note)
+{{--            @if($order->note)--}}
 
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fa fa-info"></i>
-                        Примечание к заказу:
-                    </h3>
-                </div>
-                <div class="card-body">
-                    {{$order->note}}
-                </div>
-            </div>
+{{--            <div class="card">--}}
+{{--                <div class="card-header">--}}
+{{--                    <h3 class="card-title">--}}
+{{--                        <i class="fa fa-info"></i>--}}
+{{--                        Примечание к заказу:--}}
+{{--                    </h3>--}}
+{{--                </div>--}}
+{{--                <div class="card-body">--}}
+{{--                    {{$order->note}}--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
-            @endif
+{{--            @endif--}}
         </div>
     </div>
 

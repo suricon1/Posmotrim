@@ -18,7 +18,12 @@ class AppAjaxController extends Controller
     public function upload(Request $request)
     {
         $v = Validator::make($request->all(), [
-            'upload' => 'required|image|mimes:jpg,jpeg,png|dimensions:max_width=900,max_height=600|max:500'
+            'upload' => 'required|image|mimes:jpg,jpeg,png|dimensions:max_width=900,max_height=900|max:500'
+        ],
+        [
+            'dimensions' => 'Максимальный размер изображения должен быть 900px на 900px',
+            'max' => 'Максимальный вес изображения должен быть 500кб',
+            'mimes' => 'Изображение должно иметь формат: jpg,jpeg,png'
         ]);
 
         $funcNum = $request->input('CKEditorFuncNum');

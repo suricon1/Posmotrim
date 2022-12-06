@@ -7,22 +7,22 @@
 @section('content')
     <div class="col">
         <h2>Что заказано -</h2>
-        <h3><small>{!! $titleDate !!}</small></h3>
-{{--        @if (!request('status'))--}}
-{{--            <h3>Выполненные заказы <small>{!! $titleDate !!}</small></h3>--}}
-{{--        @elseif (request('status') == 7)--}}
-{{--            <h3>Предварительные заказы <small>{!! $titleDate !!}</small></h3>--}}
-{{--        @elseif (request('status') == 1)--}}
-{{--            <h3>Новые заказы <small>{!! $titleDate !!}</small></h3>--}}
-{{--        @elseif (request('status') == 8)--}}
-{{--            <h3>Сформированные заказы <small>{!! $titleDate !!}</small></h3>--}}
-{{--        @endif--}}
+{{--        <h3><small>{!! $titleDate !!}</small></h3>--}}
+        @if (!request('status'))
+            <h3>Все заказы <small>{!! $titleDate !!}</small></h3>
+        @elseif (request('status') == 7)
+            <h3>Предварительные заказы <small>{!! $titleDate !!}</small></h3>
+        @elseif (request('status') == 1)
+            <h3>Новые заказы <small>{!! $titleDate !!}</small></h3>
+        @elseif (request('status') == 8)
+            <h3>Сформированные заказы <small>{!! $titleDate !!}</small></h3>
+        @endif
         <div class="card">
             <div class="card-header">
-{{--                <a href="{{route('dashboard.modifications', array_merge(request()->query(), ['status' => '']))}}" class="btn btn-info">В выполненных заказах</a>--}}
-{{--                <a href="{{route('dashboard.modifications', array_merge(request()->query(), ['status' => 1]))}}" class="btn btn-success">В новых заказах</a>--}}
-{{--                <a href="{{route('dashboard.modifications', array_merge(request()->query(), ['status' => 7]))}}" class="btn btn-warning">В предварительных заказах</a>--}}
-{{--                <a href="{{route('dashboard.modifications', array_merge(request()->query(), ['status' => 8]))}}" class="btn btn-default">В сформированных заказах</a>--}}
+                <a href="{{route('dashboard.ordereds', array_merge(request()->query(), ['status' => '']))}}" class="btn btn-info">Все</a>
+                <a href="{{route('dashboard.ordereds', array_merge(request()->query(), ['status' => 1]))}}" class="btn btn-success">В новых заказах</a>
+                <a href="{{route('dashboard.ordereds', array_merge(request()->query(), ['status' => 7]))}}" class="btn btn-warning">В предварительных заказах</a>
+                <a href="{{route('dashboard.ordereds', array_merge(request()->query(), ['status' => 8]))}}" class="btn btn-default">В сформированных заказах</a>
 
                 <form action="?" method="GET">
                     <div class="input-group input-group-sm mt-3">

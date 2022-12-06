@@ -28,5 +28,6 @@ mix.styles(
         'resources/css/meanmenu.min.css',
         'resources/css/style.css',
         'resources/css/responsive.css',
+        'resources/css/toastr.min.css'
     ],
     'public/build/css/custom.css');

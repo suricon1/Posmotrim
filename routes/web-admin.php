@@ -47,7 +47,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
             Route::get('/status/{status}', 'OrdersController@index')->name('index.status');
 
             Route::post('/set-status', 'OrdersController@setStatus')->name('set_status');
-            Route::post('/sent-status-mail/{order_id}', 'OrdersController@sentStatusMail')->name('sent.status.mail');
+            Route::post('/sent-status-mail', 'OrdersController@sentStatusMail')->name('sent.status.mail');
+
+            Route::post('/set-ajax-status', 'OrdersController@setAjaxStatus')->name('set_ajax_status');
+            Route::post('/set-ajax-treck_code', 'OrdersController@setAjaxTreckCode')->name('set_ajax_treck_code');
 
             Route::post('/set_track_code/{order_id}', 'OrdersController@setTrackCode')->name('set.track_code');
 
@@ -69,7 +72,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
                 Route::get('/print/nalozhka_blanck/{id}', 'OrderPrintsController@nalozhkaBlanck')->name('nalozhka_blanck');
                 Route::get('/print/nalozhka_sticker/{id}', 'OrderPrintsController@nalozhkaSticker')->name('nalozhka_sticker');
                 Route::get('/print/declared_sticker/{id}', 'OrderPrintsController@declaredSticker')->name('declared_sticker');
+                Route::get('/print/postal_belarus_sticker/{id}', 'OrderPrintsController@postalBelarusSticker')->name('postal_belarus_sticker');
                 Route::get('/print/small_package_sticker/{id}', 'OrderPrintsController@smallPackageSticker')->name('small_package_sticker');
+                Route::get('/print/small_package_sticker_2/{id}', 'OrderPrintsController@smallPackageSticker_2')->name('small_package_sticker_2');
             });
         });
 
@@ -80,6 +85,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
         Route::post('/products/modification/delete', 'ProductsController@modificationDelete')->name('products.modification.delete');
 
         Route::get('/modifications/toggle/{id}', 'ModificationsController@toggle')->name('modifications.toggle');
+
+        Route::get('/deliverys/toggle/{id}', 'DeliverysController@toggle')->name('deliverys.toggle');
 
         Route::get('/pages/toggle/{id}', 'PagesController@toggle')->name('pages.toggle');
         Route::get('/pages/up/{id}', 'PagesController@moveUp')->name('pages.move.up');

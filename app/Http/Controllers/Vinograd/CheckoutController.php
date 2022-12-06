@@ -29,7 +29,7 @@ class CheckoutController extends Controller
         }
         return view('vinograd.checkout.delivery',
             [
-                'deliverys' => DeliveryMethod::all(),
+                'deliverys' => DeliveryMethod::active()->filterCost($this->cartService->getCart()->getCost()->getTotal())->orderBy('sort')->get(),
                 'cart' => $this->cartService->getCart()
             ]);
     }
@@ -53,12 +53,10 @@ class CheckoutController extends Controller
             $order = $this->service->checkout($request);
             $this->service->sendMail($order);
 
-            if (Auth::user()){
-                return redirect()->route('vinograd.cabinet.home')->with('status', 'Заказ сохранен. В ближайшее время мы с Вами свяжемся для уточнения деталей!');
-
-                //return view('cabinet.index', ['order' => $order])->with('status', 'Заказ сохранен. В ближайшее время мы с Вами свяжемся для уточнения деталей!');
-            }
-            return redirect()->route('vinograd.category')->with('status', 'Заказ сохранен. В ближайшее время мы с Вами свяжемся для уточнения деталей!');
+            return redirect()->
+                   route((Auth::user()) ? 'vinograd.cabinet.home' : 'vinograd.category')->
+                   with('status', 'Заказ сохранен. В ближайшее время мы с Вами свяжемся для уточнения деталей!')->
+                   withErrors(['<h4>ВНИМАНИЕ! Если от нас в ближайшее время не поступит обратная связь, посмотрите письма в папке СПАМ</h4>']);
 
         } catch (\DomainException $e) {
             return back()->withErrors([$e->getMessage()]);

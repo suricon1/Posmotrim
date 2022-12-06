@@ -45,8 +45,8 @@
 
     @yield('breadcrumb')
 
-    @include('components.errors')
     @include('components.status')
+    @include('components.errors')
 
     @yield('content')
 

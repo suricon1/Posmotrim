@@ -17,7 +17,7 @@ class ImageService
 
     public function saveImage($fromPath, $savePath, $watermark = false)
     {
-
+    //dd($fromPath);
         $img = Image::make($fromPath)->encode('jpeg')->widen(1200, function ($constraint) {
             $constraint->upsize();
         });

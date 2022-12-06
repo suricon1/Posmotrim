@@ -51,8 +51,9 @@
                         <td>{{$product->name}}</td>
                         <td>{{$product->getCategory()}}</td>
 {{--                        <td>{{$product->slug}}</td>--}}
-                        <td style="padding: 5px; min-width: 250px">
-                            @foreach($product->adminModifications as $modification)
+                        <td style="padding: 5px; min-width: 250px" id="product_{{$product->id}}">
+                            <button type="button" class="btn btn-link btn-sm add-modification float-right" data-toggle="modal" data-target="#modificationModal" data-productId="{{$product->id}}"><i class="fa fa-plus"></i></button>
+                            @foreach ($product->adminModifications as $modification)
                                 @include('admin.vinograd.product._modification-input-item', ['modification' => $modification])
                             @endforeach
                         </td>
@@ -84,6 +85,8 @@
     </div>
 </div>
 
+@include('components.add-modification', ['productId' => 0])
+
 @endsection
 
 @section('scripts')
@@ -91,6 +94,17 @@
     <script src="/js/jquery.dataTables.js"></script>
     <script src="/js/dataTables.bootstrap4.js"></script>
     <script src="/js/multiUploadViewt.js" ></script>
+
+    <script>
+        const buttons = document.querySelectorAll('.add-modification');
+        buttons.forEach(item => {
+            item.addEventListener('click', (e) => {
+                const productId = item.getAttribute('data-productId');
+                const input = document.querySelector('input[name="product_id"]');
+                input.value = productId;
+            });
+        });
+    </script>
 
     <script>
         $(function () {

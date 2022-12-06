@@ -17,7 +17,7 @@
 
     <div class="card-deck mb-3">
     @foreach($deliverys as $delivery)
-        @continue($delivery->slug == 'courier-free' && $cart->getCost()->getTotal() < 100)
+{{--        @continue($delivery->slug == 'courier-free' && $cart->getCost()->getTotal() < 100)--}}
 
         <div class="card">
             <a href="{{route('vinograd.checkout.deliveryForm', ['delivery_slug' => $delivery->slug])}}">

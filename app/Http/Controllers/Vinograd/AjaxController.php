@@ -84,13 +84,16 @@ class AjaxController extends Controller
                 $products = $this->productRep->getSortProductByModifications($request, '');
             }
             Cookie::queue('grid_list', $request->get('grid_list'), 86400);
+//            $path = '/' . $request->get('model') ?: 'category' . '/' . $request->get('category');
 
-            return ['succes' => view('vinograd.components.product-'.$request->get('grid_list').'-view', [
-                'category' => ($request->get('category')) ? $category : false,
-                'products' => $products,
-                'page' => $request->get('page'),
-                'param' => $this->productRep->getParams($request)
-            ])->render()];
+            return [
+                'succes' => view('vinograd.components.product-'.$request->get('grid_list').'-view', [
+                        'category' => ($request->get('category')) ? $category : false,
+                        'products' => $products,
+//                        'products' => $products->withPath($path),
+                        'page' => $request->get('page'),
+                        'param' => $this->productRep->getParams($request)
+                    ])->render()];
     }
 
     public function preOrderForm()
@@ -103,10 +106,9 @@ class AjaxController extends Controller
     public function preOrder(PreOrderRequest $request)
     {
         try {
-            $pre_order_id = Cookie::get('pre_order_id');
+            $contact = Contact::find(Cookie::get('pre_order_id'));
 
-            if($pre_order_id){
-                $contact = Contact::find($pre_order_id);
+            if($contact){
                 $contact->name = $request->name;
                 $contact->email = $request->email;
                 $contact->phone = $request->phone;
@@ -128,6 +130,23 @@ class AjaxController extends Controller
             $contact->notify(new ContactMail($contact));
             return ['succes' =>'ok'];
 
+        } catch (\Exception $e) {
+            return ['errors' => $e->getMessage()];
+        }
+    }
+
+    public function exampleLength (Request $request)
+    {
+        $v = Validator::make($request->all(), [
+            'example_length' => 'required|in:21,42,64'
+        ]);
+        if ($v->fails()) {
+            return ['errors' => $v->errors()];
+        }
+
+        try {
+            Cookie::queue('example_length', $request->example_length, 86400);
+            return ['succes' =>'ok'];
         } catch (\Exception $e) {
             return ['errors' => $e->getMessage()];
         }

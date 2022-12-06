@@ -33,8 +33,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('currency:exchange')->daily();
         //$schedule->command('currency:exchange')->everyMinute();
 
-        $schedule->command('status:change')->cron('* * 1 10 *'); //   Переводим предварительные заказы в новые
-        $schedule->command('status:change')->cron('* * 1 4 *'); //   Переводим предварительные заказы в новые
+        $schedule->command('status:change')->cron('0 0 1 10 *'); //   Переводим предварительные заказы в новые
+        $schedule->command('status:change')->cron('0 0 30 4 *'); //   Переводим предварительные заказы в новые
 
         // 0 0 1 1 * Выполнение команды каждый год 1-го января в 00:00:
 

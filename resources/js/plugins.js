@@ -458,3 +458,38 @@ $(function(){   //Живой поиск
     //     $(".who").blur(); //Убираем фокус с input
     // });
 });
+$(".grid-list").tooltip();
+$(".wishlist-quantity-box").tooltip();
+$(".search-box").tooltip();
+
+$("#preOrder").on("show.bs.modal", function (e) {
+    $.ajax({
+        type: "GET",
+        url: "/ajax/pre-order-form",
+        error: function () {
+            alert("При выполнении запроса произошла ошибка :(")
+        },
+        success: function (e) {
+            $("#pre-order-modal").html(e)
+        }
+    })
+});
+
+$(document).delegate("#pre-order", "click", function (e) {
+    e.preventDefault(), $("input[name='name']").removeClass("is-invalid"), $("#pre-order-form #name").html(""), $("input[name='email']").removeClass("is-invalid"), $("#pre-order-form #email").html(""), $("input[name='phone']").removeClass("is-invalid"), $("#pre-order-form #phone").html(""), $("textarea[name='message']").removeClass("is-invalid"), $("#pre-order-form #message").html("");
+    var t = $(this).attr("data-url");
+    $.ajax({
+        method: "POST",
+        data: $("form#pre-order-form").serialize(),
+        url: t,
+        headers: {"X-CSRF-Token": $("meta[name = 'csrf-token']").attr("content")}
+    }).done(function (e) {
+        e.succes && ($("#pre-order-modal .modal-body").hide(500), setTimeout(function () {
+            $("#pre-order-modal").html('<div class="alert alert-success m-3" style="display: none"><h3>Спасибо за заказ. В ближайшее время мы свяжемся с Вами для уточнения детелей.</h3></div>'), $("#pre-order-modal .alert").show(500)
+        }, 500), setTimeout(function () {
+            $("#preOrder").modal("hide")
+        }, 4e3))
+    }).fail(function (e) {
+        data = jQuery.parseJSON(e.responseText), data.errors ? (data.errors.name && ($("input[name='name']").addClass("is-invalid"), $("#pre-order-form #name").html(data.errors.name)), data.errors.email && ($("input[name='email']").addClass("is-invalid"), $("#pre-order-form #email").html(data.errors.email)), data.errors.phone && ($("input[name='phone']").addClass("is-invalid"), $("#pre-order-form #phone").html(data.errors.phone)), data.errors.message && ($("textarea[name='message']").addClass("is-invalid"), $("#pre-order-form #message").html(data.errors.message))) : (data.error = '<div class="alert alert-danger" id="error">Неизвестная ошибка. Повторите попытку, пожалуйста!</div>', $("#pre-order-form").prepend(data.error))
+    })
+});

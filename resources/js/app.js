@@ -14,3 +14,5 @@ require('./plugins');
 require('./main');
 
 
+require('./index');
+

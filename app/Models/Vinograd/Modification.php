@@ -33,10 +33,13 @@ class Modification extends Model
     {
         $this->price = $price;
         $this->quantity = $this->quantity + $correct;
-        if ($this->quantity < 0){
+//        if ($this->quantity < 0){
+//            throw new \DomainException('Колличество товара не может быть меньше 0!');
+//        }
+        $this->in_stock = $this->in_stock + $correct;
+        if ($this->in_stock < 0){
             throw new \DomainException('Колличество товара не может быть меньше 0!');
         }
-        $this->in_stock = $this->in_stock + $correct;
         $this->save();
     }
 
@@ -45,9 +48,9 @@ class Modification extends Model
         $this->delete();
     }
 
-    public function checkout($quantity)
+    public function checkout($quantity, $pre)
     {
-        if ($quantity > $this->quantity) {
+        if (!$pre && $quantity > $this->quantity) {
             throw new \DomainException($this->product->name.' - '.$this->property->name.'.<br>Вы заказываете слишком много! В наличии только '.$this->quantity.' шт.');
         }
         $this->quantity -= $quantity;

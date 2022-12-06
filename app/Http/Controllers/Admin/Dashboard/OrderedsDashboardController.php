@@ -20,10 +20,11 @@ class OrderedsDashboardController extends AppController
     public function index (Request $request, DashboardService $service)
     {
         $dateRange = $service->getDateRange($request);
+        $status = $request->status ?: Order::ORDERED_LIST;
 
         return view('admin.vinograd.analytica.ordereds_analytics', [
-            'ordereds' => $service->getCompletedOrdersItemsArray($dateRange, Order::ORDERED_LIST),
-            'totalCost' => $service->getTotalCostCompletedOrders($dateRange, Order::ORDERED_LIST),
+            'ordereds' => $service->getCompletedOrdersItemsArray($dateRange, $status),
+            'totalCost' => $service->getTotalCostCompletedOrders($dateRange, $status),
             'titleDate' => $service->getTitleDate($dateRange)
         ]);
     }

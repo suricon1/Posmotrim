@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div class="special-field col-md-12">
+        <div class="special-field col-md-12" style="display: none;">
             <label for="subject">Subject</label>
             <input type="text" name="subject" id="subject" value="" />
         </div>

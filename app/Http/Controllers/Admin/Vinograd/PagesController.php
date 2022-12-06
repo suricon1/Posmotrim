@@ -6,6 +6,7 @@ use App\Http\Requests\Admin\Vinograd\Page\PageRequest;
 use App\Jobs\ContentProcessing;
 use App\Jobs\SitemapVinograd;
 use App\Models\Vinograd\Page;
+use App\UseCases\PostContentService;
 use Artisan;
 use Illuminate\Http\Request;
 use View;
@@ -36,7 +37,7 @@ class PagesController extends AppController
         $page->toggleStatus($request->get('status'));
 
         try {
-            //new PostContentService($page);
+//            new PostContentService($page);
             dispatch(new ContentProcessing($page));
 
             dispatch(new SitemapVinograd());
@@ -63,8 +64,8 @@ class PagesController extends AppController
         $page->toggleStatus($request->get('status'));
 
         try {
-            //new PostContentService($page);
-            dispatch(new ContentProcessing($page));
+            new PostContentService($page);
+//            dispatch(new ContentProcessing($page));
 
             dispatch(new SitemapVinograd());
             cache()->delete('siteMapHTML');

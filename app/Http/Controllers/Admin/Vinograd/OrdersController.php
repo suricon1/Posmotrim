@@ -10,10 +10,13 @@ use App\Models\Vinograd\Order\CustomerData;
 use App\Models\Vinograd\Order\Order;
 use App\Models\Vinograd\Order\OrderItem;
 use App\Models\Vinograd\Order\Status;
+use App\Repositories\ItemRepository;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use App\UseCases\NumberToStringService;
 use App\UseCases\OrderService;
+use App\UseCases\StatusService;
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
@@ -42,10 +45,12 @@ class OrdersController extends Controller
             $query->orWhere('customer', 'like', '%' . preg_replace("/[^\d]/", '', $request->get('phone')) . '%');
         }
 
+        $orders = $query->orderBy('current_status')->orderBy('id', 'desc')->paginate(30)->appends($request->all());
         return view('admin.vinograd.order.index',
         [
-            'orders' => $query->orderBy('current_status')->orderBy('id', 'desc')->paginate(30)->appends($request->all()),
-            'currency' => Currency::all()->keyBy('code')->all()
+            'orders' => $orders,
+            'currency' => Currency::all()->keyBy('code')->all(),
+            'statusesList' => OrderService::getArrayStasusesList($orders)
         ]);
     }
 
@@ -53,10 +58,11 @@ class OrdersController extends Controller
     {
         $order = Order::find($request->order_id);
         $service->sendReplyMail($order, $request);
+        $service->saveCorrespondence($order->id, $request->message);
         return redirect()->back();
     }
 
-    public function setStatus(Request $request)
+    public function setStatus(Request $request, StatusService $statusService)
     {
         $this->validate($request, [
             'status' =>  'required|in:1,2,3,4,5,6,7,8',
@@ -64,26 +70,73 @@ class OrdersController extends Controller
         ]);
 
         $order = Order::findOrFail($request->order_id);
-        if ($request->status == Status::SENT && $order->customer['email']){
+        if ($request->status == Status::SENT){
             return view('admin.vinograd.order.add_treck_code', [
                 'order' => $order
             ]);
         }
         try {
-            OrderService::setStatus($request->order_id, $request->status);
+            $statusService->setStatus($request->order_id, $request->status);
             return redirect()->back();
         } catch  (\RuntimeException $e) {
             return redirect()->route('orders.show', $order->id)->withErrors([$e->getMessage()]);
         }
     }
 
-    public function sentStatusMail(Request $request, OrderService $service, $order_id)
+    public function setAjaxStatus(Request $request, StatusService $statusService)
     {
         $v = Validator::make($request->all(), [
-            'track_code' =>  'required'
+            'status' =>  'required|in:1,2,3,4,5,6,7,8',
+            'order_id' => 'required|exists:vinograd_orders,id'
+        ]);
+        if ($v->fails()) {
+            return ['errors' => $v->errors()];
+        }
+
+        $order = Order::find($request->order_id);
+        if ($request->status == Status::SENT){
+            return ['success' => [
+                'code_form' => view('admin.vinograd.order.components.treck_code_form', ['id' => $order->id])->render()]
+            ];
+        }
+        try {
+            $statusService->setStatus($request->order_id, $request->status);
+            return ['success' => [
+                'status' => $order->statusName($request->status)]
+            ];
+        } catch  (\RuntimeException $e) {
+            return ['errors' => [$e->getMessage()]];
+        }
+    }
+
+    public function setAjaxTreckCode (Request $request, OrderService $OrderService, StatusService $statusService)
+    {
+        $v = Validator::make($request->all(), [
+            'track_code' =>  'required',
+            'order_id' => 'required|exists:vinograd_orders,id'
+        ]);
+        if ($v->fails()) {
+            return ['errors' => $v->errors()];
+        }
+
+        $order = Order::find($request->order_id);
+        try {
+            $statusService->setStatus($request->order_id, Status::SENT, $request->track_code);
+            $OrderService->sendCodeMail($order, $request->track_code);
+            return ['success' => $order->statusName(Status::SENT)];
+        } catch  (\RuntimeException $e) {
+            return ['errors' => [$e->getMessage()]];
+        }
+    }
+
+    public function sentStatusMail(Request $request, OrderService $OrderService, StatusService $statusService)
+    {
+        $v = Validator::make($request->all(), [
+            'track_code' =>  'required',
+            'order_id' => 'required|exists:vinograd_orders,id'
         ]);
 
-        $order = Order::findOrFail($order_id);
+        $order = Order::findOrFail($request->order_id);
 
         if ($v->fails()) {
             return view('admin.vinograd.order.add_treck_code', [
@@ -91,9 +144,9 @@ class OrdersController extends Controller
             ])->withErrors($v);
         }
         try {
-            OrderService::setStatus($order_id, Status::SENT, $request->track_code);
-            $service->sendCodeMail($order, $request->track_code);
-            return redirect()->route('orders.show', $order_id);
+            $statusService->setStatus($request->order_id, Status::SENT, $request->track_code);
+            $OrderService->sendCodeMail($order, $request->track_code);
+            return redirect()->route('orders.show', $request->order_id);
         } catch  (\RuntimeException $e) {
             return redirect()->route('orders.show', $order->id)->withErrors([$e->getMessage()]);
         }
@@ -113,6 +166,7 @@ class OrdersController extends Controller
         $order = Order::findOrFail($id);
         return view('admin.vinograd.order.show', [
             'order' => $order,
+            'other_orders' => OrderService::getOtherOrders($order), //  Получить другие заказы клиента
             'items' => OrderItem::getOrderSortedByItems($order),
             'statusesList' => OrderService::getOrderStasusesList($order),
             'currency' => Currency::where('code', $order->currency)->first(),
@@ -252,14 +306,14 @@ class OrdersController extends Controller
 
     public function update(Request $request, $id) {}
 
-    public function destroy($id)
+    public function destroy(OrderService $service, $id)
     {
-        $order = Order::find($id);
-        OrderService::returnQuantity($order);
-        $order->remove($id);
-        OrderItem::remove($id);
-        return redirect()->route('orders.index');
-        //return redirect()->back();
+        try {
+            $service->remove($id);
+            return redirect()->route('orders.index');
+        } catch (\DomainException $e) {
+            return back()->withErrors([$e->getMessage()]);
+        }
     }
 
     public function temp()

@@ -11,6 +11,10 @@
 
 @section('left-content')
 
+{{--    <div class="alert alert-warning" role="alert">--}}
+{{--        По техническим причинам <strong>корзина</strong> временно не работает. По всем вопросам обращайтесь на Email сайта: <a href="mailto:{{config('main.admin_email')}}?subject=Вопрос по винограду"><u>{{config('main.admin_email')}}</u></a>, или в <a href="{{route('vinograd.contactForm')}}"><u>форму обратной связи</u></a>.--}}
+{{--    </div>--}}
+
 <div class="single-product-area mb-115">
     <h1>{{ $product->name }}</h1>
     <div class="container">
@@ -93,7 +97,7 @@
                                 <td>{{ $product->props['flower'] }}</td>
                             </tr>
                             <tr>
-                                <th scope="row"><span class="stock in-stock"></span>Категориия</th>
+                                <th scope="row"><span class="stock in-stock"></span>Категория</th>
                                 <td>
                                     <a href="{{route('vinograd.category.category', ['slug' => $product->category->slug])}}"> {{$product->category->name}}</a>
                                 </td>
@@ -117,8 +121,7 @@
                             <h3>У нас в продаже</h3>
                             @forelse($product->modifications as $modification)
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span style="max-width: 50%;"><strong>{{$modification->property->name}}</strong> - {{currency($modification->price)}} {{signature()}}<br>
-                                    В наличии <strong>{{$modification->quantity}}</strong> шт.</span>
+                                    <span style="max-width: 50%;"><strong>{{$modification->property->name}}</strong> - {{currency($modification->price)}} {{signature()}}</span>
                                     <div>
                                         {{Form::open(['route'=>['vinograd.cart.add'], 'class' => 'add-quantity', 'data-action' => 'add-to-cart'])}}
                                         <div class="product-quantity">
@@ -142,16 +145,16 @@
                                   <i class="fa fa-circle-thin fa-stack-2x"></i>
                                   <i class="fa fa-info fa-stack-1x"></i>
                                 </span>
-                                Такие черенки мы продаем
+                                Наши черенки
                             </a>
                         </div>
-                        <div class="feature-content ml-3">
-                            <a href="https://www.youtube.com/channel/UC5-E2vxUNeMUqAYSDCFO23w" target="_blank" rel="nofollow">
+                        <div class="feature-content">
+                            <a href="{{route('vinograd.page', ['slug' => 'nashi-sazhency-vinograda'])}}">
                                 <span class="fa-stack fa-lg text-success">
                                   <i class="fa fa-circle-thin fa-stack-2x"></i>
-                                  <i class="fa fa-youtube fa-stack-1x text-danger"></i>
+                                  <i class="fa fa-info fa-stack-1x"></i>
                                 </span>
-                                Наш YouTube канал
+                                Наши саженцы
                             </a>
                         </div>
                     </div>

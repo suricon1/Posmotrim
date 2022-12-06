@@ -23,7 +23,7 @@ class OrderPrintsController extends Controller
         $order = Order::findOrFail($id);
         return view('admin.vinograd.order.print.order', [
             'order' => $order,
-            'items' => OrderItem::getOrderSortedByItem($order->id),
+            'items' => OrderItem::getOrderItems($order),
             'currency' => Currency::where('code', $order->currency)->first()
         ]);
     }
@@ -58,6 +58,16 @@ class OrderPrintsController extends Controller
         ]);
     }
 
+    public function postalBelarusSticker (NumberToStringService $service, $id)
+    {
+        $order = Order::findOrFail($id);
+        return view('admin.vinograd.order.print.postal_belarus_sticker', [
+            'order' => $order,
+            'costToString' => $service->numberToRussian($order->getTotalCost()),
+            'costFormat' => $service->numberToCostFormat($order->getTotalCost())
+        ]);
+    }
+
     public function smallPackageSticker (NumberToStringService $service, $id)
     {
         $order = Order::findOrFail($id);
@@ -68,4 +78,13 @@ class OrderPrintsController extends Controller
         ]);
     }
 
+    public function smallPackageSticker_2 (NumberToStringService $service, $id)
+    {
+        $order = Order::findOrFail($id);
+        $currency = Currency::where('code', $order->currency)->first();
+        return view('admin.vinograd.order.print.small_package_sticker_2', [
+            'order' => $order,
+            'cost' => ceil(mailCurr($currency, $order->getTotalCost()) / 100 * 30)
+        ]);
+    }
 }

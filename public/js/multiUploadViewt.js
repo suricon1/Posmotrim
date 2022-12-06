@@ -110,9 +110,14 @@ $(function() {
             data: formData,
             async: true,
             success: function (data) {
-                console.log(data);
+                const product_id = $("input[name='product_id']").val();
                 if(data) {
-                    $(data.succes).appendTo('.modification');
+                    if($("#product_" + product_id).length) {
+                        //$("#product_" + product_id).replaceWith(data.succes);
+                        $(data.succes).appendTo("#product_" + product_id);
+                    } else {
+                        $(data.succes).appendTo('.modification');
+                    }
                     $('#modificationModal').modal('hide');
                 }
                 else if(data.errors) {
@@ -152,7 +157,9 @@ $(document).on("click", ".modification-update", function(e) {
         },
         success: function (data) {
             if(data.succes) {
+                //console.log(data.modification)
                 $("#modification_" + modification_id + "_quantity").text(data.modification.quantity);
+                $("#modification_" + modification_id + "_in_stock").text(data.modification.in_stock);
                 $("#modification_" + modification_id + '_price').text(data.modification.price);
                 succes_list(data.succes);
             }

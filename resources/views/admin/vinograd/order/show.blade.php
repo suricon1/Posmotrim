@@ -64,7 +64,8 @@
                     </div>
                     <div class="col-sm-6 invoice-col">
                         <b>Номер заказа:</b> {{$order->id}}<br>
-                        <b>Дата заказа:</b> {{getRusDate($order->created_at)}}<br>
+                        <b>Создан:</b> {{getRusDate($order->created_at)}}<br>
+                        <b>Закрыт:</b> {{$order->completed_at}}<br>
                     </div>
                 </div>
 
@@ -185,10 +186,54 @@
                             Мелкий пакет наклейка
                         </a>
                         @endif
+                        @if($order->delivery['method_id'] == 5)
+                            <a href="{{route('orders.print.small_package_sticker_2', ['id' => $order->id])}}" target="_blank" class="btn btn-primary">
+                                <i class="fa fa-print"></i>
+                                Мелкий пакет наклейка 2
+                            </a>
+                        @endif
+                        @if($order->delivery['method_id'] == 6)
+                            <a href="{{route('orders.print.postal_belarus_sticker', ['id' => $order->id])}}" target="_blank" class="btn btn-primary">
+                                <i class="fa fa-print"></i>
+                                По РБ без наложки наклейка
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
+        @if($other_orders)
+        <div class="card-footer  text-muted">
+            <p>Предыдущие заказы</p>
+            <table id="example1" class="table table-bordered table-striped">
+                <tbody>
+
+                @foreach($other_orders as $other_order)
+                    <tr>
+                        <td>
+                            {{$other_order->id}}
+                            @if($other_order->isCreatedByAdmin())
+                                <span class="fa fa-check text-danger"></span>
+                            @endif
+                        </td>
+                        <td>{{$other_order->delivery['method_name']}}</td>
+                        <td>{{getRusDate($other_order->created_at)}}</td>
+                        <td> {{$other_order->cost}} бел. руб</td>
+                        <td>{{$other_order->customer['name']}}</td>
+                        <td>{{$other_order->admin_note}}</td>
+                        <td>{!! $other_order->statusName($other_order->current_status) !!}</td>
+                        <td>
+                            <div class="btn-group" id="nav">
+                                <a class="btn btn-outline-secondary btn-sm" href="{{route('orders.show', $other_order->id)}}" role="button"><i class="fa fa-eye"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+        @endif
     </div>
 </div>
 
@@ -332,14 +377,32 @@
         </div>
     </div>
 </div>
-
+@if($order->correspondences->isNotEmpty())
+<div class="col-md-12">
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <h3 class="card-title">Отправленные письма</h3>
+        </div>
+        @foreach($order->correspondences as $correspondence)
+        <div class="card">
+            <div class="card-header">
+                {{getRusDate($correspondence->created_at)}}
+            </div>
+            <div class="card-body">
+                <p class="card-text">{!! nl2br($correspondence->message, true) !!}</p>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
+@endif
 @if($order->customer['email'])
 <div class="col-md-12">
     <div class="card card-primary card-outline">
         {!! Form::open(['route' => 'orders.send_reply_mail']) !!}
         {!! Form::hidden('order_id', $order->id) !!}
         <div class="card-header">
-            <h3 class="card-title">Письмо заказчику</h3>
+            <h3 class="card-title">Написать письмо заказчику</h3>
         </div>
         <div class="card-body">
             <div class="form-group">

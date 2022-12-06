@@ -57,7 +57,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Title</span>
                     </div>
-                    <input name="meta[title]" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{old('meta[title]')}}">
+                    <input name="meta[title]" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{old('meta.title')}}">
                 </div>
                 <div class="input-group input-group-sm mb-2">
                     <div class="input-group-prepend">
@@ -81,13 +81,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Описание (description)</label>
-                            <textarea name="meta[desc]" class="form-control" rows="3" placeholder="Мета-описание ...">{{old('meta[desc]')}}</textarea>
+                            <textarea name="meta[desc]" class="form-control" rows="3" placeholder="Мета-описание ...">{{old('meta.desc')}}</textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Ключевые слова (keywords)</label>
-                            <textarea name="meta[key]" class="form-control" rows="3" placeholder="Ключевые слова ...">{{old('meta[key]')}}</textarea>
+                            <textarea name="meta[key]" class="form-control" rows="3" placeholder="Ключевые слова ...">{{old('meta.key')}}</textarea>
                         </div>
                     </div>
                 </div>
@@ -186,7 +186,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Средняя масса грозди</span>
                             </div>
-                            <input name="props[mass]" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{old('mass')}}">
+                            <input name="props[mass]" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{old('props.mass')}}">
                             <div class="input-group-append">
                                 <span class="input-group-text">грамм</span>
                             </div>
@@ -195,19 +195,19 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Окраска</span>
                             </div>
-                            <input name="props[color]" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{old('color')}}">
+                            <input name="props[color]" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{old('props.color')}}">
                         </div>
                         <div class="input-group input-group-sm mb-2">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Вкус</span>
                             </div>
-                            <input name="props[flavor]" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{old('flavor')}}">
+                            <input name="props[flavor]" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{old('props.flavor')}}">
                         </div>
                         <div class="input-group input-group-sm mb-2">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Морозоустойчивость</span>
                             </div>
-                            <input name="props[frost]" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{old('frost')}}">
+                            <input name="props[frost]" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{old('props.frost')}}">
                             <div class="input-group-append">
                                 <span class="input-group-text">&#8451;</span>
                             </div>
@@ -216,7 +216,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Цветок</span>
                             </div>
-                            <input name="props[flower]" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{old('flower')}}">
+                            <input name="props[flower]" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" value="{{old('props.flower')}}">
                         </div>
                     </div>
                     <div class="col-md-6">

@@ -28,7 +28,7 @@ class PreOrdersController extends Controller
         //return redirect()->route('orders.pre.edit', $order->id);
     }
 
-    public function preEdit(Request $request, ProductRepository $productRep, OrderRepository $orderRep, $id)
+    public function preEdit(ProductRepository $productRep, OrderRepository $orderRep, $id)
     {
         $order = Order::with('items')->findOrFail($id);
         try {
@@ -66,7 +66,7 @@ class PreOrdersController extends Controller
 
         try {
             if ($request->quantity == 0){
-                return $service->deleteItem($request, $order_id)
+                return $service->deleteItem($request, $order_id, true)
                     ? redirect()->route('orders.pre.edit', $order_id)->with('status', 'Изменения сохранены')
                     : redirect()->route('orders.index')->with('status', 'Изменения сохранены');
             }
@@ -84,7 +84,7 @@ class PreOrdersController extends Controller
         ]);
 
         try {
-            return $service->deleteItem($request, $order_id)
+            return $service->deleteItem($request, $order_id, true)
                 ? redirect()->route('orders.pre.edit', $order_id)->with('status', 'Изменения сохранены')
                 : redirect()->route('orders.index')->with('status', 'Изменения сохранены');
         } catch (\DomainException $e) {

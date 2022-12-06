@@ -64,4 +64,13 @@ class DeliverysController extends Controller
         DeliveryMethod::find($id)->remove();
         return redirect()->route('deliverys.index');
     }
+
+
+    public function toggle($id)
+    {
+        $delivery = DeliveryMethod::find($id);
+        $delivery->toggledsStatus();
+        return redirect()->back();
+    }
+
 }

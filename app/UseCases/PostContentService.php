@@ -71,13 +71,13 @@ class PostContentService
         if(empty($temp['host'])) return $url;
 
         $path = str_after($temp['path'], '/storage/');
-        //$contentPath = $this->model->getContentPath();
         $src = $this->model->getContentPath() . str_random(20) . '.jpg';
 
         if(!Storage::exists($this->model->getContentPath())) {
             Storage::makeDirectory($this->model->getContentPath());
         }
 
+        $url = str_replace('https', 'http', $url); //   Почему то не работает с https, возможно из за ssl сертификатов. Временный костыль.
         $image = new ImageService(new Size($width.'x'.$height));
         $image->routeUrlImageSave($url, $src, $this->model->getImageWatermark());
 

@@ -35,6 +35,11 @@
                         <td>{{$delivery->slug}}</td>
                         <td>
                             <div class="btn-group" id="nav">
+                                @if($delivery->status == 1)
+                                    <a class="btn btn-outline-warning btn-sm" href="{{route('deliverys.toggle', ['id' => $delivery->id])}}" role="button"><i class="fa fa-lock"></i></a>
+                                @else
+                                    <a class="btn btn-outline-success btn-sm" href="{{route('deliverys.toggle', ['id' => $delivery->id])}}" role="button"><i class="fa fa-thumbs-o-up"></i></a>
+                                @endif
                                 <a class="btn btn-outline-primary btn-sm" href="{{route('deliverys.edit', $delivery->id)}}" role="button"><i class="fa fa-pencil"></i></a>
                                 {{Form::open(['route'=>['deliverys.destroy', $delivery->id], 'method'=>'delete'])}}
                                 <button onclick="return confirm('Подтвердите удаление Статьи!')" type="submit" class="btn btn-outline-danger btn-sm"><i class="fa fa-remove"></i></button>

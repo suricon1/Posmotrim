@@ -111,11 +111,14 @@ class ProductRepository
     public function getGridList()
     {
         $grid_list = Cookie::get('grid_list');
-        return $grid_list ?: 'list';
+        return $grid_list ?: 'small_list';
     }
 
-    public function getSortProductByModifications($request, $page, $category = null, $per_page = 21)
+    public function getSortProductByModifications($request, $page, $category = null, $per_page = '')
     {
+        if (!$per_page) {
+            $per_page = Cookie::get('example_length') ?: 21;
+        }
         return Product::
             with('modifications.property')->
             leftJoin('vinograd_product_modifications AS modifications', function ($join) {

@@ -125,8 +125,7 @@
                                     <h3>У нас в продаже</h3>
                                     @forelse($product->getModifications() as $modification)
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span style="max-width: 50%;"><strong>{{$modification->property->name}}</strong> - {{$modification->price}}руб.<br>
-                                    В наличии <strong>{{$modification->quantity}}</strong> шт.</span>
+                                    <span style="max-width: 50%;"><strong>{{$modification->property->name}}</strong> - {{$modification->price}}руб.</span>
                                             <div>
                                                 {{Form::open(['route'=>['vinograd.cart.add'], 'class' => 'add-quantity'])}}
                                                 <div class="product-quantity">
@@ -165,8 +164,9 @@
                         </div>
                         <div class="social-share mb-5 text-center">
                             <ul class="socil-icon2">
-                                <li><a href="#"><i class="fa fa-facebook" rel="nofollow"></i></a></li>
-                                <li><a href="https://www.youtube.com/channel/UC5-E2vxUNeMUqAYSDCFO23w"><i class="fa fa-youtube" rel="nofollow"></i></a></li>
+                                <li><a href="https://www.facebook.com/Minsk.Vinograd/" rel="nofollow"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="https://www.youtube.com/channel/UC5-E2vxUNeMUqAYSDCFO23w" rel="nofollow"><i class="fa fa-youtube"></i></a></li>
+                                <li><a href="https://zen.yandex.ru/id/5c57c7f3ea64bc00ac1eb86e"><img src="{{Storage::url('pics/img/logo/yandex-zen.png')}}"></a></li>
                             </ul>
                         </div>
                     </div>

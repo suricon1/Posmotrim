@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Vinograd\UserDeliveryRequest;
 use App\Models\Vinograd\Order\Status;
 use App\UseCases\OrderService;
+use App\UseCases\StatusService;
 use Illuminate\Http\Request;
 use App\Models\Site\User;
 use App\Models\Vinograd\Order\Order;
@@ -35,12 +36,15 @@ class DashboardController extends Controller
         return view('cabinet.order_view', ['order' => $order]);
     }
 
-    public function destroy (Request $request, $order_id)
+    public function destroy (StatusService $statusService, $order_id)
     {
         $order = Order::findOrFail($order_id);
-        OrderService::setStatus($order->id, Status::CANCELLED_BY_CUSTOMER);
-
-        return redirect()->route('vinograd.cabinet.home');
+        try {
+            $statusService->setStatus($order_id, '6');
+            return redirect()->back();
+        } catch  (\RuntimeException $e) {
+            return redirect()->route('orders.show', $order->id)->withErrors([$e->getMessage()]);
+        }
     }
 
     public function update(UserDeliveryRequest $request, $id)

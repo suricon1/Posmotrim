@@ -165,8 +165,8 @@
                                     <div class="row">
                                         @foreach($product->modifications as $modification)
                                             <div class="col">{{$modification->property->name}}</div>
-                                            <div class="col">В наличии - <strong>{{$modification->quantity}}</strong> шт</div>
-                                            <div class="col">Стоимость - <strong>{{$modification->price}}</strong> руб</div>
+                                            <div class="col">В наличии: <strong>{{$modification->quantity}}</strong> шт</div>
+                                            <div class="col">Стоимость: <strong>{{$modification->price}}</strong> руб</div>
                                             <div class="col">
                                                 {{Form::open(['route'=>['orders.add.item', $order->id], 'style' => 'margin: 2px;'])}}
                                                 {{Form::hidden('modification_id', $modification->id)}}

@@ -4,6 +4,7 @@ namespace App\Models\Vinograd\Order;
 
 use App\Models\Vinograd\Product;
 use App\Models\Vinograd\User;
+use App\UseCases\OrderService;
 use Html;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -166,6 +167,15 @@ class Order extends Model
         return $this->current_status == Status::PRELIMINARY;
     }
 
+    public function isMailed()
+    {
+        if($this->delivery['method_id'] == 2 || $this->delivery['method_id'] == 5 || $this->delivery['method_id'] == 6) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function isTrackCode(): bool
     {
         return $this->track_code !== null;
@@ -263,6 +273,11 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function correspondences()
+    {
+        return $this->hasMany(OrderCorrespondence::class);
+    }
+
     ########## Mutators ################
 
     public function getCompletedAtAttribute($value)
@@ -302,8 +317,8 @@ class Order extends Model
     public static function statusName($status): string
     {
         return Html::tag('span', array_get(self::statusList(), $status), [
-            'class' => 'bg-' . self::statusColor($status),
-            'style' => 'padding: 5px;'
+            'class' => 'input-group-text bg-' . self::statusColor($status),
+            //'style' => 'padding: 5px;'
         ]);
     }
 

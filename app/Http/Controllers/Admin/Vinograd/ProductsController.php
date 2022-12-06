@@ -30,7 +30,8 @@ class ProductsController extends AppController
     public function index()
     {
         return view('admin.vinograd.product.index', [
-            'products' => Product::with('category', 'adminModifications.property')->get()
+            'products' => Product::with('category', 'adminModifications.property')->get(),
+            'modifications' => ModificationProps::orderBy('name')->pluck('name', 'id')->all()
         ]);
     }
 

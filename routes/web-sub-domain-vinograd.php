@@ -89,6 +89,8 @@ Route::group(['namespace' => 'Vinograd', 'as' => 'vinograd.'], function() {
 
     Route::get('/ajax/grid-list', 'AjaxController@gridList')->name('ajax.grid-list');
 
+    Route::get('/ajax/example-length', 'AjaxController@exampleLength')->name('ajax.example-length');
+
     Route::get('/ajax/pre-order-form', 'AjaxController@preOrderForm')->name('ajax.pre-order-form');
     Route::post('/ajax/pre-order', 'AjaxController@preOrder')->name('ajax.pre-order');
 

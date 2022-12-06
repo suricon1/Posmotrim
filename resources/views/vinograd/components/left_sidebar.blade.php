@@ -1,13 +1,18 @@
 <div class="plantmore-address">
     <h2 class="contact-title text-center">Контакты</h2>
     <ul>
-{{--        <li><i class="fa fa-fax"></i> Address : No 40 Baria Sreet 133/2 NewYork City</li>--}}
         <li><i class="fa fa-phone"></i><img src="{{Storage::url('pics/img/velcom.png')}}"> {{config('main.phone 1')}}</li>
+        <li class="pl-2"><a href="viber://add?number=375291565956"><img src="{{Storage::url('pics/img/viber.png')}}"> Viber</a></li>
         <li>
             <i class="fa fa-envelope-o"></i>
             <a href="mailto:{{config('main.admin_email')}}?subject=Вопрос по винограду">{{config('main.admin_email')}}</a>
         </li>
         <li><a href="{{route('vinograd.contactForm')}}"><i class="fa fa-pencil"></i> Форма обратной связи</a></li>
+        <li>
+            <i class="fa fa-youtube-play text-danger"></i>
+            <a href="https://www.youtube.com/channel/UC5-E2vxUNeMUqAYSDCFO23w" target="_blank" rel="nofollow">Наш YouTube канал</a>
+        </li>
+        <li><a href="https://zen.yandex.ru/id/5c57c7f3ea64bc00ac1eb86e" target="_blank" rel="nofollow"><img src="{{Storage::url('pics/img/logo/yandex-zen.png')}}"> Наш Дзен канал</a></li>
     </ul>
 {{--    <div class="working-time">--}}
 {{--        <h3><strong>Working hours</strong></h3>--}}
@@ -32,7 +37,8 @@
                 @endforeach
 {{--                <li class="rx-child"><a href="#">Скрытый пункт</a></li>--}}
 {{--                <form action="{{route('vinograd.category.filter')}}" class="rx-child p-3">--}}
-                {{Form::open(['route' => 'vinograd.category.filter', 'class' => 'rx-child p-3'])}}
+{{--                {{Form::open(['route' => 'vinograd.category.filter', 'class' => 'rx-child p-3'])}}--}}
+                {{Form::open(['route' => 'vinograd.category.filter', 'class' => 'p-3'])}}
 
                     <div class="shop-sidebar mt-5">
                         <h3>Селекционеры</h3>
@@ -86,62 +92,62 @@
                 </script>
                 {{--                </form>--}}
                 {{Form::close()}}
-                <li class="rx-parent">
-                    <a class="rx-default"><span class="cat-thumb  fa fa-plus"></span>Еще больше категорий</a>
-                    <a class="rx-show"><span class="cat-thumb  fa fa-minus"></span>Скрыть</a>
-                </li>
+{{--                <li class="rx-parent">--}}
+{{--                    <a class="rx-default"><span class="cat-thumb  fa fa-plus"></span>Еще больше категорий</a>--}}
+{{--                    <a class="rx-show"><span class="cat-thumb  fa fa-minus"></span>Скрыть</a>--}}
+{{--                </li>--}}
             </ul>
         </div>
     </div>
 </div>
 
-@if($featured->count())
-<div class="sidebar-layout mb-5">
-    <div class="featured-product">
-        <div class="sidebar-title text-center">
-            <h3>Рекомендуем</h3>
-        </div>
-        <div class="sidebar-product-active">
-            <div class="product-item">
+{{--@if($featured->count())--}}
+{{--<div class="sidebar-layout mb-5">--}}
+{{--    <div class="featured-product">--}}
+{{--        <div class="sidebar-title text-center">--}}
+{{--            <h3>Рекомендуем</h3>--}}
+{{--        </div>--}}
+{{--        <div class="sidebar-product-active">--}}
+{{--            <div class="product-item">--}}
 
-                @foreach($featured as $item)
-                <div class="single-product product-list">
-                    <div class="list-col-4">
-                        <div class="product-img img-full">
-                            <a href="{{route('vinograd.product', ['slug' => $item->slug])}}">
-                                <img src="{{asset($item->getImage('400x400'))}}" alt="">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="list-col-8">
-                        <div class="product-content">
-                            <h2><a href="{{route('vinograd.product', ['slug' => $item->slug])}}">{{$item->name}}</a></h2>
-                            <div class="product-price">
-                                <div class="price-box">
+{{--                @foreach($featured as $item)--}}
+{{--                <div class="single-product product-list">--}}
+{{--                    <div class="list-col-4">--}}
+{{--                        <div class="product-img img-full">--}}
+{{--                            <a href="{{route('vinograd.product', ['slug' => $item->slug])}}">--}}
+{{--                                <img src="{{asset($item->getImage('400x400'))}}" alt="">--}}
+{{--                            </a>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="list-col-8">--}}
+{{--                        <div class="product-content">--}}
+{{--                            <h2><a href="{{route('vinograd.product', ['slug' => $item->slug])}}">{{$item->name}}</a></h2>--}}
+{{--                            <div class="product-price">--}}
+{{--                                <div class="price-box">--}}
 
-                                    @forelse($item->modifications as $modification)
-                                        <span><strong>{{$modification->property->name}}</strong> - {{$modification->price}}руб</span><br>
-                                    @empty
-                                        <p class="text-danger">Нет в наличии</p>
-                                    @endforelse
+{{--                                    @forelse($item->modifications as $modification)--}}
+{{--                                        <span><strong>{{$modification->property->name}}</strong> - {{$modification->price}}руб</span><br>--}}
+{{--                                    @empty--}}
+{{--                                        <p class="text-danger">Нет в наличии</p>--}}
+{{--                                    @endforelse--}}
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
-                @if($loop->iteration % 3 == 0 && !$loop->last)
-            </div>
-            <div class="product-item">
-                @endif
+{{--                @if($loop->iteration % 3 == 0 && !$loop->last)--}}
+{{--            </div>--}}
+{{--            <div class="product-item">--}}
+{{--                @endif--}}
 
-                @endforeach
+{{--                @endforeach--}}
 
-        </div>
-    </div>
-</div>
-@endif
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
+{{--@endif--}}
 
 <div class="sidebar-layout mb-5">
     <div class="sidebar-banner single-banner">

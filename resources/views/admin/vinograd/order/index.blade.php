@@ -78,7 +78,6 @@
                         <th>№</th>
                         <th>Доставка</th>
                         <th>Создан</th>
-                        <th>Закрыт</th>
                         <th>Стоимость</th>
                         <th>Заказчик</th>
                         <th>Примечание</th>
@@ -88,6 +87,7 @@
                     </thead>
                     <tbody>
                     @foreach($orders as $order)
+
                         <tr>
                             <td>
                                 {{$order->id}}
@@ -97,7 +97,6 @@
                             </td>
                             <td>{{$order->delivery['method_name']}}</td>
                             <td>{{getRusDate($order->created_at)}}</td>
-                            <td>{{$order->completed_at}}</td>
                             <td>
                                 {{$order->cost}} бел. руб
                                 @if($order->currency !== 'BYN')
@@ -107,7 +106,29 @@
                             </td>
                             <td>{{$order->customer['name']}}</td>
                             <td>{{$order->admin_note}}</td>
-                            <td>{!! $order->statusName($order->current_status) !!}</td>
+                            <td style="min-width: 200px">
+                                @if($statusesList[$order->id])
+                                {!! Form::open(['route' => 'orders.set_status', 'data-ajax-url' => route('orders.set_ajax_status'), 'data-name' => 'status']) !!}
+                                {!! Form::hidden('order_id', $order->id) !!}
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        {!! $order->statusName($order->current_status) !!}
+                                    </div>
+                                    <select name="status" class="custom-select form-control" id="inputGroupSelect04">
+                                        <option selected disabled hidden>Изменить</option>
+                                        @foreach($statusesList[$order->id] as $key => $value)
+                                            <option value="{{$key}}">{{$value}}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-outline-info btn-flat" title="Обновить"><i class="fa fa-refresh"></i></button>
+                                    </div>
+                                </div>
+                                {!! Form::close() !!}
+                                @else
+                                    {!! $order->statusName($order->current_status) !!}
+                                @endif
+                            </td>
                             <td>
                                 <div class="btn-group" id="nav">
                                     @if(!$order->isCompleted())
@@ -139,4 +160,108 @@
 
     </div>
 
+@endsection
+
+@section('scripts')
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+
+    const postData = async (form) => {
+        let res = await fetch(form.getAttribute('data-ajax-url'), {
+            method: "POST",
+            headers: {'X-Requested-With': 'XMLHttpRequest'},
+            body: new FormData(form)
+        });
+        return await res.json();
+    };
+
+    const forms = document.querySelectorAll('form[data-name=status]');
+    forms.forEach(form => {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            postData(form)
+            .then(data => {
+                if(data.success) {
+
+                    this.badge = e.target.querySelector('.input-group-prepend');
+                    this.alert = document.querySelector('#Succes');
+
+                    if(data.success.code_form) {
+                        this.alert.innerHTML = data.success.code_form;
+                        //$("#Succes").html(data.success.code_form);
+                        $('#SuccesModal').modal('show');
+
+                        let code_form = this.alert.querySelector('form');
+                        code_form.addEventListener('submit', (e) => {
+                            e.preventDefault();
+
+                            postData(code_form)
+                                .then (data => {
+                                    if(data.success) {
+                                        this.badge.innerHTML = data.success;
+                                        this.alert.innerHTML = 'Статус изменен.';
+                                    } else if(data.errors){
+                                        if (this.alert.querySelector(".errors") !== null) {
+                                            this.alert.querySelector(".errors").innerHTML = get_list(data.errors);
+                                        } else {
+                                            const newEl = document.createElement("div");
+                                            newEl.classList.add('alert', 'alert-danger', 'errors');
+                                            newEl.innerHTML = get_list(data.errors);
+                                            this.alert.querySelector(".card-header").replaceWith(newEl);
+                                        }
+                                    }else{
+                                        console.log(data);
+                                        const newEl = document.createElement("div");
+                                        newEl.classList.add('alert', 'alert-danger', 'errors');
+                                        newEl.innerHTML = 'Неизвестная ошибка. Повторите попытку, пожалуйста!';
+                                        this.alert.replaceWith(newEl);
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                })
+                                .finally(() => {
+                                    //
+                                });
+                        });
+                    } else {
+                        this.badge.innerHTML = data.success.status;
+                        this.alert.innerHTML = 'Статус изменен.';
+                        // $("#Succes").html('Статус изменен.');
+                        $('#SuccesModal').modal('show')
+                    }
+                }else if(data.errors){
+                    errors_list(data.errors);
+                }else{
+                    console.log(data);
+                    errors_list('Неизвестная ошибка. Повторите попытку, пожалуйста!');
+                }
+            }).catch((error) => {
+                console.log(error);
+            }).finally(() => {
+                //
+            });
+        });
+    });
+
+    function errors_list(data) {
+        $(function() {
+            document.querySelector('#Errors').innerHTML = get_list(data);
+            $('#ErrorModal').modal('show')
+        });
+    }
+    function get_list(data) {
+        let temp = '';
+        if((typeof data) != 'string'){
+            for (var error in data) {
+                temp = temp + '<li>' + data[error] + "</li>";
+            }
+        }else{
+            temp = '<li>' + data + "</li>";
+        }
+        return temp;
+    }
+});
+</script>
 @endsection

@@ -24,7 +24,7 @@ function cart() {
                     .then(data => {
                         if(data.succes) {
                             miniCart(data.succes)
-                            toastr.success('Товар положен в Вашу корзину.');
+                            toastr.success('Товар положен в корзину.');
                         }else if(data.errors){
                             toastr.error(data.errors);
                         }else{

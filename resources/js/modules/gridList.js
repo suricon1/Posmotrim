@@ -23,8 +23,9 @@ function gridList() {
                 .then(data => {
                     if (data.succes) {
                         document.querySelector('#grid').innerHTML = data.succes;
-                        document.querySelector('.grid').classList.toggle('active');
-                        document.querySelector('.list').classList.toggle('active');
+
+                        gridLists.forEach(el=>el.classList.remove('active'));
+                        item.classList.add('active');
                         cart();
                         compare();
                     } else if (data.errors) {

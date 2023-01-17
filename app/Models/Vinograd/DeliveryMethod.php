@@ -14,9 +14,11 @@ class DeliveryMethod extends Model
     const IS_DRAFT = 0;
     const IS_PUBLIC = 1;
 
+    const SELF_DELIVERY = 1;
+
     protected $table = 'vinograd_delivery_methods';
     public $timestamps = false;
-    protected $fillable = ['name', 'content', 'slug', 'cost', 'status', 'min_weight', 'max_weight'];
+    protected $fillable = ['name', 'content', 'slug', 'cost', 'price', 'status', 'min_weight', 'max_weight'];
 
     public function sluggable()
     {
@@ -92,6 +94,22 @@ class DeliveryMethod extends Model
     public function toggledsStatus()
     {
         return ($this->status == 0) ? $this->setPublic() : $this->setDraft();
+    }
+
+    public function getDeliveryCost($weight)
+    {
+        /*
+         * Калькулятор расчета стоимости мелкого пакета в РФ
+         * http://tarifikator.belpost.by/forms/international/small.php
+         */
+
+        if(!$this->cost) {
+            return 0;
+        }
+        if($weight <= $this->min_weight) {
+            return $this->cost;
+        }
+        return $this->price * ceil(($weight - $this->min_weight) / 100) + $this->cost;
     }
 
     public function isAvailableForWeight($weight): bool

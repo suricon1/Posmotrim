@@ -4,6 +4,10 @@
 @section('key', 'Admin | Список заказов')
 @section('desc', 'Admin | Список заказов')
 
+@section('header')
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
+@endsection
+
 @section('header-title', 'Список заказов')
 
 @section('content')
@@ -105,17 +109,19 @@
                                 @endif
                             </td>
                             <td>{{$order->customer['name']}}</td>
-                            <td>{{$order->admin_note}}</td>
+
+                            <td data-name="admin_note" data-order_id="{{$order->id}}">{{$order->admin_note}}</td>
+
                             <td style="min-width: 200px">
                                 @if($statusesList[$order->id])
-                                {!! Form::open(['route' => 'orders.set_status', 'data-ajax-url' => route('orders.set_ajax_status'), 'data-name' => 'status']) !!}
+                                {!! Form::open(['route' => 'orders.set_status', 'data-name' => 'status']) !!}
                                 {!! Form::hidden('order_id', $order->id) !!}
                                 <div class="input-group input-group-sm">
                                     <div class="input-group-prepend">
                                         {!! $order->statusName($order->current_status) !!}
                                     </div>
                                     <select name="status" class="custom-select form-control" id="inputGroupSelect04">
-                                        <option selected disabled hidden>Изменить</option>
+                                        <option selected disabled hidden value="">Изменить</option>
                                         @foreach($statusesList[$order->id] as $key => $value)
                                             <option value="{{$key}}">{{$value}}</option>
                                         @endforeach
@@ -163,11 +169,31 @@
 @endsection
 
 @section('scripts')
-<script>
-window.addEventListener('DOMContentLoaded', function() {
+<script src="{{ asset('js/toastr.min.js') }}"></script>
 
-    const postData = async (form) => {
-        let res = await fetch(form.getAttribute('data-ajax-url'), {
+<script>
+const note_url = '{{route('ajax.note.edit')}}';
+const status_url = '{{route('orders.set_ajax_status')}}';
+
+window.addEventListener('DOMContentLoaded', function() {window.addEventListener('DOMContentLoaded', function() {
+
+    const getData = async (data) => {
+        const res = await fetch(note_url + searchParams(data));
+        return await res.json();
+    }
+
+    function searchParams(data) {
+        let search = window.location.search
+            ? window.location.search + '&'
+            : '?';
+        return data
+            ? search + new URLSearchParams(data).toString()
+            : search;
+    }
+
+    const postData = async (form, url = false) => {
+        url = url ? url : status_url;
+            let res = await fetch(url, {
             method: "POST",
             headers: {'X-Requested-With': 'XMLHttpRequest'},
             body: new FormData(form)
@@ -179,6 +205,7 @@ window.addEventListener('DOMContentLoaded', function() {
     forms.forEach(form => {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
+            if(!form.querySelector('[name="status"]').value) { return; }
 
             postData(form)
             .then(data => {
@@ -189,14 +216,13 @@ window.addEventListener('DOMContentLoaded', function() {
 
                     if(data.success.code_form) {
                         this.alert.innerHTML = data.success.code_form;
-                        //$("#Succes").html(data.success.code_form);
                         $('#SuccesModal').modal('show');
 
                         let code_form = this.alert.querySelector('form');
                         code_form.addEventListener('submit', (e) => {
                             e.preventDefault();
 
-                            postData(code_form)
+                            postData(code_form, code_form.getAttribute("data-ajax-url"))
                                 .then (data => {
                                     if(data.success) {
                                         this.badge.innerHTML = data.success;
@@ -217,19 +243,13 @@ window.addEventListener('DOMContentLoaded', function() {
                                         newEl.innerHTML = 'Неизвестная ошибка. Повторите попытку, пожалуйста!';
                                         this.alert.replaceWith(newEl);
                                     }
-                                })
-                                .catch((error) => {
+                                }).catch((error) => {
                                     console.log(error);
-                                })
-                                .finally(() => {
-                                    //
                                 });
                         });
                     } else {
                         this.badge.innerHTML = data.success.status;
-                        this.alert.innerHTML = 'Статус изменен.';
-                        // $("#Succes").html('Статус изменен.');
-                        $('#SuccesModal').modal('show')
+                        toastr.success('Статус изменен.');
                     }
                 }else if(data.errors){
                     errors_list(data.errors);
@@ -239,16 +259,13 @@ window.addEventListener('DOMContentLoaded', function() {
                 }
             }).catch((error) => {
                 console.log(error);
-            }).finally(() => {
-                //
             });
         });
     });
 
     function errors_list(data) {
         $(function() {
-            document.querySelector('#Errors').innerHTML = get_list(data);
-            $('#ErrorModal').modal('show')
+            toastr.error(get_list(data));
         });
     }
     function get_list(data) {
@@ -262,6 +279,63 @@ window.addEventListener('DOMContentLoaded', function() {
         }
         return temp;
     }
+
+    //  Редактирование примечания админа
+    const views = document.querySelectorAll('td[data-name=admin_note]');
+    views.forEach(view => {
+        view.addEventListener("click", function () {
+            view.style.display = "none";
+
+            let textarea = document.createElement("textarea");
+            textarea.classList.add("form-control");
+            textarea.value = view.innerHTML;
+
+            view.after(textarea);
+            textarea.focus();
+
+            // при уходе фокуса с HTML-элемента textarea
+            textarea.addEventListener("blur", function () {
+
+                let old = view.innerHTML;
+                view.innerHTML = textarea.value;
+                textarea.remove();
+                view.style.display = "";
+
+                if (old === textarea.value.trim()) {return;}
+
+                let overlay = document.createElement("div");
+                overlay.classList.add('overlay', 'dark');
+                let spinner = document.createElement("i");
+                spinner.classList.add('fa', 'fa-spinner', 'fa-pulse', 'fa-fw');
+                overlay.appendChild(spinner);
+                view.classList.add('card');
+                view.appendChild(overlay);
+
+                let data = {
+                    order_id: view.getAttribute("data-order_id"),
+                    admin_note: textarea.value
+                }
+                getData(data)
+                    .then(data => {
+                        if (data.success) {
+                            view.classList.remove('card');
+                            overlay.remove();
+                        } else if (data.errors) {
+                            errors_list(data.errors);
+                        } else {
+                            errors_list('Неизвестная ошибка. Повторите попытку, пожалуйста!');
+                        }
+                    }).catch((xhr) => {
+                        console.log(xhr);
+                    });
+            });
+
+            // в случае нажатия клавиши Enter делаем то же самое, что и при уходе фокуса
+            textarea.addEventListener("keydown", function (event) {
+                if (event.code == "Enter") textarea.blur();
+            });
+        });
+    });
 });
 </script>
 @endsection

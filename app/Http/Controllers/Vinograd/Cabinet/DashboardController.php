@@ -26,7 +26,7 @@ class DashboardController extends Controller
         $user = Auth::user();
         return view('cabinet.index', [
             'user' => $user,
-            'orders' => Order::where('user_id', $user->id)->orderBy('current_status')->get()
+            'orders' => Order::where('user_id', $user->id)->orderBy('current_status')->paginate(30)
         ]);
     }
 

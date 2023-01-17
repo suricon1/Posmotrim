@@ -2,6 +2,7 @@
 
 namespace App\cart;
 
+use App\Models\Vinograd\Modification;
 use App\Models\Vinograd\Product;
 
 class CartItem
@@ -12,12 +13,12 @@ class CartItem
 
     public function __construct(Product $product, $modification, $quantity)
     {
+        $this->modification = Modification::find($modification->id);
         if (!$product->canBeCheckout($modification->id, $quantity)) {
-        //if ($modification->quantity < $quantity) {
-            throw new \DomainException($product->name.' - '.$modification->property->name.'.<br>Вы заказываете слишком много! В наличии только '.$modification->quantity.' шт.');
+            throw new \DomainException($product->name.' - '.$this->modification->property->name.'.<br>Вы заказываете слишком много! В наличии только '.$this->modification->quantity.' шт.');
         }
         $this->product = $product;
-        $this->modification = $modification;
+        //$this->modification = $modification;
         $this->quantity = $quantity;
     }
 
@@ -60,10 +61,10 @@ class CartItem
         return $this->product->getModificationPrice($this->modification->id);
     }
 
-//    public function getWeight()
-//    {
-//        return $this->product->weight * $this->quantity;
-//    }
+    public function getWeight()
+    {
+        return $this->modification->property->weight * $this->quantity;
+    }
 
     public function getCost()
     {

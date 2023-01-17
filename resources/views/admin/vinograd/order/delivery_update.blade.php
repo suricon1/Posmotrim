@@ -16,7 +16,7 @@
         {{Form::open(['route'=>['orders.delivery.update', $order->id], 'style' => 'margin: 2px;', 'class' => 'form-horizontal'])}}
         {!! Form::hidden('delivery[method]', $delivery->id) !!}
             <div class="card-body">
-            @if($delivery->isPostal() || $delivery->isPostalRussian())
+                @if($delivery->isMailed())
                 <div class="form-group">
                     <label for="customer[name]">Фамилия Имя Отчество (Необходимо для заполнения почтовой формы) <span class="text-danger">*</span></label>
                     <input type="text" name="customer[name]" class="form-control{{ $errors->first('customer.name') ? ' is-invalid' : '' }}"  value="{{ old('customer.name', $order->customer['name']) }}" id="customer[name]">

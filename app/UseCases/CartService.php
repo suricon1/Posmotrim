@@ -2,7 +2,6 @@
 
 namespace App\UseCases;
 
-
 use App\cart\Cart;
 use App\cart\CartItem;
 use App\Repositories\ProductRepository;

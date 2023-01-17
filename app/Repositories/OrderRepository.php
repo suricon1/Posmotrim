@@ -8,7 +8,7 @@ class OrderRepository
 {
     public function get($id): Order
     {
-        if (!$order = Order::find($id)) {
+        if (!$order = Order::with('items')->find($id)) {
             throw new \RuntimeException('Order is not found.');
         }
         return $order;

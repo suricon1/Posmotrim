@@ -81,6 +81,9 @@
                         <h2>Итоговая стоимость</h2>
                         <ul>
                             <li>Полная стоимость <span>{{currency($order->cost)}} {{signature()}}</span></li>
+                            @isset($order->delivery['weight'])
+                            <li>Вес заказа: <span>{{$order->delivery['weight'] / 1000}} кг.</span></li>
+                            @endisset
                             <li>Стоимость доставки: <span>{{currency($order->delivery['cost'])}} {{signature()}}</span></li>
                             <li>К оплате <span>{{currency($order->getTotalCost())}} {{signature()}}</span></li>
                         </ul>

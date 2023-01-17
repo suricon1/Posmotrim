@@ -59,7 +59,8 @@ class CheckoutController extends Controller
                    withErrors(['<h4>ВНИМАНИЕ! Если от нас в ближайшее время не поступит обратная связь, посмотрите письма в папке СПАМ</h4>']);
 
         } catch (\DomainException $e) {
-            return back()->withErrors([$e->getMessage()]);
+            return redirect()->route('vinograd.cart.ingex')->withErrors([$e->getMessage()]);
+//            return back()->withErrors([$e->getMessage()]);
         }
     }
 }

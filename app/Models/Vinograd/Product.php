@@ -223,7 +223,9 @@ class Product extends Model
 
     public function canBeCheckout($modificationId, $quantity): bool
     {
-        return $quantity <= $this->getModification($modificationId)->quantity;
+        $modification = Modification::find($modificationId);
+        return $quantity <= $modification->quantity;
+//        return $quantity <= $this->getModification($modificationId)->quantity;
     }
 
     public function checkout($modificationId, $quantity): void

@@ -8,7 +8,7 @@ class ModificationProps extends Model
 {
     protected $table = 'vinograd_modifications';
     public $timestamps = false;
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'weight'];
 
     public static function create($fields)
     {

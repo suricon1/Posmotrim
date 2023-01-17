@@ -2,9 +2,9 @@
 
 namespace App\Models\Vinograd\Order;
 
+use App\Models\Vinograd\DeliveryMethod;
 use App\Models\Vinograd\Product;
 use App\Models\Vinograd\User;
-use App\UseCases\OrderService;
 use Html;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -122,10 +122,24 @@ class Order extends Model
         $this->addStatus(Status::CANCELLED);
     }
 
-    public function getTotalCost(): int
+
+/////////////////
+    public function getWeight(): int
     {
-        return $this->cost + $this->delivery['cost'];
+        return $this->items->map(function ($item) {
+            return $item->modification->property->weight * $item->quantity;
+        })->sum();
     }
+
+    public function getTotalCost($delivery = false): int
+    {
+        if(!isset($this->delivery['weight'])) {
+            return $this->cost + $this->delivery['cost'];
+        }
+        $delivery = $delivery ?: DeliveryMethod::find($this->delivery['method_id']);
+        return $this->cost + $delivery->getDeliveryCost($this->delivery['weight']);
+    }
+//////////
 
     public function canBePaid(): bool
     {
@@ -196,20 +210,6 @@ class Order extends Model
         $this->current_status = $value;
         if ($value == Status::COMPLETED) {
             $this->completed_at = time();
-        }
-    }
-
-    public function getColorProgress($int)
-    {
-        switch ($int) {
-            case $int >= 50:
-                return 'success';
-            case $int >= 30 && $int < 49:
-                return 'primary';
-            case $int >= 10 && $int < 29:
-                return 'warning';
-            case $int < 10:
-                return 'danger';
         }
     }
 

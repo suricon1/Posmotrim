@@ -1,0 +1,9 @@
+
+GET http://vinograd/
+Accept: text/html
+
+###
+
+GET http://vinograd/dsfsdf
+Accept: text/html
+

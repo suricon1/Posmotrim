@@ -109,7 +109,9 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                {{ $orders->links() }}
                             </div>
+
                             <div id="account-details" class="tab-pane fade">
                                 <h3>Контактные данные</h3>
                                 <div class="login">

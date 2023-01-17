@@ -33,7 +33,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
             '/modifications' => 'ModificationsController',
             '/sliders' => 'SlidersController',
             '/pages' => 'PagesController',
-            '/orders' => 'OrdersController',
+            '/orders' => 'Order\OrdersController',
             '/deliverys' => 'DeliverysController',
             '/mails' => 'MailsController'
         ]);
@@ -43,38 +43,43 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
         Route::get('/categorys/create/{model}', 'CategorysController@create')->name('categorys.create');
         Route::get('/categorys/{id}/edit/{model}', 'CategorysController@edit')->name('categorys.edit');
 
-        Route::group(['prefix' => 'orders', 'as' => 'orders.'], function() {
-            Route::get('/status/{status}', 'OrdersController@index')->name('index.status');
+        Route::group(['namespace'=>'Order'], function() {
+            Route::group(['prefix' => 'orders', 'as' => 'orders.'], function() {
+                Route::get('/status/{status}', 'OrdersController@index')->name('index.status');
 
-            Route::post('/set-status', 'OrdersController@setStatus')->name('set_status');
-            Route::post('/sent-status-mail', 'OrdersController@sentStatusMail')->name('sent.status.mail');
+                Route::post('/set-ajax-treck_code', 'OrdersTreckCodeController@setAjaxTreckCode')->name('set_ajax_treck_code');
+                Route::post('/set_track_code/{order_id}', 'OrdersTreckCodeController@setTrackCode')->name('set.track_code');
+                Route::post('/sent-status-mail', 'OrdersTreckCodeController@sentStatusMail')->name('sent.status.mail');
 
-            Route::post('/set-ajax-status', 'OrdersController@setAjaxStatus')->name('set_ajax_status');
-            Route::post('/set-ajax-treck_code', 'OrdersController@setAjaxTreckCode')->name('set_ajax_treck_code');
+                Route::post('/currency-update', 'OrdersController@currencyUpdate')->name('currency_update');
 
-            Route::post('/set_track_code/{order_id}', 'OrdersController@setTrackCode')->name('set.track_code');
+                Route::post('/send-reply-mail', 'OrdersController@sendReplyMail')->name('send_reply_mail');
 
-            Route::post('/currency-update', 'OrdersController@currencyUpdate')->name('currency_update');
+                Route::post('/add_item/{order_id}', 'OrdersItemController@addItem')->name('add.item');
+                Route::post('/update_item/{order_id}', 'OrdersItemController@updateItem')->name('update.item');
+                Route::post('/delete_item/{order_id}', 'OrdersItemController@deleteItem')->name('delete.item');
 
-            Route::post('/send-reply-mail', 'OrdersController@sendReplyMail')->name('send_reply_mail');
+                Route::get('/delivery_edit/{order_id}', 'OrdersDeliveryController@deliveryEdit')->name('delivery.edit');
+                Route::post('/delivery_update/{order_id}', 'OrdersDeliveryController@deliveryUpdate')->name('delivery.update');
 
-            Route::post('/add_item/{order_id}', 'OrdersController@addItem')->name('add.item');
-            Route::post('/update_item/{order_id}', 'OrdersController@updateItem')->name('update.item');
-            Route::post('/delete_item/{order_id}', 'OrdersController@deleteItem')->name('delete.item');
+                Route::post('/set-status', 'OrdersStatusController@setStatus')->name('set_status');
+                Route::post('/set-ajax-status', 'OrdersStatusController@setAjaxStatus')->name('set_ajax_status');
 
-            Route::get('/delivery_edit/{order_id}', 'OrdersController@deliveryEdit')->name('delivery.edit');
-            Route::post('/delivery_update/{order_id}', 'OrdersController@deliveryUpdate')->name('delivery.update');
+                Route::post('/admin_note_edit', 'OrdersNoteController@noteEdit')->name('admin.note.edit');
 
-            Route::post('/admin_note_edit/{order_id}', 'OrdersController@adminNoteEdit')->name('admin.note.edit');
+                Route::group(['as' => 'print.'], function() {
+                    Route::get('/print/{id}', 'OrderPrintsController@order')->name('order');
+                    Route::get('/print/nalozhka_blanck/{id}', 'OrderPrintsController@nalozhkaBlanck')->name('nalozhka_blanck');
+                    Route::get('/print/nalozhka_sticker/{id}', 'OrderPrintsController@nalozhkaSticker')->name('nalozhka_sticker');
+                    Route::get('/print/declared_sticker/{id}', 'OrderPrintsController@declaredSticker')->name('declared_sticker');
+                    Route::get('/print/postal_belarus_sticker/{id}', 'OrderPrintsController@postalBelarusSticker')->name('postal_belarus_sticker');
+                    Route::get('/print/small_package_sticker/{id}', 'OrderPrintsController@smallPackageSticker')->name('small_package_sticker');
+                    Route::get('/print/small_package_sticker_2/{id}', 'OrderPrintsController@smallPackageSticker_2')->name('small_package_sticker_2');
+                });
+            });
 
-            Route::group(['as' => 'print.'], function() {
-                Route::get('/print/{id}', 'OrderPrintsController@order')->name('order');
-                Route::get('/print/nalozhka_blanck/{id}', 'OrderPrintsController@nalozhkaBlanck')->name('nalozhka_blanck');
-                Route::get('/print/nalozhka_sticker/{id}', 'OrderPrintsController@nalozhkaSticker')->name('nalozhka_sticker');
-                Route::get('/print/declared_sticker/{id}', 'OrderPrintsController@declaredSticker')->name('declared_sticker');
-                Route::get('/print/postal_belarus_sticker/{id}', 'OrderPrintsController@postalBelarusSticker')->name('postal_belarus_sticker');
-                Route::get('/print/small_package_sticker/{id}', 'OrderPrintsController@smallPackageSticker')->name('small_package_sticker');
-                Route::get('/print/small_package_sticker_2/{id}', 'OrderPrintsController@smallPackageSticker_2')->name('small_package_sticker_2');
+            Route::group(['prefix' => 'ajax', 'as' => 'ajax.'], function() {
+                Route::get('/admin_note_edit', 'OrdersNoteController@ajaxNoteEdit')->name('note.edit');
             });
         });
 

@@ -20,6 +20,7 @@
                         <tr>
                             <th style="width: 10px">#</th>
                             <th>Название</th>
+                            <th>Вес (гр.)</th>
                             <th>Действия</th>
                         </tr>
                         </thead>
@@ -28,6 +29,7 @@
                         <tr>
                             <td>{{$modification->id}}.</td>
                             <td>{{$modification->name}}</td>
+                            <td>{{$modification->weight}}</td>
                             <td><div class="btn-group" id="nav">
                                     <a href="{{route('modifications.edit', $modification->id)}}" class="btn btn-outline-primary btn-sm"
                                        role="button"><i class="fa fa-pencil"></i></a>

@@ -173,20 +173,25 @@
                             @endforeach
                             @if($delivery->cost)
                             <tr class="cart-subtotal">
+                                <th>Вес заказа (прим.)</th>
+                                <td><span class="amount">{{$cart->getWeight() / 1000}} кг.</span></td>
+                            </tr>
+                            <tr class="cart-subtotal">
                                 <th>Стоимость доставки</th>
-                                <td><span class="amount">{{currency($delivery->cost)}} {{signature()}}</span></td>
+                                <td>
+                                    <span class="amount">{{currency($delivery->getDeliveryCost($cart->getWeight()))}} {{signature()}}</span>
+                                </td>
                             </tr>
                             @endif
 
                             </tbody>
                             <tfoot>
-                            {{--                            <tr class="cart-subtotal">--}}
-                                {{--                                <th>Cart Subtotal</th>--}}
-                                {{--                                <td><span class="amount">£215.00</span></td>--}}
-                                {{--                            </tr>--}}
                             <tr class="order-total">
                                 <th>Полная стоимость</th>
-                                <td><strong><span class="amount">{{currency($cart->getCost()->getTotal() + $delivery->cost)}} {{signature()}}</span></strong><br>({{$cart->getCost()->getTotal() + $delivery->cost}} бел. руб)</td>
+                                <td>
+                                    <strong><span class="amount">{{currency($cart->getCost()->getTotal() + $delivery->getDeliveryCost($cart->getWeight()))}} {{signature()}}</span></strong><br>
+                                    ({{$cart->getCost()->getTotal() + $delivery->getDeliveryCost($cart->getWeight())}} бел. руб)
+                                </td>
                             </tr>
                             </tfoot>
                         </table>

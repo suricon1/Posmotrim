@@ -114,6 +114,12 @@
                                         <th style="width:50%">Стоимость:</th>
                                         <td>{{$order->cost}} руб</td>
                                     </tr>
+                                    @isset($order->delivery['weight'])
+                                        <tr>
+                                            <th style="width:50%">Вес заказа:</th>
+                                            <td>{{$order->delivery['weight'] / 1000}} кг.</td>
+                                        </tr>
+                                    @endisset
                                     @if($order->delivery['cost'])
                                         <tr>
                                             <th style="width:50%">Стоимость доставки:</th>

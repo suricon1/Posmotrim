@@ -15,12 +15,9 @@ use App\Notifications\OrderCustomerMail;
 use App\Notifications\OrderReplyCustomerMail;
 use App\Notifications\SendCodeMail;
 use App\Repositories\CorrespondenceRepository;
-use App\Repositories\DeliveryMethodRepository;
 use App\Repositories\ItemRepository;
 use App\Repositories\ModificationRepository;
 use App\Repositories\OrderRepository;
-use App\Repositories\ProductRepository;
-use App\Repositories\UserRepository;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -33,9 +30,6 @@ class OrderService
     private $statusService;
     private $items;
     private $modifications;
-    private $products;
-    private $users;
-    private $deliveryMethods;
     private $correspondence;
 
     public function __construct(
@@ -44,9 +38,6 @@ class OrderService
         StatusService $statusService,
         ItemRepository $items,
         ModificationRepository $modifications,
-        ProductRepository $products,
-        UserRepository $users,
-        DeliveryMethodRepository $deliveryMethods,
         CorrespondenceRepository $correspondence
     )
     {
@@ -55,9 +46,6 @@ class OrderService
         $this->statusService = $statusService;
         $this->items = $items;
         $this->modifications = $modifications;
-        $this->products = $products;
-        $this->users = $users;
-        $this->deliveryMethods = $deliveryMethods;
         $this->correspondence = $correspondence;
     }
 
@@ -65,9 +53,7 @@ class OrderService
     {
         $order = Order::create(
             Auth::id(),
-            new DeliveryData(
-                $this->deliveryMethods->get(1)
-             ),
+            new DeliveryData(),
             new CustomerData(),
             0,
             null,
@@ -79,7 +65,7 @@ class OrderService
 
     public function remove ($id)
     {
-        $order = Order::find($id);
+        $order = $this->orders->get($id);
         return DB::transaction(function() use ($order)
         {
             $this->statusService->remove($order);
@@ -93,20 +79,42 @@ class OrderService
         });
     }
 
+    private function newDeliveryData($request)
+    {
+        $per = new DeliveryData($request->input('delivery.method'));
+        $per->setAddress($request->input('delivery.index'), $request->input('delivery.address'));
+        $per->setWeight($this->cart->getWeight());
+        return $per;
+    }
+
+    private function setDeliveryData($order)
+    {
+        $order = $this->orders->get($order->id);
+        $per = new DeliveryData($order->delivery['method_id']);
+        $per->setAddress($order->delivery['index'], $order->delivery['address']);
+        $per->setWeight($order->getWeight());
+        return $per;
+    }
+
+    private function updateDeliveryData($request, $order)
+    {
+        $delivery = new DeliveryData($request->input('delivery.method'));
+        $delivery->setAddress(
+            ($request->has('delivery.index')) ? $request->input('delivery.index') : $order->delivery['index'],
+            ($request->has('delivery.address')) ? $request->input('delivery.address') : $order->delivery['address']
+        );
+        $delivery->setWeight($order->getWeight());
+        return $delivery;
+    }
+
     public function checkout($request): Order
     {
         return DB::transaction(function() use ($request)
         {
             $user_id = (Auth::check()) ? Auth::id() : null;
-            $delivery = $this->deliveryMethods->get($request->input('delivery.method'));
-
             $order = Order::create(
                 $user_id,
-                new DeliveryData(
-                    $delivery,
-                    $request->input('delivery.index'),
-                    $request->input('delivery.address')
-                ),
+                $this->newDeliveryData($request),
                 new CustomerData(
                     $request->input('customer.phone'),
                     $request->input('customer.name'),
@@ -120,7 +128,7 @@ class OrderService
 
             foreach ($this->cart->getItems() as $item)
             {
-                $modification = $item->getModification();
+                $modification = Modification::find($item->getModificationId());
                 $modification->checkout($item->getQuantity(), false);
                 $this->modifications->save($modification);
 
@@ -142,7 +150,7 @@ class OrderService
     {
         return DB::transaction(function() use ($request, $order_id, $pre)
         {
-            $order = Order::with('items')->find($order_id);
+            $order = $this->orders->get($order_id);
             $modification = Modification::with('product')->find($request->modification_id);
             if(!$pre){
                 $modification->checkout($request->quantity, false);
@@ -150,33 +158,40 @@ class OrderService
             }
 
             $order->cost += $request->quantity * $modification->price;
+
+            $this->_addItems($order, $modification, $request);
+
+            $order->delivery = $this->setDeliveryData($order);
             $this->orders->save($order);
-
-            //  Добавляем уже имеющийся продукт
-            foreach ($order->items as $item){
-                if($item->modification_id == $modification->id){
-                    $item->quantity += $request->quantity;
-                    $this->items->save($item);
-                    return;
-                }
-            }
-
-            //  Добавляем новый продукт
-            $orderItem = OrderItem::create(
-                $order->id,
-                $modification,
-                $modification->price,
-                $request->quantity
-            );
-            $this->items->save($orderItem);
         });
+    }
+
+    private function _addItems($order, $modification, $request)
+    {
+        //  Добавляем уже имеющийся продукт
+        foreach ($order->items as $item){
+            if($item->modification_id == $modification->id){
+                $item->quantity += $request->quantity;
+                $this->items->save($item);
+                return;
+            }
+        }
+
+        //  Добавляем новый продукт
+        $orderItem = OrderItem::create(
+            $order->id,
+            $modification,
+            $modification->price,
+            $request->quantity
+        );
+        $this->items->save($orderItem);
     }
 
     public function updateItem(Request $request, $order_id, $pre = false)
     {
         return DB::transaction(function() use ($request, $order_id, $pre)
         {
-            $order = Order::with('items')->find($order_id);
+            $order = $this->orders->get($order_id);
             foreach ($order->items as $item){
                 if($item->id == $request->item_id){
                     if ($item->quantity == $request->quantity){
@@ -207,7 +222,7 @@ class OrderService
     {
         return DB::transaction(function() use ($request, $order_id, $pre)
         {
-            $order = Order::with('items')->find($order_id);
+            $order = $this->orders->get($order_id);
             foreach ($order->items as $item){
                 if($item->id == $request->item_id){
                     if(!$pre) {
@@ -228,6 +243,7 @@ class OrderService
             return $item['price'] * $item['quantity'];
         }, $order->items->toArray()));
 
+        $order->delivery = $this->setDeliveryData($order);
         $this->orders->save($order);
         return true;
     }
@@ -236,13 +252,7 @@ class OrderService
     {
         return DB::transaction(function() use ($request, $order)
         {
-            $delivery = $this->deliveryMethods->get($request->input('delivery.method'));
-
-            $order->delivery = new DeliveryData(
-                $delivery,
-                ($request->has('delivery.index')) ? $request->input('delivery.index') : $order->delivery['index'],
-                ($request->has('delivery.address')) ? $request->input('delivery.address') : $order->delivery['address']
-            );
+            $order->delivery = $this->updateDeliveryData($request, $order);
             $order->customer = new CustomerData(
                 $request->input('customer.phone'),
                 $request->input('customer.name'),
@@ -252,11 +262,11 @@ class OrderService
         });
     }
 
-    public function adminNoteEdit(Request $request, $order_id)
+    public function adminNoteEdit(Request $request)
     {
-        return DB::transaction(function() use ($request, $order_id)
+        return DB::transaction(function() use ($request)
         {
-            $order = Order::find($order_id);
+            $order = $this->orders->get($request->order_id);
             $order->admin_note = $request->admin_note;
             $this->orders->save($order);
         });
@@ -340,7 +350,7 @@ class OrderService
     {
         return DB::transaction(function () use ($order_id, $track_code)
         {
-            $order = Order::find($order_id);
+            $order = $this->orders->get($order_id);
             $order->setTrackCode($track_code);
             $this->orders->save($order);
         });

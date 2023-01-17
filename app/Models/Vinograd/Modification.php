@@ -51,7 +51,7 @@ class Modification extends Model
     public function checkout($quantity, $pre)
     {
         if (!$pre && $quantity > $this->quantity) {
-            throw new \DomainException($this->product->name.' - '.$this->property->name.'.<br>Вы заказываете слишком много! В наличии только '.$this->quantity.' шт.');
+            throw new \DomainException('Вас кто то опередил!<br>' . $this->product->name.' - '.$this->property->name.'.<br>В наличии осталось '.$this->quantity.' шт.<br>Отредактируйте корзину.');
         }
         $this->quantity -= $quantity;
     }

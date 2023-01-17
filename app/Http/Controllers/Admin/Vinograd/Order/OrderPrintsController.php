@@ -1,23 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Vinograd;
+namespace App\Http\Controllers\Admin\Vinograd\Order;
 
-use App\Http\Controllers\Controller;
 use App\Models\Vinograd\Currency;
 use App\Models\Vinograd\Order\Order;
 use App\Models\Vinograd\Order\OrderItem;
 use App\UseCases\NumberToStringService;
-use View;
 
-class OrderPrintsController extends Controller
+class OrderPrintsController extends AppOrdersController
 {
-    public function __construct()
-    {
-        View::share ('orders_open', ' menu-open');
-        View::share ('orders_active', ' active');
-        View::share ('order_active', ' active');
-    }
-
     public function order($id)
     {
         $order = Order::findOrFail($id);

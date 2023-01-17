@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Requests\Vinograd;
-
 
 use App\Models\Vinograd\Category;
 use Illuminate\Foundation\Http\FormRequest;

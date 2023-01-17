@@ -109,7 +109,10 @@
                             <div class="card-body">
                                 <h5>Доставка:</h5>
                                 <p>{{$order->delivery['method_name']}}</p>
-
+                                @isset($order->delivery['weight'])
+                                    <h5>Вес заказа:</h5>
+                                    <p>{{$order->delivery['weight'] / 1000}} кг.</p>
+                                @endisset
                                 <h5>Стоимость доставки:</h5>
                                 <p>{{$order->delivery['cost']}} руб</p>
                             </div>
@@ -369,7 +372,8 @@
         </div>
         <div class="card-body">
             <div class="form-group mt-2">
-                {!! Form::open(['route' => ['orders.admin.note.edit', $order->id], 'method' => 'post']) !!}
+                {!! Form::open(['route' => 'orders.admin.note.edit', 'method' => 'post']) !!}
+                {!! Form::hidden('order_id', $order->id) !!}
                 <textarea name="admin_note" class="form-control" rows="3" placeholder="Enter ...">{{$order->admin_note}}</textarea>
                 <button type="submit" class="btn btn-success">Сохранить примечание</button>
                 {!! Form::close() !!}
@@ -409,9 +413,53 @@
                 <label for="compose-subject">Тема письма</label>
                 <input name="subject" class="form-control" value="Уточнение Вашего заказа на сайте: {{config('app.name')}}" id="compose-subject">
             </div>
-            <div class="form-group form-check">
-                <input name="add_cart" type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Прикрепить к письму корзину заказа</label>
+{{--            <div class="form-group form-check">--}}
+{{--                <input name="add_cart" type="checkbox" class="form-check-input" id="exampleCheck1">--}}
+{{--                <label class="form-check-label" for="exampleCheck1">Прикрепить к письму корзину заказа</label>--}}
+{{--            </div>--}}
+            <div class="form-row align-items-center">
+
+                <div class="col-auto">
+                    <div class="form-check mb-2">
+                        <input name="add_cart" type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">Прикрепить к письму корзину заказа</label>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary mb-2"
+                            data-name="insert"
+                            data-text="
+Здравствуйте, {{$order->customer['name']}}.
+Заказ принят. Все в наличии. Оплата на карту 9112 3801 6226 5914 до 07/27
+Отправка после оплаты в течение нескольких рабочих дней.
+Ближайшая дата
+После отправки высылаем трек-номер для отслеживания.
+Обращаем ваше внимание, что заказ будет действителен в течение 5 календарных дней.
+Если в течение этого срока мы не получаем от вас никакой обратной связи, то отменяем заказ.
+Надеемся на ваше понимание.
+
+"
+                    >Реквизиты Беларусь</button>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary mb-2"
+                            data-name="insert"
+                            data-text="
+Здравствуйте, {{$order->customer['name']}}.
+Проверьте, пожалуйста, заказ.
+Отправляем по предоплате. Оплата на карту через Сбербанк по номеру телефона (Важно: перевод на карту ИНОСТРАННОГО БАНКА, далее выбрать БСБ или ПАО Сбербанк, далее – по номеру телефона) +375291565956 (Александр Михайлович М.)
+Просьба после оплаты прислать подтверждающее письмо, в нем достаточно указать номер вашего заказа.
+Саму оплату я вижу, но не вижу имя отправителя денежных средств.
+Отправка после оплаты в течение нескольких рабочих дней.
+После отправки мы высылаем трек-номер для отслеживания.
+P.S.
+Обращаем ваше внимание, что заказ будет действителен в течение 5 календарных дней.
+Если в течение этого срока мы не получаем от вас никакой обратной связи, то отменяем заказ.
+Надеемся на ваше понимание.
+
+"
+                    >Реквизиты Россия</button>
+                </div>
             </div>
             <div class="form-group">
                 <label for="compose-textarea">Сообщение</label>
@@ -429,5 +477,24 @@
     </div>
 </div>
 @endif
+
+@endsection
+
+@section('scripts')
+
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            const textarea = document.querySelector('textarea[name=message]');
+            const buttons = document.querySelectorAll('button[data-name=insert]');
+            buttons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    const text = e.target.getAttribute('data-text');
+                    textarea.value += text;
+                });
+            });
+        });
+    </script>
 
 @endsection

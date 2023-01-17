@@ -6699,6 +6699,9 @@ margin-bottom: 0;
     font-style: italic;
     background-color: #f4f4f4;
 }
+.wp-caption img{
+    max-width: 100%;
+}
 .bg-gray{
     background: lightgrey;
 }

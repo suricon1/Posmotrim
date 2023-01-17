@@ -108,6 +108,8 @@ class OrderService
     }
 
     public function checkout($request): Order
+
+
     {
         return DB::transaction(function() use ($request)
         {

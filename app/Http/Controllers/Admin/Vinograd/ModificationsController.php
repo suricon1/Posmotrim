@@ -43,6 +43,12 @@ class ModificationsController extends AppController
 
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'name' =>  'required|max:100',
+            'weight' =>  'required|max:255'
+        ]);
+        $modification = ModificationProps::find($id);
+        $modification->edit($request->all());
         return redirect()->route('modifications.index');
     }
 

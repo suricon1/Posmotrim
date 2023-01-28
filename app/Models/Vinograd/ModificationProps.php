@@ -3,7 +3,6 @@
 namespace App\Models\Vinograd;
 
 use Illuminate\Database\Eloquent\Model;
-
 class ModificationProps extends Model
 {
     protected $table = 'vinograd_modifications';
@@ -18,9 +17,9 @@ class ModificationProps extends Model
         return $modification;
     }
 
-    public function edit($name)
+    public function edit($fields): void
     {
-        $this->name = $name;
+        $this->fill($fields);
         $this->save();
     }
 

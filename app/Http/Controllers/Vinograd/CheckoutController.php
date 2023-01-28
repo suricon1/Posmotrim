@@ -55,12 +55,11 @@ class CheckoutController extends Controller
 
             return redirect()->
                    route((Auth::user()) ? 'vinograd.cabinet.home' : 'vinograd.category')->
-                   with('status', 'Заказ сохранен. В ближайшее время мы с Вами свяжемся для уточнения деталей!')->
+                   with('status', 'Заказ сохранен. № заказа: ' . $order->id . '. В ближайшее время мы с Вами свяжемся для уточнения деталей!')->
                    withErrors(['<h4>ВНИМАНИЕ! Если от нас в ближайшее время не поступит обратная связь, посмотрите письма в папке СПАМ</h4>']);
 
         } catch (\DomainException $e) {
             return redirect()->route('vinograd.cart.ingex')->withErrors([$e->getMessage()]);
-//            return back()->withErrors([$e->getMessage()]);
         }
     }
 }

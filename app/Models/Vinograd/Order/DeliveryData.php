@@ -24,10 +24,10 @@ class DeliveryData
         $this->method_id = $this->delivery->id;
         $this->method_name = $this->delivery->name;
 
-        if($method_id == DeliveryMethod::SELF_DELIVERY) {
+//        if($method_id == DeliveryMethod::SELF_DELIVERY) {
             $this->setAddress();
             $this->setWeight();
-        }
+//        }
     }
 
     public function setWeight($weight = 0)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Vinograd;
 
 use App\Models\Vinograd\ModificationProps;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use View;
 
 class ModificationsController extends AppController
@@ -29,9 +30,10 @@ class ModificationsController extends AppController
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' =>  'required|max:100'
+            'name' =>  'required|max:100|unique:vinograd_modifications',
+            'weight' =>  'required|integer'
         ]);
-
+        ModificationProps::create($request->all());
         return redirect()->route('modifications.index');
     }
 
@@ -44,8 +46,12 @@ class ModificationsController extends AppController
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' =>  'required|max:100',
-            'weight' =>  'required|max:255'
+            'name' =>  [
+                'required',
+                'max:100',
+                Rule::unique('vinograd_modifications')->ignore($id),
+            ],
+            'weight' =>  'required|integer'
         ]);
         $modification = ModificationProps::find($id);
         $modification->edit($request->all());

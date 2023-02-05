@@ -226,3 +226,10 @@ if (! function_exists('statusFormed'))
     }
 }
 
+if (! function_exists('yearsQuery'))
+{
+    function yearsQuery()
+    {
+        return \App\UseCases\Dashboard\DashboardService::getArrayOfYears();
+    }
+}

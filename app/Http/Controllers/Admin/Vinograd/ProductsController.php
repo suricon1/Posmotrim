@@ -38,14 +38,15 @@ class ProductsController extends AppController
     public function showByStatus($status)
     {
         return view('admin.vinograd.product.index', [
-            'products' => Product::with('category', 'adminModifications.property')->getByStatus($status)->get()
+            'products' => Product::with('category', 'adminModifications.property')->getByStatus($status)->get(),
+            'modifications' => ModificationProps::orderBy('name')->pluck('name', 'id')->all()
         ]);
     }
 
     public function create()
     {
         return view('admin.vinograd.product.create', [
-            'productsAll'     => getArray(Product::orderBy('name')->pluck('name', 'id')->all()),
+            'productsAll' => getArray(Product::orderBy('name')->pluck('name', 'id')->all()),
             'categorys' => Category::orderBy('name')->pluck('name', 'id')->all(),
             'countrys' => Country::orderBy('name')->pluck('name', 'id')->all(),
             'selections' => Selection::orderBy('name')->pluck('name', 'id')->all()
@@ -54,7 +55,6 @@ class ProductsController extends AppController
 
     public function store(ProductRequest $request)
     {
-        //dd($request->all());
         try {
             $product = Product::add($request);
 

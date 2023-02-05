@@ -147,6 +147,23 @@ class DashboardService
         return $price = Order::whereStatus($status)->timeRange($dateRange, $status)->sum('cost');
     }
 
+    public static function getArrayOfYears()
+    {
+        $start = new \DateTime('2019-01-01');
+        $end = new \DateTime(date('Y-m-d'));
+        $dateRange = new \DatePeriod($start, new \DateInterval('P1Y'), $end, 0);
+
+        $years = [];
+        foreach ($dateRange as $key=>$date) {
+            $year = $date->format('Y');
+            $years[$year] = [
+                'from' => '1-7-' . ($year - 1),
+                'to' => '30-6-' . $year
+            ];
+        }
+        return $years;
+    }
+
     public function getDateRange(Request $request)
     {
         if (!$request->has('from') || $request->from == null){

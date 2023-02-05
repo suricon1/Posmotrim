@@ -23,28 +23,13 @@
                 <a href="{{route('dashboard.sorts', array_merge(request()->query(), ['status' => 7]))}}" class="btn btn-warning">Показать предварительные заказы</a>
                 <a href="{{route('dashboard.sorts', array_merge(request()->query(), ['status' => 8]))}}" class="btn btn-default">Показать сформированные заказы</a>
 
-                <form action="?" method="GET">
-                    <div class="input-group input-group-sm mt-3">
-                        {{--                        <div class="input-group-prepend">--}}
-                        {{--                            <span class="input-group-text">Выбрать временной диапазон</span>--}}
-                        {{--                        </div>--}}
-                        <input name="from" id="periodpickerstart" type="text" />
-                        <input name="to" id="periodpickerend" type="text" />
-                        @if(request('status'))
-                            <input name="status" type="hidden" value="{{request('status')}}" />
-                        @endif
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-primary">Показать</button>
-                        </div>
-                    </div>
-                </form>
+                @include('admin.vinograd.analytica._periodpicker', ['route' => 'dashboard.sorts'])
 
                 <div class="card-tools">
                     <h3 class="card-title">Итого: <b>{{$totalCost}}</b> руб</h3>
                 </div>
             </div>
             <div class="card-body table-responsive">
-                {{--                {{dd(request()->getQueryString())}}--}}
                 <table id="example1" class="table table-condensed">
                     <thead>
                     <tr>

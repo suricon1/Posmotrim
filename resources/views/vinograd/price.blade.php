@@ -53,6 +53,9 @@
                         <tr>
                             <td class="plantmore-product-name">
                                 <a href="#" class="open-modal" data-product-id="{{$product->id}}" title="Быстрый просмотр" rel="nofollow">{{ $product->name }}</a>
+                                @if($product->selection->id != 1)
+                                <br><small>({{$product->selection->name}})</small>
+                                @endif
                             </td>
                             <td>{{$category::getRipeningDays($product->ripening)}}</td>
                             <td>{{ $product->props['mass'] }}</td>

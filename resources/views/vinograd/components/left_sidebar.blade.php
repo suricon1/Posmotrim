@@ -1,7 +1,12 @@
 <div class="plantmore-address">
     <h2 class="contact-title text-center">Контакты</h2>
     <ul>
-        <li><i class="fa fa-phone"></i><img src="{{Storage::url('pics/img/velcom.png')}}"> {{config('main.phone 1')}}</li>
+        <li>
+            <i class="fa fa-phone"></i>
+            <img src="{{Storage::url('pics/img/velcom.png')}}">
+            <a href="tel:{{config('main.phone 1')}}" rel="nofollow">{{config('main.phone 1')}}</a>
+
+        </li>
         <li class="pl-2"><a href="viber://add?number=375291565956"><img src="{{Storage::url('pics/img/viber.png')}}"> Viber</a></li>
         <li>
             <i class="fa fa-envelope-o"></i>

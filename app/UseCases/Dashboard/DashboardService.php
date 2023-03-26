@@ -100,16 +100,6 @@ class DashboardService
 
     private function getRawData($dateRange, $status)
     {
-//        return Order::
-//            leftJoin('vinograd_order_items as items', function ($join) {
-//                $join->on('vinograd_orders.id', '=', 'items.order_id');
-//            })->
-//            rightJoin('vinograd_product_modifications as prod_mod', function ($join) {
-//                $join->on('prod_mod.id', '=', 'items.modification_id');
-//            })->
-//            rightJoin('vinograd_modifications as mod', function ($join) {
-//                $join->on('mod.id', '=', 'prod_mod.modification_id');
-//            })->
         return OrderService::RawJoin()->
             select(
                 'mod.name as name',
@@ -125,31 +115,14 @@ class DashboardService
             orderByDesc('allQuantity');
     }
 
-//    private function RawJoin ()
-//    {
-//        return Order::
-//        leftJoin('vinograd_order_items as items', function ($join) {
-//            $join->on('vinograd_orders.id', '=', 'items.order_id');
-//        })->
-//        rightJoin('vinograd_products as prod', function ($join) {
-//            $join->on('prod.id', '=', 'items.product_id');
-//        })->
-//        rightJoin('vinograd_product_modifications as prod_mod', function ($join) {
-//            $join->on('prod_mod.id', '=', 'items.modification_id');
-//        })->
-//        rightJoin('vinograd_modifications as mod', function ($join) {
-//            $join->on('mod.id', '=', 'prod_mod.modification_id');
-//        });
-//    }
-
     public function getTotalCostCompletedOrders($dateRange, $status)
     {
-        return $price = Order::whereStatus($status)->timeRange($dateRange, $status)->sum('cost');
+        return Order::whereStatus($status)->timeRange($dateRange, $status)->sum('cost');
     }
 
     public static function getArrayOfYears()
     {
-        $start = new \DateTime('2019-01-01');
+        $start = new \DateTime('2020-01-01');
         $end = new \DateTime(date('Y-m-d'));
         $dateRange = new \DatePeriod($start, new \DateInterval('P1Y'), $end, 0);
 
@@ -157,8 +130,8 @@ class DashboardService
         foreach ($dateRange as $key=>$date) {
             $year = $date->format('Y');
             $years[$year] = [
-                'from' => '1-7-' . ($year - 1),
-                'to' => '30-6-' . $year
+                'from' => '01-07-' . ($year - 1),
+                'to' => '29-06-' . $year
             ];
         }
         return $years;
@@ -168,7 +141,6 @@ class DashboardService
     {
         if (!$request->has('from') || $request->from == null){
             return [
-//                'from' => mktime(0, 0, 0, 1, 1, 2019),
                 'from' => date("m") > '08'
                     ? mktime(0, 0, 0, 8, 1, date("Y"))
                     : mktime(0, 0, 0, 8, 1, date("Y") - 1),

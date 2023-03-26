@@ -136,7 +136,10 @@ class VinogradController extends Controller
     {
         return view('vinograd.price', [
             'categorys' => cache()->remember('priceListHTML', 30*24*60, function () {
-                return Category::with('productsActive.modifications')->active()->get();
+                return Category::with([
+                    'productsActive.modifications.property',
+                    'productsActive.selection:id,name'
+                ])->active()->get();
             })
         ]);
     }

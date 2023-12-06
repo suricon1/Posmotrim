@@ -67,6 +67,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
 
                 Route::post('/admin_note_edit', 'OrdersNoteController@noteEdit')->name('admin.note.edit');
 
+                Route::get('/merge/{order_id}/{merge_order_id}', 'OrdersController@merge')->name('merge');
+
                 Route::group(['as' => 'print.'], function() {
                     Route::get('/print/{id}', 'OrderPrintsController@order')->name('order');
                     Route::get('/print/nalozhka_blanck/{id}', 'OrderPrintsController@nalozhkaBlanck')->name('nalozhka_blanck');
@@ -80,6 +82,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
 
             Route::group(['prefix' => 'ajax', 'as' => 'ajax.'], function() {
                 Route::get('/admin_note_edit', 'OrdersNoteController@ajaxNoteEdit')->name('note.edit');
+                Route::get('/ajax_print', 'OrderPrintsController@ajaxOrder')->name('print.order');
+                Route::get('/build', 'OrdersController@setBuildDate')->name('build');
             });
         });
 

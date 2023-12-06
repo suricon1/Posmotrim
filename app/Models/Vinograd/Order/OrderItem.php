@@ -64,6 +64,13 @@ class OrderItem extends Model
         });
     }
 
+    public static function getQuantityByModifications($items)
+    {
+        return $items->groupBy('modification_name')->map(function ($item, $key) {
+            return $item->sum('quantity');
+        });
+    }
+
     public static function getOrderItems ($order)
     {
         return self::

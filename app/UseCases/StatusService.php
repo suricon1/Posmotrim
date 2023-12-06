@@ -8,6 +8,7 @@ use App\Repositories\ItemRepository;
 use App\Repositories\ModificationRepository;
 use App\Repositories\OrderRepository;
 use DB;
+use Illuminate\Support\Facades\Redirect;
 
 class StatusService
 {
@@ -54,6 +55,18 @@ class StatusService
                 $this->checkoutQuantity($order);
             }
         });
+    }
+
+    public function setPrintStatus($order_id)
+    {
+        return DB::transaction(function () use ($order_id)
+        {
+            $order = Order::find($order_id);
+            if ($order->isNew() || $order->isPaid()) {
+                $this->setStatus($order->id, Status::FORMED);
+            }
+        });
+
     }
 
     public function remove($order)

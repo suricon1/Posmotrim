@@ -61,10 +61,10 @@ Route::group(['domain'	=>	env('APP_DOMAIN')], function(){
     });
 
     Route::get('/clear', function() {
-        Artisan::call('cache:clear');
+        //Artisan::call('cache:clear');
         Artisan::call('config:cache');
-        Artisan::call('view:clear');
-        Artisan::call('route:clear');
+        //Artisan::call('view:clear');
+        //Artisan::call('route:clear');
         //Artisan::call('backup:clean');
         return "Кэш очищен.";
     });

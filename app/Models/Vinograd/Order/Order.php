@@ -39,6 +39,8 @@ class Order extends Model
         'current_status',
         'track_code',
         'statuses_json',
+        'print_count',
+        'date_build'
     ];
 
     protected $casts = [
@@ -181,6 +183,11 @@ class Order extends Model
         return $this->current_status == Status::PRELIMINARY;
     }
 
+    public function isFormed(): bool
+    {
+        return $this->current_status == Status::FORMED;
+    }
+
     public function isMailed()
     {
         if($this->delivery['method_id'] == 2 || $this->delivery['method_id'] == 5 || $this->delivery['method_id'] == 6) {
@@ -228,6 +235,22 @@ class Order extends Model
         if ($code) {
             $this->track_code = $code;
         }
+    }
+
+    public function setPrintCount()
+    {
+        $this->print_count = $this->print_count  ? $this->print_count+1 : 1;
+    }
+
+    public function setDateBuild($date_build)
+    {
+        $this->date_build = $date_build;
+    }
+
+    public function getDateBuild()
+    {
+        return $this->date_build;
+//        return $this->date_build ?: '';
     }
 
     ##########################

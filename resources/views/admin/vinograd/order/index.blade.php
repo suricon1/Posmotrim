@@ -6,6 +6,7 @@
 
 @section('header')
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}">
 @endsection
 
 @section('header-title', 'Список заказов')
@@ -26,22 +27,28 @@
                         <div class="col-2">
                             <div class="form-group">
                                 <label for="formGroupExampleInput">№ Заказа</label>
-                                <input type="text" class="form-control" id="formGroupExampleInput" name="id"
+                                <input type="text" class="form-control" id="formGroupExampleInput" name="id" autocomplete="off"
                                        value="{{ request('id') }}">
                             </div>
                         </div>
-                        <div class="col-5">
+                        <div class="col-4">
                             <div class="form-group">
                                 <label for="inputGroupSelect1">Email</label>
                                 <input type="text" class="form-control" id="inputGroupSelect1" name="email"
                                        value="{{ request('email') }}">
                             </div>
                         </div>
-                        <div class="col-5">
+                        <div class="col-4">
                             <div class="form-group">
                                 <label for="inputGroupSelect1">Телефон</label>
-                                <input type="text" class="form-control" id="inputGroupSelect1" name="phone"
+                                <input type="text" class="form-control" id="inputGroupSelect1" name="phone" autocomplete="off"
                                        value="{{ request('phone') }}">
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                <label for="inputGroupSelect1">Дата</label>
+                                {!! Form::text('build', request('build'), ['class' => 'form-control float-right', 'id' => 'daterange',  'autocomplete'=> 'off']) !!}
                             </div>
                             <div class="form-group float-right">
                                 <button type="submit" class="btn btn-primary">Найти</button>
@@ -85,7 +92,7 @@
                         <th>Стоимость</th>
                         <th>Заказчик</th>
                         <th>Примечание</th>
-                        <th>Статус</th>
+                        <th>Статус/Дата</th>
                         <th>Действия</th>
                     </tr>
                     </thead>
@@ -114,7 +121,7 @@
 
                             <td style="min-width: 200px">
                                 @if($statusesList[$order->id])
-                                {!! Form::open(['route' => 'orders.set_status', 'data-name' => 'status']) !!}
+                                {!! Form::open(['route' => 'orders.set_status', 'data-name' => 'status', 'class' => 'mb-2']) !!}
                                 {!! Form::hidden('order_id', $order->id) !!}
                                 <div class="input-group input-group-sm">
                                     <div class="input-group-prepend">
@@ -131,6 +138,17 @@
                                     </div>
                                 </div>
                                 {!! Form::close() !!}
+                                    <div class="form-group mb-0">
+                                        <div class="input-group input-group-sm">
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text">
+                                                <i class="fa fa-calendar"></i>
+                                              </span>
+                                            </div>
+                                            {!! Form::text('', $order->getDateBuild(), ['class' => 'form-control float-right', 'data-build' => 'build', 'data-order_id' => $order->id]) !!}
+                                        </div>
+                                    </div>
+
                                 @else
                                     {!! $order->statusName($order->current_status) !!}
                                 @endif
@@ -170,15 +188,18 @@
 
 @section('scripts')
 <script src="{{ asset('js/toastr.min.js') }}"></script>
+<script src="{{ asset('js/moment.min.js') }}"></script>
+<script src="{{ asset('js/daterangepicker.js') }}"></script>
 
 <script>
 const note_url = '{{route('ajax.note.edit')}}';
 const status_url = '{{route('orders.set_ajax_status')}}';
+const build_url = '{{route('ajax.build')}}';
 
-window.addEventListener('DOMContentLoaded', function() {window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function() {
 
-    const getData = async (data) => {
-        const res = await fetch(note_url + searchParams(data));
+    const getData = async (data, url = note_url) => {
+        const res = await fetch(url + searchParams(data));
         return await res.json();
     }
 
@@ -227,6 +248,9 @@ window.addEventListener('DOMContentLoaded', function() {window.addEventListener(
                                     if(data.success) {
                                         this.badge.innerHTML = data.success;
                                         this.alert.innerHTML = 'Статус изменен.';
+                                        if(data.info){
+                                            this.alert.insertAdjacentHTML('afterend', data.info);
+                                        }
                                     } else if(data.errors){
                                         if (this.alert.querySelector(".errors") !== null) {
                                             this.alert.querySelector(".errors").innerHTML = get_list(data.errors);
@@ -334,6 +358,29 @@ window.addEventListener('DOMContentLoaded', function() {window.addEventListener(
             textarea.addEventListener("keydown", function (event) {
                 if (event.code == "Enter") textarea.blur();
             });
+        });
+    });
+
+    @include('admin.vinograd.order.components.scripts.data-picker')
+
+    $(function() {
+
+        $('#daterange').daterangepicker({
+            autoUpdateInput: false,
+            singleDatePicker: true,
+            locale: {
+                format: 'DD.MM YYYY',
+                applyLabel: 'Принять',
+                cancelLabel: 'Отмена',
+                invalidDateLabel: 'Выберите дату',
+                daysOfWeek: ['Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс', 'Пн'],
+                monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                firstDay: 1
+            }
+        });
+
+        $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD.MM YYYY'));
         });
     });
 });

@@ -79,6 +79,29 @@ class OrderService
         });
     }
 
+    public function mergeOrders($order_id, $merge_order_id)
+    {
+        $order = $this->orders->get($order_id);
+        $merge_orders = $this->orders->get($merge_order_id);
+        foreach ($merge_orders->items as $item){
+            $res = null;
+            foreach ($order->items as $order_item){
+                if ($item->product_id == $order_item->product_id AND $item->modification_id == $order_item->modification_id){
+                    $order_item->quantity += $item->quantity;
+                    $res = $order_item;
+                    break;
+                } else {
+                    $item->order_id = $order_id;
+                    $res = $item;
+                }
+            }
+            $this->items->save($res);
+        }
+        $this->remove($merge_order_id);
+        $order = $this->orders->get($order_id);
+        $this->newOrderCost($order, 0);
+    }
+
     private function newDeliveryData($request)
     {
         $per = new DeliveryData($request->input('delivery.method'));
@@ -227,6 +250,9 @@ class OrderService
                 if($item->id == $request->item_id){
                     if(!$pre) {
                         $item->modification->returnQuantity($item->quantity);
+                        if ($order->isPaid() || $order->isSent()){
+                            $item->modification->returnInStock($item->quantity);
+                        }
                         $this->modifications->save($item->modification);
                     }
                     $this->items->remove($item);
@@ -352,6 +378,27 @@ class OrderService
         {
             $order = $this->orders->get($order_id);
             $order->setTrackCode($track_code);
+            $this->orders->save($order);
+        });
+    }
+
+    public function setPrintCount($order_id)
+    {
+        return DB::transaction(function () use ($order_id)
+        {
+            $order = $this->orders->get($order_id);
+            $order->setPrintCount();
+            $this->orders->save($order);
+            return $order->print_count;
+        });
+    }
+
+    public function setDateBuild($order_id, $date_build)
+    {
+        return DB::transaction(function () use ($order_id, $date_build)
+        {
+            $order = $this->orders->get($order_id);
+            $order->setDateBuild($date_build);
             $this->orders->save($order);
         });
     }

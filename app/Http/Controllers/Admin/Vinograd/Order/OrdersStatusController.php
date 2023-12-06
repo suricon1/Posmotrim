@@ -26,6 +26,15 @@ class OrdersStatusController extends AppOrdersController
         }
         try {
             $statusService->setStatus($request->order_id, $request->status);
+//
+//            вывод на печать
+//
+//            if($request->status == Status::PAID) {
+//                return redirect()->route('orders.print.nalozhka_blanck', [
+//                    'order' => $order
+//                ]);
+//            }
+//
             return redirect()->back();
         } catch  (\RuntimeException $e) {
             return redirect()->route('orders.show', $order->id)->withErrors([$e->getMessage()]);

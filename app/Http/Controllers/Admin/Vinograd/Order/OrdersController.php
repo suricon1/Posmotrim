@@ -11,7 +11,9 @@ use App\Models\Vinograd\Order\OrderItem;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use App\UseCases\OrderService;
+use Html;
 use Illuminate\Http\Request;
+use Validator;
 
 class OrdersController extends AppOrdersController
 {
@@ -27,6 +29,9 @@ class OrdersController extends AppOrdersController
         }
         if (!empty($request->get('phone'))) {
             $query->orWhere('customer', 'like', '%' . preg_replace("/[^\d]/", '', $request->get('phone')) . '%');
+        }
+        if (!empty($request->get('build'))) {
+            $query->orWhere('date_build', $request->get('build'));
         }
 
         $orders = $query->orderBy('current_status')->orderBy('id', 'desc')->paginate(30)->appends($request->all());
@@ -50,10 +55,16 @@ class OrdersController extends AppOrdersController
     public function show($id)
     {
         $order = Order::findOrFail($id);
+        $items = OrderItem::getOrderSortedByItems($order);
+        $quantityByModifications = OrderItem::getQuantityByModifications($items);
+
+        //dd(Html::link(route('orders.print.order', ['id' => $order->id]), 'Распечатан 1 раз', ['target' => "_blank", 'class' => "print btn btn-primary", 'data-order_id' => "{{$order->id}}"]));
+
         return view('admin.vinograd.order.show', [
             'order' => $order,
             'other_orders' => OrderService::getOtherOrders($order), //  Получить другие заказы клиента
-            'items' => OrderItem::getOrderSortedByItems($order),
+            'items' => $items,
+            'quantityByModifications' => $quantityByModifications,
             'statusesList' => OrderService::getOrderStasusesList($order),
             'currency' => Currency::where('code', $order->currency)->first(),
             'currencys' => Currency::orderBy('code')->pluck('name', 'code')->all()
@@ -88,6 +99,17 @@ class OrdersController extends AppOrdersController
         }
     }
 
+    public function merge(OrderService $service, $order_id, $merge_order_id)
+    {
+        try {
+            $service->mergeOrders($order_id, $merge_order_id);
+            return back();
+        } catch (\DomainException $e) {
+            return back()->withErrors([$e->getMessage()]);
+        }
+    }
+
+
     public function sendReplyMail(SendReplyMailRequest $request, OrderService $service)
     {
         $order = Order::find($request->order_id);
@@ -109,6 +131,22 @@ class OrdersController extends AppOrdersController
             return back();
         } catch (\DomainException $e) {
             return back()->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function setBuildDate(Request $request, OrderService $orderservice)
+    {
+        $v = Validator::make($request->all(), [
+            'order_id' => 'required|exists:vinograd_orders,id'
+        ]);
+        if ($v->fails()) {
+            return ['errors' => $v->errors()];
+        }
+        try{
+            $orderservice->setDateBuild($request->order_id, $request->date_build);
+            return ['success' => 'ok'];
+        } catch  (\RuntimeException $e) {
+            return ['errors' => [$e->getMessage()]];
         }
     }
 

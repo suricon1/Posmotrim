@@ -42,7 +42,7 @@
 @section('content')
 
 
-    <div class="row p-4 pb-3" style="width: 74%; background-color: #ffffff; margin-left: -18px">
+    <div class="row p-2 pb-3" style="width: 65%; background-color: #ffffff; margin: 0 auto;">
         <div class="col-6 c1">
             <div class="row" style="border-bottom: #000000 solid 1px">
                 <div class="col-6 pb-3 c12">

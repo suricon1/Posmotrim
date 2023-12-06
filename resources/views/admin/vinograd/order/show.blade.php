@@ -4,6 +4,11 @@
 @section('key', 'Admin | Заказ № ' . $order->id)
 @section('desc', 'Admin | Заказ № ' . $order->id)
 
+@section('header')
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}">
+@endsection
+
 @section('header-title', 'Заказ № ' . $order->id)
 
 @section('content')
@@ -92,6 +97,16 @@
                                     <td>{{$item->getCost()}} руб</td>
                                 </tr>
                             @endforeach
+                            <tr>
+                                <th><h5>Общее колличество</h5></th>
+                                <td>
+                                    @foreach ($quantityByModifications as $name => $value)
+                                        <p>{{$name}}: <strong>{{$value}}</strong> шт</p>
+                                    @endforeach
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -165,10 +180,17 @@
 
                 <div class="row no-print">
                     <div class="col-12">
-                        <a href="{{route('orders.print.order', ['id' => $order->id])}}" target="_blank" class="btn btn-primary">
+                        @if(!$order->print_count)
+                        <a href="{{route('orders.print.order', ['id' => $order->id])}}" target="_blank" class="print btn btn-primary" data-order_id="{{$order->id}}">
                             <i class="fa fa-print"></i>
                             Распечатать заказ
                         </a>
+                        @else
+                        <a href="{{route('orders.print.order', ['id' => $order->id])}}" target="_blank" class="print btn btn-danger" data-order_id="{{$order->id}}">
+                            <i class="fa fa-print"></i>
+                            Распечатан {{$order->print_count}} раз
+                        </a>
+                        @endif
                         @if($order->delivery['method_id'] == 2)
                         <a href="{{route('orders.print.nalozhka_blanck', ['id' => $order->id])}}" target="_blank" class="btn btn-primary">
                             <i class="fa fa-print"></i>
@@ -228,6 +250,9 @@
                         <td>
                             <div class="btn-group" id="nav">
                                 <a class="btn btn-outline-secondary btn-sm" href="{{route('orders.show', $other_order->id)}}" role="button"><i class="fa fa-eye"></i></a>
+                                @if($other_order->isNew() AND $order->isNew())
+                                    <a class="btn btn-outline-primary btn-sm" href="{{route('orders.merge', ['order->id' => $order->id, 'merge_order_id' => $other_order->id])}}" role="button"><i class="fa fa-compress"></i></a>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -275,11 +300,7 @@
                 <h3 class="card-title">Управление статусами</h3>
             </div>
             <div class="card-body">
-                {{--            <div class="row">--}}
-                {{--                <div class="col-3">--}}
-                {{--                    <div class="form-group">--}}
-                {{--                        <label>Изменить статус</label>--}}
-                {!! Form::open(['route' => 'orders.set_status']) !!}
+                {!! Form::open(['route' => 'orders.set_status', 'data-name' => 'status']) !!}
                 {!! Form::hidden('order_id', $order->id) !!}
                 <div class="input-group">
                     <select name="status" class="custom-select" id="inputGroupSelect04">
@@ -293,15 +314,23 @@
                     </div>
                 </div>
                 {!! Form::close() !!}
-                {{--                    </div>--}}
-                {{--                </div>--}}
-                {{--                <div class="col-4">--}}
-                {{--                    <input type="text" class="form-control" placeholder=".col-4">--}}
-                {{--                </div>--}}
-                {{--                <div class="col-5">--}}
-                {{--                    <input type="text" class="form-control" placeholder=".col-5">--}}
-                {{--                </div>--}}
-                {{--            </div>--}}
+            </div>
+        </div>
+        <div class="card card-outline card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Дата выдачи/отправки</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i class="fa fa-calendar"></i>
+                          </span>
+                        </div>
+                        {!! Form::text('build', $order->getDateBuild(), ['class' => 'form-control float-right', 'data-build' => 'build', 'data-order_id' => $order->id]) !!}
+                    </div>
+                </div>
             </div>
         </div>
     @endif
@@ -380,6 +409,7 @@
             </div>
         </div>
     </div>
+
 </div>
 @if($order->correspondences->isNotEmpty())
 <div class="col-md-12">
@@ -481,9 +511,84 @@ P.S.
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+    <script src="{{ asset('js/daterangepicker.js') }}"></script>
 
     <script>
+        const order_id = {{$order->id}}
+
+        const print_url = '{{route('ajax.print.order')}}';
+        const build_url = '{{route('ajax.build')}}';
+
         window.addEventListener('DOMContentLoaded', function() {
+
+            const getData = async (data, url ) => {
+
+                const res = await fetch(url + searchParams(data));
+                return await res.json();
+            }
+
+            function searchParams(data) {
+                let search = window.location.search
+                    ? window.location.search + '&'
+                    : '?';
+                return data
+                    ? search + new URLSearchParams(data).toString()
+                    : search;
+            }
+
+            const print_button = document.querySelector(".print");
+            print_button.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                let data = {
+                    order_id: order_id
+                    // order_id: print_button.getAttribute("data-order_id")
+                }
+                getData(data, print_url)
+                    .then(data => {
+                        if (data.success) {
+                            const printCSS = '<link rel="stylesheet" href="/css/adminlte.min.css">';
+                            const windowPrint = window.open('','','left=50,top=50,width=1000,height=800,toolbar=0,scrollbars=1,status=0');
+                            windowPrint.document.write(printCSS);
+                            windowPrint.document.write(data.success.print_order);
+                            windowPrint.document.close();
+                            windowPrint.focus();
+                            windowPrint.print();
+                            windowPrint.close();
+
+                            print_button.innerHTML = data.success.print_count;
+                            print_button.classList.remove('btn-primary');
+                            print_button.classList.add('btn-danger');
+
+                        } else if (data.errors) {
+                            errors_list(data.errors);
+                        } else {
+                            errors_list('Неизвестная ошибка. Повторите попытку, пожалуйста!');
+                        }
+                    }).catch((xhr) => {
+                        console.log(xhr);
+                    });
+            });
+
+            function errors_list(data) {
+                $(function() {
+                    toastr.error(get_list(data));
+                });
+            }
+            function get_list(data) {
+                let temp = '';
+                if((typeof data) != 'string'){
+                    for (var error in data) {
+                        temp = temp + '<li>' + data[error] + "</li>";
+                    }
+                }else{
+                    temp = '<li>' + data + "</li>";
+                }
+                return temp;
+            }
+
             const textarea = document.querySelector('textarea[name=message]');
             const buttons = document.querySelectorAll('button[data-name=insert]');
             buttons.forEach(button => {
@@ -494,6 +599,9 @@ P.S.
                     textarea.value += text;
                 });
             });
+
+            @include('admin.vinograd.order.components.scripts.data-picker')
+
         });
     </script>
 

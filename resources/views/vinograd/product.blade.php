@@ -134,7 +134,8 @@
                                     </div>
                             </li>
                             @empty
-                                {!! config('main.empty_text_info') !!}
+{{--                                {!! config('main.empty_text_info') !!}--}}
+                                <span class="text-danger">Нет в наличии</span>
                             @endforelse
                         </ul>
                     </div>

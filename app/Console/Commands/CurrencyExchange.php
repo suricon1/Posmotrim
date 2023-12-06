@@ -13,7 +13,7 @@ class CurrencyExchange extends Command
 
     public function handle()
     {
-        $currency = Currency::where('code', '<>', 'BYN')->where('code', '<>', 'RUB')->get();
+        $currency = Currency::where('code', '<>', 'BYN')->get();
         $arrContextOptions = [
             "ssl" => [
                 "verify_peer" => false,

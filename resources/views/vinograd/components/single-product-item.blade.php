@@ -25,7 +25,8 @@
 {{--                        <span style="white-space: nowrap;">в наличии <strong>{{$modification->quantity}}</strong> шт</span>--}}
                     </li>
                 @empty
-                    {!! config('main.empty_text_info') !!}
+{{--                    {!! config('main.empty_text_info') !!}--}}
+                    <span class="text-danger">Нет в наличии</span>
                 @endforelse
             </div>
             <div class="add-to-cart">
@@ -47,7 +48,8 @@
                         {{Form::close()}}
                     </li>
                 @empty
-                    {!! config('main.empty_text_info') !!}
+{{--                    {!! config('main.empty_text_info') !!}--}}
+                    <span class="text-danger">Нет в наличии</span>
                 @endforelse
 
             </div>

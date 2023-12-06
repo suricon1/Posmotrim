@@ -177,7 +177,7 @@
                                                 {{Form::open(['route'=>['orders.add.item', $order->id], 'style' => 'margin: 2px;'])}}
                                                 {{Form::hidden('modification_id', $modification->id)}}
                                                 <div class="input-group input-group-sm">
-                                                    {{Form::number('quantity', 0, ['class' => 'form-control'])}}
+                                                    {{Form::number('quantity', 1, ['class' => 'form-control'])}}
                                                     <span class="input-group-append">
                                                         {{Form::button('Добавить', [
                                                             'type' => 'submit',

@@ -6,17 +6,65 @@ use App\Models\Vinograd\Currency;
 use App\Models\Vinograd\Order\Order;
 use App\Models\Vinograd\Order\OrderItem;
 use App\UseCases\NumberToStringService;
+use App\UseCases\OrderService;
+use App\UseCases\StatusService;
+use Html;
+use Illuminate\Http\Request;
+use Validator;
 
 class OrderPrintsController extends AppOrdersController
 {
-    public function order($id)
+    public function order(StatusService $statusService, OrderService $orderService, $id)
     {
         $order = Order::findOrFail($id);
-        return view('admin.vinograd.order.print.order', [
-            'order' => $order,
-            'items' => OrderItem::getOrderItems($order),
-            'currency' => Currency::where('code', $order->currency)->first()
+        $items = OrderItem::getOrderSortedByItems($order);
+        $quantityByModifications = OrderItem::getQuantityByModifications($items);
+
+        try {
+            $orderService->setPrintCount($id);
+            $statusService->setPrintStatus($id);
+
+                return view('admin.vinograd.order.print.order', [
+                    'order' => $order,
+                    'items' => $items,
+                    'quantityByModifications' => $quantityByModifications,
+                    'currency' => Currency::where('code', $order->currency)->first()
+                ]);
+        } catch  (\RuntimeException $e) {
+            return redirect()->route('orders.print.order', $id)->withErrors([$e->getMessage()]);
+        }
+
+    }
+
+    public function ajaxOrder(Request $request, StatusService $statusService, OrderService $orderService)
+    {
+        $v = Validator::make($request->all(), [
+            'order_id' => 'required|exists:vinograd_orders,id'
         ]);
+        if ($v->fails()) {
+            return ['errors' => $v->errors()];
+        }
+        $order = Order::findOrFail($request->order_id);
+        $items = OrderItem::getOrderSortedByItems($order);
+        $quantityByModifications = OrderItem::getQuantityByModifications($items);
+
+        try {
+            $count = $orderService->setPrintCount($request->order_id);
+            $statusService->setPrintStatus($request->order_id);
+            return [
+                'success' => [
+                    'print_order' => view('admin.vinograd.order.components.print_order', [
+                            'order' => $order,
+                            'items' => $items,
+                            'quantityByModifications' => $quantityByModifications,
+                            'currency' => Currency::where('code', $order->currency)->first()
+                        ])->render(),
+                    'print_count' => '<i class="fa fa-print"></i> Распечатан ' . $count . ' раз'
+                ]
+            ];
+        } catch  (\RuntimeException $e) {
+            return ['errors' => [$e->getMessage()]];
+        }
     }
 
     public function nalozhkaBlanck (NumberToStringService $service, $id)

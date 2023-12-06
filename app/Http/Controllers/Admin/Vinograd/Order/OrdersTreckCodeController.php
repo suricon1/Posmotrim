@@ -27,6 +27,23 @@ class OrdersTreckCodeController extends AppOrdersController
         }
     }
 
+    public function textInfo($order, $track_code)
+    {
+        if(!$order->customer['email']){
+            $phone = $order->customer['phone'];
+            return
+<<<EOD
+    <div>
+        <h4>Для Вайбера</h4>
+        <p>тел: $phone</p>
+        <p>Текст сообщения</p>
+        <p>Код отслеживания: $track_code</p>
+    </div>
+EOD;
+        }
+        return null;
+    }
+
     public function setAjaxTreckCode (Request $request, OrderService $OrderService, StatusService $statusService)
     {
         $v = Validator::make($request->all(), [
@@ -43,7 +60,10 @@ class OrdersTreckCodeController extends AppOrdersController
         try {
             $statusService->setStatus($request->order_id, Status::SENT, $request->track_code);
             $OrderService->sendCodeMail($order, $request->track_code);
-            return ['success' => $order->statusName(Status::SENT)];
+            return [
+                'success' => $order->statusName(Status::SENT),
+                'info' => $this->textInfo($order, $request->track_code)
+            ];
         } catch  (\RuntimeException $e) {
             return ['errors' => [$e->getMessage()]];
         }
@@ -64,7 +84,7 @@ class OrdersTreckCodeController extends AppOrdersController
         try {
             $statusService->setStatus($request->order_id, Status::SENT, $request->track_code);
             $OrderService->sendCodeMail($order, $request->track_code);
-            return redirect()->route('orders.show', $request->order_id);
+            return redirect()->route('orders.show', $request->order_id)->with('status', $this->textInfo($order, $request->track_code));
         } catch  (\RuntimeException $e) {
             return redirect()->route('orders.show', $order->id)->withErrors([$e->getMessage()]);
         }

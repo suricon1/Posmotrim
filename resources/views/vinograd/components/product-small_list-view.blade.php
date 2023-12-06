@@ -35,7 +35,8 @@
                                 </li>
                             @empty
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    {!! config('main.empty_text_info') !!}
+{{--                                    {!! config('main.empty_text_info') !!}--}}
+                                    <span class="text-danger">Нет в наличии</span>
                                 </li>
                             @endforelse
                         </ul>

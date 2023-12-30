@@ -39,7 +39,10 @@
                     <th>Название</th>
                     <th>Категория</th>
 {{--                    <th>Алиас</th>--}}
-                    <th>Цены и количество</th>
+                    <th>
+                        Цены и количество
+                        <a onclick="return confirm('Подтвердите обнуление базы!')" class="btn btn-outline-danger btn-sm float-right" href="{{route(('products.modification.set_to_zero'))}}" role="button">Обнулить</a>
+                    </th>
                     <th>Картинка</th>
                     <th>Действия</th>
                 </tr>
@@ -118,8 +121,20 @@
                 "aaSorting": [[ 1, "asc" ]],
                 "iDisplayLength": 20,
                 "aLengthMenu": [[ 10, 20, 50, 100 ,-1],[10,20,50,100,"все"]],
-
-                //"autoWidth": false,
+                "aoColumns": [//  Исключаем из поиска столбцы
+                    {"bSearchable": false },
+                    null,
+                    {"bSearchable": false },
+                    {"bSearchable": false },
+                    {"bSearchable": false },
+                    {"bSearchable": false },
+                ],
+                "aoColumnDefs": [
+                    {
+                        'bSortable': false,
+                        'aTargets': [3, 4 ,5]
+                    }
+                ],
                 "language": {
                     "processing": "Подождите...",
                     "search": "Поиск:",
@@ -138,20 +153,6 @@
                         "last": "Последняя"
                     },
                 },
-                "columnDefs": [ //  Исключаем из поиска столбца Алиас Картинка и Действия
-                    {
-                        "targets": [ 3 ],
-                        "searchable": false
-                    },
-                    {
-                        "targets": [ 4 ],
-                        "searchable": false
-                    },
-                    {
-                        "targets": [ 5 ],
-                        "searchable": false
-                    }
-                ]
             });
         });
     </script>

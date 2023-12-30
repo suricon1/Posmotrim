@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Vinograd\Category;
 use App\Models\Vinograd\Modification;
+use App\Models\Vinograd\Order\Order;
 use App\Models\Vinograd\Product;
 use Cache;
 use Cookie;
@@ -44,7 +45,7 @@ class ProductRepository
     {
         foreach ($categorys as $category)
         {
-            $products[$category->slug] = $this->getSortProductByModifications($request, null, $category, $per_page = 10);
+            $products[$category->slug] = $this->getSortProductByModifications($request, null, $category, 10);
         }
         return $products;
     }
@@ -88,6 +89,13 @@ class ProductRepository
             throw new \DomainException('Такой модификации не существует.');
         }
         return $modification;
+    }
+
+    public function isNotClosedOrders()
+    {
+        if(Order::whereIn('current_status', [1, 8])->exists()){
+            throw new \DomainException('Еще есть не закрытые заказы!');
+        }
     }
 
     public static function getFeatured()

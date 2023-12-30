@@ -13,8 +13,11 @@ use App\Models\Vinograd\Category;
 use App\Models\Vinograd\Country;
 use App\Models\Vinograd\Modification;
 use App\Models\Vinograd\ModificationProps;
+use App\Models\Vinograd\Order\Order;
 use App\Models\Vinograd\Product;
 use App\Models\Vinograd\Selection;
+use App\Repositories\ProductRepository;
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use View;
@@ -154,6 +157,17 @@ class ProductsController extends AppController
                 : redirect()->back();
         } catch (\Exception $e) {
             return ['errors' => $e->getMessage()];
+        }
+    }
+
+    public function setToZero(ProductRepository $repository)
+    {
+        try {
+            $repository->isNotClosedOrders();
+            DB::table('vinograd_product_modifications')->update(['quantity' => 0, 'in_stock' => 0]);
+            return redirect()->back()->with('status', 'База очищена.');
+        } catch (\Exception $e) {
+            return back()->withErrors([$e->getMessage()]);
         }
     }
 

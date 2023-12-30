@@ -13,9 +13,22 @@
             </div>
         </form>
     </div>
-    <div class="btn-group ml-2 btn-group-sm">
-        @foreach(yearsQuery() as $year => $period)
-        <a href="{{route($route, array_merge(request()->query(), ['from' => $period['from'], 'to' => $period['to']]))}}"  class="btn btn-outline-secondary">{{$year}}</a>
+    <div class="btn-group btn-group-sm ml-2" role="group" aria-label="Button group with nested dropdown">
+        <div class="btn-group btn-group-sm" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                . . . .
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                @foreach(yearsQuery()['dropdown'] as $year => $period)
+                    <a href="{{route($route, array_merge(request()->query(), ['from' => $period['from'], 'to' => $period['to']]))}}" class="dropdown-item">{{$year}}</a>
+                @endforeach
+            </div>
+        </div>
+        @foreach(yearsQuery()['visible'] as $year => $period)
+            <a href="{{route($route, array_merge(request()->query(), ['from' => $period['from'], 'to' => $period['to']]))}}"  class="btn btn-outline-secondary">{{$year}}</a>
         @endforeach
+
     </div>
 </div>
+
+

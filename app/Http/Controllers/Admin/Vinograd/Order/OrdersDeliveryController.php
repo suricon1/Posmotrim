@@ -24,9 +24,8 @@ class OrdersDeliveryController extends AppOrdersController
         $order = Order::find($order_id);
         try {
             $service->deliveryUpdate($request, $order);
-            return $order->current_status == Status::PRELIMINARY
-                ? redirect()->route('orders.pre.edit', $order_id)->with('status', 'Метод доставки изменен!')
-                : redirect()->route('orders.edit', $order_id)->with('status', 'Метод доставки изменен!');
+            $route = $order->current_status == Status::PRELIMINARY ? 'orders.pre.edit' : 'orders.edit';
+            return redirect()->route($route, $order_id)->with('status', 'Метод доставки изменен!');
         } catch (\DomainException $e) {
             return back()->withErrors([$e->getMessage()]);
         }

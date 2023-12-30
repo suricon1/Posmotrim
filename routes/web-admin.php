@@ -27,6 +27,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
         Route::post('/orders/pre_update_item/{order_id}', 'PreOrdersController@updateItem')->name('orders.pre.update.item');
         Route::post('/orders/pre_delete_item/{order_id}', 'PreOrdersController@deleteItem')->name('orders.pre.delete.item');
 
+//        Route::get('/orders/viber_send', 'Order\OrdersController@viber_send')->name('orders.viber_send');
+//        Route::get('/orders/webhook', 'Order\OrdersController@webhook')->name('orders.webhook');
+
         Route::resources([
             '/products' => 'ProductsController',
             '/categorys' => 'CategorysController',
@@ -69,6 +72,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
 
                 Route::get('/merge/{order_id}/{merge_order_id}', 'OrdersController@merge')->name('merge');
 
+                Route::get('/repeat_order_create/{order_id}', 'OrdersController@repeatCreate')->name('repeat.create');
+
+
+
                 Route::group(['as' => 'print.'], function() {
                     Route::get('/print/{id}', 'OrderPrintsController@order')->name('order');
                     Route::get('/print/nalozhka_blanck/{id}', 'OrderPrintsController@nalozhkaBlanck')->name('nalozhka_blanck');
@@ -92,6 +99,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
         Route::post('/products/modification/add', 'ProductsController@modificationAdd')->name('products.modification.add');
         Route::post('/products/modification/edit', 'ProductsController@modificationEdit')->name('products.modification.edit');
         Route::post('/products/modification/delete', 'ProductsController@modificationDelete')->name('products.modification.delete');
+        Route::get('/products/modification/set_to_zero', 'ProductsController@setToZero')->name('products.modification.set_to_zero');
 
         Route::get('/modifications/toggle/{id}', 'ModificationsController@toggle')->name('modifications.toggle');
 

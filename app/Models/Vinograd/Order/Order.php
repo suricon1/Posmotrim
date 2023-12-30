@@ -197,6 +197,14 @@ class Order extends Model
         }
     }
 
+    public function isAllowedDateBuild() :bool
+    {
+        if($this->isSent() || $this->isCancelled() || $this->isCancelledByCustomer()) {
+            return false;
+        }
+        return true;
+    }
+
     public function isTrackCode(): bool
     {
         return $this->track_code !== null;
@@ -209,6 +217,9 @@ class Order extends Model
 
     public function addStatus($value): void
     {
+        if ($value == Status::NEW) {
+            $this->statuses_json = [];
+        }
         $this->statuses_json = $this->statuses_json ?: [];
         $this->statuses_json = array_merge($this->statuses_json, [[
             'value' => $value,
@@ -250,7 +261,6 @@ class Order extends Model
     public function getDateBuild()
     {
         return $this->date_build;
-//        return $this->date_build ?: '';
     }
 
     ##########################

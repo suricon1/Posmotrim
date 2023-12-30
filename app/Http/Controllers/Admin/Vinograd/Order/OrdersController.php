@@ -5,38 +5,28 @@ namespace App\Http\Controllers\Admin\Vinograd\Order;
 use App\Http\Requests\Admin\Vinograd\Order\SendReplyMailRequest;
 use App\Models\Vinograd\Currency;
 use App\Models\Vinograd\DeliveryMethod;
-use App\Models\Vinograd\Order\CustomerData;
 use App\Models\Vinograd\Order\Order;
 use App\Models\Vinograd\Order\OrderItem;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use App\UseCases\OrderService;
-use Html;
 use Illuminate\Http\Request;
 use Validator;
 
 class OrdersController extends AppOrdersController
 {
+    private $orderRepository;
+
+    public function __construct()
+    {
+        parent:: __construct();
+        $this->orderRepository = app(OrderRepository::class);
+    }
+
     public function index(Request $request, $status = false)
     {
-        $query = Order::status($status);
-
-        if (!empty($request->get('id'))) {
-            $query->orWhere('id', $request->get('id'));
-        }
-        if (!empty($request->get('email'))) {
-            $query->orWhere('customer', 'like', '%' . $request->get('email') . '%');
-        }
-        if (!empty($request->get('phone'))) {
-            $query->orWhere('customer', 'like', '%' . preg_replace("/[^\d]/", '', $request->get('phone')) . '%');
-        }
-        if (!empty($request->get('build'))) {
-            $query->orWhere('date_build', $request->get('build'));
-        }
-
-        $orders = $query->orderBy('current_status')->orderBy('id', 'desc')->paginate(30)->appends($request->all());
-        return view('admin.vinograd.order.index',
-        [
+        $orders = $this->orderRepository->getFilterOrders($request, $status);
+        return view('admin.vinograd.order.index', [
             'orders' => $orders,
             'currency' => Currency::all()->keyBy('code')->all(),
             'statusesList' => OrderService::getArrayStasusesList($orders)
@@ -47,7 +37,6 @@ class OrdersController extends AppOrdersController
     {
         $order = $service->createNewOrder();
         return redirect()->route('orders.delivery.edit', $order->id);
-        //return redirect()->route('orders.edit', $order->id);
     }
 
     public function store(Request $request){}
@@ -57,8 +46,6 @@ class OrdersController extends AppOrdersController
         $order = Order::findOrFail($id);
         $items = OrderItem::getOrderSortedByItems($order);
         $quantityByModifications = OrderItem::getQuantityByModifications($items);
-
-        //dd(Html::link(route('orders.print.order', ['id' => $order->id]), 'Распечатан 1 раз', ['target' => "_blank", 'class' => "print btn btn-primary", 'data-order_id' => "{{$order->id}}"]));
 
         return view('admin.vinograd.order.show', [
             'order' => $order,
@@ -109,6 +96,15 @@ class OrdersController extends AppOrdersController
         }
     }
 
+    public function repeatCreate (OrderService $service, $id)
+    {
+        try {
+            $new_order_id = $service->createRepeatOrder($id);
+            return redirect()->route('orders.edit', $new_order_id);
+        } catch (\DomainException $e) {
+            return back()->withErrors([$e->getMessage()]);
+        }
+    }
 
     public function sendReplyMail(SendReplyMailRequest $request, OrderService $service)
     {
@@ -148,22 +144,5 @@ class OrdersController extends AppOrdersController
         } catch  (\RuntimeException $e) {
             return ['errors' => [$e->getMessage()]];
         }
-    }
-
-
-
-
-
-
-    public function temp()
-    {
-        $orders = Order::all();
-        dd($orders);
-        foreach ($orders as $order){
-            $customer = new CustomerData($order->customer['phone'], $order->customer['name'], $order->customer['email']);
-            $order->customer['phone'] = $customer;
-            $order->save();
-        }
-        return "Обновление телефонов заказчиков.";
     }
 }

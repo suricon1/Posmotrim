@@ -138,6 +138,7 @@
                                     </div>
                                 </div>
                                 {!! Form::close() !!}
+                                    @if($order->isAllowedDateBuild())
                                     <div class="form-group mb-0">
                                         <div class="input-group input-group-sm">
                                             <div class="input-group-prepend">
@@ -148,7 +149,7 @@
                                             {!! Form::text('', $order->getDateBuild(), ['class' => 'form-control float-right', 'data-build' => 'build', 'data-order_id' => $order->id]) !!}
                                         </div>
                                     </div>
-
+                                    @endif
                                 @else
                                     {!! $order->statusName($order->current_status) !!}
                                 @endif
@@ -166,9 +167,9 @@
                                     @if($order->isSent() && $order->isTrackCode())
                                         <a class="btn btn-outline-info btn-sm" href="{{config('main.tracking_post')}}{{$order->track_code}}" role="button" target="_blank"><i class="fa fa-truck"></i></a>
                                     @endif
-                                    {{Form::open(['route'=>['orders.destroy', $order->id], 'method'=>'delete'])}}
-                                    <button onclick="return confirm('Подтвердите удаление заказа!')" type="submit" class="btn btn-outline-danger btn-sm"><i class="fa fa-remove"></i></button>
-                                    {{Form::close()}}
+{{--                                    {{Form::open(['route'=>['orders.destroy', $order->id], 'method'=>'delete'])}}--}}
+{{--                                    <button onclick="return confirm('Подтвердите удаление заказа!')" type="submit" class="btn btn-outline-danger btn-sm"><i class="fa fa-remove"></i></button>--}}
+{{--                                    {{Form::close()}}--}}
                                 </div>
                             </td>
                         </tr>

@@ -27,7 +27,7 @@ class OrdersTreckCodeController extends AppOrdersController
         }
     }
 
-    public function textInfo($order, $track_code)
+    private function textInfo($order, $track_code)
     {
         if(!$order->customer['email']){
             $phone = $order->customer['phone'];
@@ -36,7 +36,8 @@ class OrdersTreckCodeController extends AppOrdersController
     <div>
         <h4>Для Вайбера</h4>
         <p>тел: $phone</p>
-        <p>Текст сообщения</p>
+        <p>Здравствуйте.</p>
+        <p>Ваш заказ отправлен.</p>
         <p>Код отслеживания: $track_code</p>
     </div>
 EOD;
@@ -72,7 +73,8 @@ EOD;
     public function sentStatusMail(Request $request, OrderService $OrderService, StatusService $statusService)
     {
         $v = Validator::make($request->all(), [
-            'track_code' =>  'required|regex:/^[A-Za-z]{2}[0-9]{9}[A-Za-z]{2}$/'
+            'track_code' =>  'required|regex:/^[A-Za-z]{2}[0-9]{9}[A-Za-z]{2}$/',
+            'order_id' => 'required|exists:vinograd_orders,id'
         ]);
 
         $order = Order::findOrFail($request->order_id);

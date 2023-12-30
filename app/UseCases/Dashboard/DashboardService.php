@@ -129,12 +129,14 @@ class DashboardService
         $years = [];
         foreach ($dateRange as $key=>$date) {
             $year = $date->format('Y');
-            $years[$year] = [
+            $years[$year - 1 .' - '. $year] = [
                 'from' => '01-07-' . ($year - 1),
                 'to' => '29-06-' . $year
             ];
         }
-        return $years;
+        $arr['dropdown'] = array_slice($years, 0, -2);
+        $arr['visible'] = array_slice($years, -2, 2);
+        return $arr;
     }
 
     public function getDateRange(Request $request)

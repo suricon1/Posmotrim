@@ -102,6 +102,20 @@ class OrderService
         $this->newOrderCost($order, 0);
     }
 
+    public function createRepeatOrder($id)
+    {
+        return DB::transaction(function() use ($id)
+        {
+            $rep_order = $this->orders->get($id);
+            $new_order = $this->createNewOrder();
+
+            $new_order->delivery = $rep_order->delivery;
+            $new_order->customer = $rep_order->customer;
+            $this->orders->save($new_order);
+            return $new_order->id;
+        });
+    }
+
     private function newDeliveryData($request)
     {
         $per = new DeliveryData($request->input('delivery.method'));
@@ -345,10 +359,10 @@ class OrderService
 
     public static function getOrderStasusesList($order)
     {
-        if ($order->isCancelled() || $order->isCancelledByCustomer() || $order->isCompleted()){
+        if ($order->isCompleted()){
             return null;
         }
-        if ($order->isPreliminsry()) {
+        if ($order->isPreliminsry() || $order->isCancelled() || $order->isCancelledByCustomer()) {
             return [Status::NEW => 'Новый'];
         }
 

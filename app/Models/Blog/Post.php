@@ -10,6 +10,7 @@ use App\Models\Vinograd\Comment;
 use Auth;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -165,7 +166,7 @@ class Post extends Model
 
     public function StrLimit($str, $limit)
     {
-        return str_limit(wp_strip_all_tags(htmlspecialchars_decode($str)), $limit);
+        return STR::limit(wp_strip_all_tags(htmlspecialchars_decode($str)), $limit);
     }
 
     public function classNameByIDForCache()

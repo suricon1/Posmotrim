@@ -3,7 +3,7 @@
 namespace App\Models\Vinograd;
 
 use App\Models\Blog\Post;
-use App\Models\Vinograd\WishlistItem;
+use App\Models\Vinograd\Order\Order;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -43,6 +43,11 @@ class User extends Authenticatable
     public function wishlistItems()
     {
         return $this->hasMany(WishlistItem::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 
     public function isWait()
@@ -106,7 +111,7 @@ class User extends Authenticatable
 
         $this->removeAvatar();
 
-        $filename = str_random(10) . '.' . $image->extension();
+        $filename = STR::random(10) . '.' . $image->extension();
         $image->storeAs('img/avatar/', $filename);
         $this->avatar = $filename;
         $this->save();

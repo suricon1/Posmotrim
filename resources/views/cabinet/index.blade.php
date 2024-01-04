@@ -89,7 +89,7 @@
                                                 <td>{{$order->id}}</td>
                                                 <td>{{getRusDate($order->created_at)}}</td>
                                                 <td style="color: snow">{!! $order->statusName($order->current_status) !!}</td>
-                                                <td>{{currency($order->getTotalCost())}} {{signature()}}</td>
+                                                <td>{{currency($order->getTotalCost($user->delivery))}} {{signature()}}</td>
                                                 <td>
                                                     <div class="btn-group" id="nav">
                                                         <a class="view" href="{{route('vinograd.cabinet.order.view', ['order_id' => $order->id])}}">Посмотреть</a>

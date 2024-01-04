@@ -104,11 +104,12 @@
                                     @if($message->phone)
                                         {{$message->phone}}<br>
                                     @endif
-                                    @if($message->mark_as_read)
-                                        <strong>{{str_limit($message->message, 100)}}</strong>
-                                    @else
-                                        {{str_limit($message->message, 100)}}
-                                    @endif
+{{--                                    Перенести в хелпер функцию Str::limit--}}
+{{--                                    @if($message->mark_as_read)--}}
+{{--                                        <strong>{{Str::limit($message->message, 100)}}</strong>--}}
+{{--                                    @else--}}
+{{--                                        {{Str::limit($message->message, 100)}}--}}
+{{--                                    @endif--}}
                                 </td>
                                 <td class="mailbox-attachment"></td>
                                 <td class="mailbox-date">

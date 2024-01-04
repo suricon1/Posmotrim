@@ -84,7 +84,7 @@
                             </div>
                             <div class="post-comments-count">
                                 <i class="fa fa-eye"></i> {{$post->view}}
-                                <a href="{{ route('blog.post', ['alias' => $post->slug]) }}#comments" title="Открыть комментарии">
+                                <a href="{{ route('blog.post', ['slug' => $post->slug]) }}#comments" title="Открыть комментарии">
                                     <i class="fa fa-comments-o"></i>{{$post->comments->count()}}
                                 </a>
                             </div>

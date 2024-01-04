@@ -6,8 +6,6 @@ use App\Models\Vinograd\Order\Order;
 use App\Models\Vinograd\Order\Order as Model;
 use Illuminate\Http\Request;
 
-//use Illuminate\Database\Eloquent\Model;
-
 class OrderRepository extends CoreRepository
 {
     public function getModelClass()

@@ -45,7 +45,7 @@ class CurrencyService
 
     public function price($price)
     {
-        return number_format($price * $this->currency->scale / $this->currency->rate, 2, '.', '');
+        return number_format($price * $this->currency->scale / $this->currency->rate, 2, '.', ' ');
     }
 
     public function sign()

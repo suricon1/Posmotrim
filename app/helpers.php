@@ -236,3 +236,11 @@ if (! function_exists('yearsQuery'))
         return \App\UseCases\Dashboard\DashboardService::getArrayOfYears();
     }
 }
+
+if (! function_exists('flash'))
+{
+    function flash()
+    {
+        return app(App\Support\Flash\Flash::class);
+    }
+}

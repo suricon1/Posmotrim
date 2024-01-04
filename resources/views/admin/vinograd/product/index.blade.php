@@ -70,7 +70,7 @@
                                 @endif
                                 <a class="btn btn-outline-primary btn-sm" href="{{route('products.edit', $product->id)}}" role="button"><i class="fa fa-pencil"></i></a>
                                 @if($product->status != 1)
-                                    <a class="btn btn-outline-secondary btn-sm" href="{{route('vinograd.product', ['alias' => $product->slug])}}" role="button" target="_blank">
+                                    <a class="btn btn-outline-secondary btn-sm" href="{{route('vinograd.product', ['slug' => $product->slug])}}" role="button" target="_blank">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                 @endif
@@ -101,7 +101,7 @@
     <script>
         const buttons = document.querySelectorAll('.add-modification');
         buttons.forEach(item => {
-            item.addEventListener('click', (e) => {
+            item.addEventListener('click', () => {
                 const productId = item.getAttribute('data-productId');
                 const input = document.querySelector('input[name="product_id"]');
                 input.value = productId;

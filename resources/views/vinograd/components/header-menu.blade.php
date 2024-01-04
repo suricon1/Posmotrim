@@ -28,7 +28,7 @@
                 <ul class="dropdown">
 
                     @foreach($categorys_blog_menu as $slug => $name)
-                        <li><a href="{{route('blog.category', ['category' => $slug])}}">{{$name}}</a></li>
+                        <li><a href="{{route('blog.category', ['slug' => $slug])}}">{{$name}}</a></li>
                     @endforeach
 
                 </ul>

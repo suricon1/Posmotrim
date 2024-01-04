@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Vinograd\Cabinet;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Vinograd\UserDeliveryRequest;
 use App\Models\Vinograd\Order\Status;
-use App\UseCases\OrderService;
 use App\UseCases\StatusService;
-use Illuminate\Http\Request;
 use App\Models\Site\User;
 use App\Models\Vinograd\Order\Order;
 use Auth;
@@ -26,7 +24,8 @@ class DashboardController extends Controller
         $user = Auth::user();
         return view('cabinet.index', [
             'user' => $user,
-            'orders' => Order::where('user_id', $user->id)->orderBy('current_status')->paginate(30)
+            'orders' => $user->orders()->orderBy('current_status')->paginate(30)
+//            'orders' => Order::getAllUserOrders($user->id)
         ]);
     }
 
@@ -40,7 +39,7 @@ class DashboardController extends Controller
     {
         $order = Order::findOrFail($order_id);
         try {
-            $statusService->setStatus($order_id, '6');
+            $statusService->setStatus($order_id, Status::CANCELLED_BY_CUSTOMER);
             return redirect()->back();
         } catch  (\RuntimeException $e) {
             return redirect()->route('orders.show', $order->id)->withErrors([$e->getMessage()]);

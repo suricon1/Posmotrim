@@ -27,9 +27,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware'	=>	'admi
         Route::post('/orders/pre_update_item/{order_id}', 'PreOrdersController@updateItem')->name('orders.pre.update.item');
         Route::post('/orders/pre_delete_item/{order_id}', 'PreOrdersController@deleteItem')->name('orders.pre.delete.item');
 
-//        Route::get('/orders/viber_send', 'Order\OrdersController@viber_send')->name('orders.viber_send');
-//        Route::get('/orders/webhook', 'Order\OrdersController@webhook')->name('orders.webhook');
-
         Route::resources([
             '/products' => 'ProductsController',
             '/categorys' => 'CategorysController',

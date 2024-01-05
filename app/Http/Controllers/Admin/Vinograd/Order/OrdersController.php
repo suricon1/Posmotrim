@@ -96,10 +96,10 @@ class OrdersController extends AppOrdersController
         }
     }
 
-    public function repeatCreate (OrderService $service, $id)
+    public function repeatCreate (OrderService $service, $order_id)
     {
         try {
-            $new_order_id = $service->createRepeatOrder($id);
+            $new_order_id = $service->createRepeatOrder($order_id);
             return redirect()->route('orders.edit', $new_order_id);
         } catch (\DomainException $e) {
             return back()->withErrors([$e->getMessage()]);

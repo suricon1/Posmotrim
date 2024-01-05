@@ -250,9 +250,10 @@
                         <td>{!! $other_order->statusName($other_order->current_status) !!}</td>
                         <td>
                             <div class="btn-group" id="nav">
-                                <a class="btn btn-outline-secondary btn-sm" href="{{route('orders.show', $other_order->id)}}" role="button"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-outline-secondary btn-sm" href="{{route('orders.show', ['order' => $other_order->id])}}" role="button"><i class="fa fa-eye"></i></a>
                                 @if($other_order->isNew() AND $order->isNew())
-                                    <a class="btn btn-outline-primary btn-sm" href="{{route('orders.merge', ['order->id' => $order->id, 'merge_order_id' => $other_order->id])}}" role="button"><i class="fa fa-compress"></i></a>
+{{--                                    {{dd($order->id, $other_order->id)}}--}}
+                                    <a class="btn btn-outline-primary btn-sm" href="{{route('orders.merge', ['order_id' => $order->id, 'merge_order_id' => $other_order->id])}}" role="button"><i class="fa fa-compress"></i></a>
                                 @endif
                             </div>
                         </td>
@@ -521,7 +522,7 @@ P.S.
     <script src="{{ asset('js/daterangepicker.js') }}"></script>
 
     <script>
-        const order_id = {{$order->id}}
+        const order_id = {{$order->id}};
 
         const print_url = '{{route('ajax.print.order')}}';
         const build_url = '{{route('ajax.build')}}';

@@ -49,7 +49,7 @@
                                         @endif
                                         <a class="btn btn-outline-primary btn-sm" href="{{route('posts.edit', $post)}}" role="button"><i class="fa fa-pencil"></i></a>
                                         @if($post->status != 1)
-                                            <a class="btn btn-outline-secondary btn-sm" href="{{route('blog.post', ['alias' => $post->slug])}}" role="button" target="_blank">
+                                            <a class="btn btn-outline-secondary btn-sm" href="{{route('blog.post', ['slug' => $post->slug])}}" role="button" target="_blank">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         @endif

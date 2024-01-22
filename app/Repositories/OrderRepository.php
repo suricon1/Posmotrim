@@ -40,7 +40,12 @@ class OrderRepository extends CoreRepository
             $query->orWhere('date_build', $request->get('build'));
         }
 
-        return $query->orderBy('current_status')->orderBy('id', 'desc')->paginate(30)->appends($request->all());
+        return $query
+            ->orderBy('current_status')
+            ->orderBy('id', 'desc')
+            ->paginate(30)
+            ->appends($request
+            ->all());
     }
 
 

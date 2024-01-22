@@ -125,7 +125,7 @@
                                 {!! Form::hidden('order_id', $order->id) !!}
                                 <div class="input-group input-group-sm">
                                     <div class="input-group-prepend">
-                                        {!! $order->statusName($order->current_status) !!}
+                                        {!! $order->statuses->name($order->current_status) !!}
                                     </div>
                                     <select name="status" class="custom-select form-control" id="inputGroupSelect04">
                                         <option selected disabled hidden value="">Изменить</option>
@@ -151,7 +151,7 @@
                                     </div>
                                     @endif
                                 @else
-                                    {!! $order->statusName($order->current_status) !!}
+                                    {!! $order->statuses->name($order->current_status) !!}
                                 @endif
                             </td>
                             <td>

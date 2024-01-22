@@ -6,6 +6,7 @@ use App\UseCases\ImageService;
 use App\UseCases\Size;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use Storage;
 use Validator;
 
@@ -37,7 +38,7 @@ class AppAjaxController extends Controller
         }
 
         $file = $request->file('upload');
-        $filename = str_random(20) . '.' . $file->extension();
+        $filename = STR::random(20) . '.' . $file->extension();
 
         $img = new ImageService(new Size('0x0'));
 

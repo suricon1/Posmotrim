@@ -10,7 +10,7 @@ use App\Models\Vinograd\Order\DeliveryData;
 use App\Models\Vinograd\Order\Order;
 use App\Models\Vinograd\Order\OrderCorrespondence;
 use App\Models\Vinograd\Order\OrderItem;
-use App\Models\Vinograd\Order\Status;
+use App\Status\Status;
 use App\Notifications\OrderCustomerMail;
 use App\Notifications\OrderReplyCustomerMail;
 use App\Notifications\SendCodeMail;
@@ -330,7 +330,8 @@ class OrderService
 
     public function sendReplyMail(Order $order, Request $request)
     {
-        return $order->notify(new OrderReplyCustomerMail($order, $request));
+        $order->notify(new OrderReplyCustomerMail($order, $request));
+//        return $order->notify(new OrderReplyCustomerMail($order, $request));
     }
 
     public function saveCorrespondence($orderId, $message)
@@ -357,31 +358,12 @@ class OrderService
         return $orders->isNotEmpty() ? $orders : false;
     }
 
-    public static function getOrderStasusesList($order)
-    {
-        if ($order->isCompleted()){
-            return null;
-        }
-        if ($order->isPreliminsry() || $order->isCancelled() || $order->isCancelledByCustomer()) {
-            return [Status::NEW => 'Новый'];
-        }
-
-        $array = $order::statusList();
-        unset($array[Status::CANCELLED_BY_CUSTOMER]);
-        foreach ($order->statuses_json as $item){
-            if(array_key_exists($item['value'], $array)){
-                unset($array[$item['value']]);
-            }
-        }
-        return $array;
-    }
-
     public static function getArrayStasusesList($orders)
     {
         $statuses = [];
         foreach ($orders as $order)
         {
-            $statuses[$order->id] = self::getOrderStasusesList($order);
+            $statuses[$order->id] = $order->statuses->allowedTransitions;
         }
         return$statuses;
     }
@@ -431,7 +413,7 @@ class OrderService
         return array_replace(
             array_map(function() {
                 return 0;
-            }, Order::statusList()),
+            }, Status::list()),
             $res);
     }
 

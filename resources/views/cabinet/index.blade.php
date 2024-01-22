@@ -88,16 +88,17 @@
                                             <tr>
                                                 <td>{{$order->id}}</td>
                                                 <td>{{getRusDate($order->created_at)}}</td>
-                                                <td style="color: snow">{!! $order->statusName($order->current_status) !!}</td>
+                                                <td style="color: snow">{!! $order->statuses->name() !!}</td>
+{{--                                                <td style="color: snow">{!! $order->statusName($order->current_status) !!}</td>--}}
                                                 <td>{{currency($order->getTotalCost($user->delivery))}} {{signature()}}</td>
                                                 <td>
                                                     <div class="btn-group" id="nav">
                                                         <a class="view" href="{{route('vinograd.cabinet.order.view', ['order_id' => $order->id])}}">Посмотреть</a>
-                                                        @if($order->isNew())
-                                                        {{Form::open(['route'=>['vinograd.cabinet.order.destroy', $order->id]])}}
-                                                        <button onclick="return confirm('Подтвердите отмену заказа!')" type="submit" class="btn btn-danger">Отменить</button>
-                                                        {{Form::close()}}
-                                                        @endif
+{{--                                                        @if($order->isNew())--}}
+{{--                                                        {{Form::open(['route'=>['vinograd.cabinet.order.destroy', $order->id]])}}--}}
+{{--                                                        <button onclick="return confirm('Подтвердите отмену заказа!')" type="submit" class="btn btn-danger">Отменить</button>--}}
+{{--                                                        {{Form::close()}}--}}
+{{--                                                        @endif--}}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -109,7 +110,10 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                {{ $orders->links() }}
+
+                                <div class="product-pagination">
+                                    {{$orders->links()}}
+                                </div>
                             </div>
 
                             <div id="account-details" class="tab-pane fade">

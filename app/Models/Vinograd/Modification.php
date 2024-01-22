@@ -2,6 +2,7 @@
 
 namespace App\Models\Vinograd;
 
+use App\Casts\PriceCast;
 use Illuminate\Database\Eloquent\Model;
 
 class Modification extends Model
@@ -9,6 +10,10 @@ class Modification extends Model
     protected $table = 'vinograd_product_modifications';
     public $timestamps = false;
     protected $fillable = ['product_id', 'modification_id', 'price', 'quantity'];
+
+    protected $casts = [
+        'price' => PriceCast::class
+    ];
 
     public function product()
     {

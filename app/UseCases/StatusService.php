@@ -3,28 +3,23 @@
 namespace App\UseCases;
 
 use App\Models\Vinograd\Order\Order;
-use App\Models\Vinograd\Order\Status;
-use App\Repositories\ItemRepository;
 use App\Repositories\ModificationRepository;
 use App\Repositories\OrderRepository;
+use App\Status\Status;
 use DB;
-use Illuminate\Support\Facades\Redirect;
 
 class StatusService
 {
     private $orders;
-    private $items;
     private $modifications;
 
     public function __construct
     (
         OrderRepository $orders,
-        ItemRepository $items,
         ModificationRepository $modifications
     )
     {
         $this->orders = $orders;
-        $this->items = $items;
         $this->modifications = $modifications;
     }
 
@@ -32,28 +27,10 @@ class StatusService
     {
         return DB::transaction(function () use ($order_id, $status, $track_code)
         {
-            $order = Order::find($order_id);
-            if ($status == $order->current_status) {
-                throw new \RuntimeException('Этот статус уже установлен!');
-            }
-            $statusList = OrderService::getOrderStasusesList($order);
-            if(!$statusList || !array_key_exists($status, $statusList)) {
-                throw new \RuntimeException('Статус не пригоден для этого заказа!');
-            }
-            $order->addStatus($status);
+            $order = Order::with('items')->find($order_id);
+            $order->statuses->transitionTo(Status::createStatus((int) $status, $order));
             $order->setTrackCode($track_code);
             $this->orders->save($order);
-
-            if ($order->isCancelled() || $order->isCancelledByCustomer()) {
-                $this->returnQuantity($order);
-                $this->returnInStock($order);
-            }
-            if ($order->isPaid() || $order->isSent() || $order->isCompleted()) {
-                $this->checkoutInStock($order);
-            }
-            if ($order->isNew()) {
-                $this->checkoutQuantity($order);
-            }
         });
     }
 
@@ -78,7 +55,7 @@ class StatusService
         $this->returnInStock($order);
     }
 
-    private function returnQuantity($order)
+    public function returnQuantity($order)
     {
         foreach ($order->items as $item){
             $item->modification->returnQuantity($item->quantity);
@@ -86,7 +63,7 @@ class StatusService
         }
     }
 
-    private function checkoutQuantity($order)
+    public function checkoutQuantity($order)
     {
         foreach ($order->items as $item){
             $item->modification->checkout($item->quantity, true);
@@ -94,7 +71,7 @@ class StatusService
         }
     }
 
-    private function returnInStock ($order)
+    public function returnInStock ($order)
     {
         $flag = array_filter($order->statuses_json, function($ar) {
             return $ar['value'] == Status::PAID OR $ar['value'] == Status::SENT;
@@ -107,7 +84,7 @@ class StatusService
         }
     }
 
-    private function checkoutInStock($order)
+    public function checkoutInStock($order)
     {
         $flag = array_filter($order->statuses_json, function($ar) use ($order) {
             return $ar['value'] !== $order->current_status AND in_array($ar['value'], Order::SOLD_LIST);

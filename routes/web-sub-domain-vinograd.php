@@ -102,6 +102,9 @@ Route::group(['namespace' => 'Vinograd', 'as' => 'vinograd.'], function() {
 Route::post('/subscribe', 'SubsController@subscribe')->name('subscribers');
 Route::get('/verify/{token}', 'SubsController@verify')->name('verify');
 
+Route::group(['namespace' => 'Vinograd', 'middleware'	=>	'guest'], function(){
+    Route::get('/login','AuthController@loginForm')->name('login');    //  Разобраться с перенаправлением
+});
 
 Route::group(['namespace' => 'Blog', 'prefix'=>'blog', 'as' => 'blog.'], function() {
 

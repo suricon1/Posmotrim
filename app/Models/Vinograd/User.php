@@ -4,6 +4,7 @@ namespace App\Models\Vinograd;
 
 use App\Models\Blog\Post;
 use App\Models\Vinograd\Order\Order;
+use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,6 +13,7 @@ use Illuminate\Support\Str;
 class User extends Authenticatable
 {
     use Notifiable;
+    use MassPrunable;
 
     const IS_BANNED = 1;
     const IS_ACTIVE = 0;
@@ -29,6 +31,16 @@ class User extends Authenticatable
     protected $casts = [
         'delivery' => 'array'
     ];
+
+    /**
+     * Get the prunable model query.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function prunable()
+    {
+        return static::where('remember_token',  null)->delete();
+    }
 
     public function posts()
     {

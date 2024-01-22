@@ -52,7 +52,6 @@ class OrdersController extends AppOrdersController
             'other_orders' => OrderService::getOtherOrders($order), //  Получить другие заказы клиента
             'items' => $items,
             'quantityByModifications' => $quantityByModifications,
-            'statusesList' => OrderService::getOrderStasusesList($order),
             'currency' => Currency::where('code', $order->currency)->first(),
             'currencys' => Currency::orderBy('code')->pluck('name', 'code')->all()
         ]);

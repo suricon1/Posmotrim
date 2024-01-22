@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Vinograd\Order;
 
 use App\Models\Vinograd\Order\Order;
-use App\Models\Vinograd\Order\Status;
+use App\Status\Status;
 use App\UseCases\OrderService;
 use App\UseCases\StatusService;
 use Illuminate\Http\Request;

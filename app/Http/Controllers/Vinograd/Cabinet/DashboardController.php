@@ -37,12 +37,11 @@ class DashboardController extends Controller
 
     public function destroy (StatusService $statusService, $order_id)
     {
-        $order = Order::findOrFail($order_id);
         try {
             $statusService->setStatus($order_id, Status::CANCELLED_BY_CUSTOMER);
             return redirect()->back();
         } catch  (\RuntimeException $e) {
-            return redirect()->route('orders.show', $order->id)->withErrors([$e->getMessage()]);
+            return redirect()->route('vinograd.cabinet.home')->withErrors([$e->getMessage()]);
         }
     }
 

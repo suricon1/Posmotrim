@@ -18,14 +18,14 @@
         "laravelcollective/html": "*"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.7",
+        "barryvdh/laravel-ide-helper": "^2.5",
         "beyondcode/laravel-dump-server": "^1.0",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.0",
-		"barryvdh/laravel-debugbar": "^3.1",
-        "barryvdh/laravel-ide-helper": "^2.5",
         "symfony/thanks": "^1.0"
     },
     "config": {
@@ -38,7 +38,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/telescope"
+            ]
         }
     },
     "autoload": {

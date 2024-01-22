@@ -9,8 +9,6 @@ use App\Models\Blog\Category as BlogCategory;
 use App\Models\Vinograd\Comment;
 use App\Models\Vinograd\Contact;
 use App\Models\Vinograd\Currency;
-use App\Models\Vinograd\Order\Order;
-use App\Models\Vinograd\Order\Status;
 use App\Models\Vinograd\Page;
 use App\Models\Vinograd\WishlistItem;
 use App\Repositories\ProductRepository;

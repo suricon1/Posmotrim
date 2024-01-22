@@ -32,7 +32,7 @@
 @endsection
 
 @section('content')
-    <div class="row p-4 pb-3" style="width: 71%; background-color: #ffffff; border-bottom: #000000 solid 1px">
+    <div class="row p-4 pb-3" style="width: 71%; background-color: #ffffff; border-bottom: #000000 solid 1px; margin: 0 auto;">
         <div class="col-5">
             <span class="c2 mb-5 p-3 text-center">Место для стикера</span>
             <p>
@@ -66,7 +66,7 @@
         </div>
     </div>
 
-    <div class="row p-4" style="width: 71%; background-color: #ffffff; height: 195px">
+    <div class="row p-4" style="width: 71%; background-color: #ffffff; height: 195px; margin: 0 auto;">
         <div class="col-5 align-self-center">
             (Место для наклеивания таможенной декларации CN22)<br>
             Упаковано по желанию отправителя. Запрещенных вложений нет.

@@ -55,7 +55,7 @@
                             </td>
                             <td>{{$order->customer['name']}}</td>
                             <td>{{$order->admin_note}}</td>
-                            <td>{!! $order->statusName($order->current_status) !!}</td>
+                            <td>{!! $order->statuses->name($order->current_status) !!}</td>
                             <td>
                                 <div class="btn-group" id="nav">
                                     @if(!$order->isCompleted())

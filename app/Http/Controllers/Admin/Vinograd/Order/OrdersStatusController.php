@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin\Vinograd\Order;
 
 use App\Models\Vinograd\Order\Order;
-use App\Models\Vinograd\Order\Status;
-use App\UseCases\OrderService;
+use App\Status\Status;
 use App\UseCases\StatusService;
 use Illuminate\Http\Request;
 use Validator;
@@ -26,15 +25,7 @@ class OrdersStatusController extends AppOrdersController
         }
         try {
             $statusService->setStatus($request->order_id, $request->status);
-//
-//            вывод на печать
-//
-//            if($request->status == Status::PAID) {
-//                return redirect()->route('orders.print.nalozhka_blanck', [
-//                    'order' => $order
-//                ]);
-//            }
-//
+
             return redirect()->back();
         } catch  (\RuntimeException $e) {
             return redirect()->route('orders.show', $order->id)->withErrors([$e->getMessage()]);
@@ -60,7 +51,7 @@ class OrdersStatusController extends AppOrdersController
         try {
             $statusService->setStatus($request->order_id, $request->status);
             return ['success' => [
-                'status' => $order->statusName($request->status)]
+                'status' => $order->statuses->name($request->status)]
             ];
         } catch  (\RuntimeException $e) {
             return ['errors' => [$e->getMessage()]];

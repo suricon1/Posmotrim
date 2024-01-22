@@ -29,16 +29,22 @@
                 <div class="form-fild">
                     <p><label>Имя <span class="required">*</span></label></p>
                     <input name="name" value="{{old('name')}}" type="text">
-                </div><div class="form-fild">
+                </div>
+                <div class="form-fild">
                     <p><label>Email <span class="required">*</span></label></p>
                     <input name="email" value="{{old('email')}}" type="email">
                 </div>
                 <div class="form-fild">
                     <p><label>Пароль <span class="required">*</span></label></p>
                     <input name="password" type="password">
-                </div><div class="form-fild">
+                </div>
+                <div class="form-fild">
                     <p><label>Повторить пароль <span class="required">*</span></label></p>
                     <input name="password_confirmation" type="password">
+                </div>
+                <div class="special-field">
+                    <label for="subject">Subject</label>
+                    <input type="text" name="subject" id="subject" placeholder="Subject" value="{{old('subject')}}" />
                 </div>
                 <div class="register-submit">
                     <button type="submit" class="form-button">Зарегистрироваться</button>

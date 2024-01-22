@@ -2,6 +2,7 @@
 
 namespace App\UseCases;
 
+use Illuminate\Support\Str;
 use Storage;
 use Illuminate\Database\Eloquent\Model;
 
@@ -70,8 +71,8 @@ class PostContentService
         $temp = parse_url($url);
         if(empty($temp['host'])) return $url;
 
-        $path = str_after($temp['path'], '/storage/');
-        $src = $this->model->getContentPath() . str_random(20) . '.jpg';
+        $path = STR::after($temp['path'], '/storage/');
+        $src = $this->model->getContentPath() . STR::random(20) . '.jpg';
 
         if(!Storage::exists($this->model->getContentPath())) {
             Storage::makeDirectory($this->model->getContentPath());

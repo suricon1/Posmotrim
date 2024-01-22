@@ -21,7 +21,8 @@ class CurrencyService
     private  function __construct()
     {
         if (!$currency = Cookie::get('cur_code')){
-            $is_bot = preg_match("~(Google|Yahoo|Rambler|Bot|Yandex|Spider|Snoopy|Crawler|Finder|Mail|curl)~i", $_SERVER['HTTP_USER_AGENT']);
+            $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "undefined";
+            $is_bot = preg_match("~(Google|Yahoo|Rambler|Bot|Yandex|Spider|Snoopy|Crawler|Finder|Mail|curl)~i", $user_agent);
 
             try {
                 $client  = @$_SERVER['HTTP_CLIENT_IP'];

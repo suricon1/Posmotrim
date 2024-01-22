@@ -1,6 +1,6 @@
 <?php
 
-use \App\Models\Vinograd\Order\Status;
+use \App\Status\Status;
 
 if (!function_exists('getRusDate'))
  {
@@ -134,7 +134,7 @@ if (! function_exists('statusList'))
 {
     function statusList()
     {
-        return \App\Models\Vinograd\Order\Order::statusList();
+        return Status::list();
     }
 }
 
@@ -142,7 +142,7 @@ if (! function_exists('statusColor'))
 {
     function statusColor($status)
     {
-        return \App\Models\Vinograd\Order\Order::statusColor($status);
+        return Status::statusColor((int) $status);
     }
 }
 
@@ -209,7 +209,6 @@ if (! function_exists('statusNew'))
     function statusNew()
     {
         return Status::NEW;
-//        return \App\Models\Vinograd\Order\Status::NEW;
     }
 }
 

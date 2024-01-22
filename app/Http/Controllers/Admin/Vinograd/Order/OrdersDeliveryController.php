@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\Vinograd\Order;
 use App\Http\Requests\Vinograd\CheckoutRequest;
 use App\Models\Vinograd\DeliveryMethod;
 use App\Models\Vinograd\Order\Order;
-use App\Models\Vinograd\Order\Status;
+use App\Status\Status;
 use App\UseCases\OrderService;
 use Illuminate\Http\Request;
 

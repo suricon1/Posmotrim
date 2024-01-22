@@ -10,7 +10,6 @@ use App\Models\Blog\Category as BlogCategory;
 use App\Models\Vinograd\Comment;
 use App\Models\Vinograd\Country;
 use App\Models\Vinograd\Page;
-use App\Models\Vinograd\Product;
 use App\Models\Vinograd\Selection;
 use App\Models\Vinograd\Slider;
 use App\Http\Controllers\Controller;

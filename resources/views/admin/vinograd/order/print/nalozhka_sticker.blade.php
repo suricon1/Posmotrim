@@ -67,7 +67,7 @@
 @endsection
 
 @section('content')
-    <div class="row p-2" style="width: 71%; background-color: #ffffff; position: relative">
+    <div class="row p-2" style="width: 71%; background-color: #ffffff; position: relative; margin: 0 auto;">
         <div class="col-5" style="position: relative; z-index: 10;">
             <p class="text-center"> Отправитель</p>
             <span class="mr-2">ОТ КОГО:</span>

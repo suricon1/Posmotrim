@@ -4,13 +4,19 @@ namespace App\Models\Vinograd;
 
 use App\Models\Meta;
 use App\Models\Traits\GalleryServais;
+//use App\Models\Traits\HasSlug;
 use App\Models\Traits\ImageServais;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
-    use Sluggable, ImageServais, GalleryServais;
+    use ImageServais;
+    use GalleryServais;
+    use Sluggable;
+    //use HasSlug;
 
     const IS_DRAFT = 0;
     const IS_PUBLIC = 1;
@@ -133,6 +139,18 @@ class Product extends Model
         if ($selection){
             return $query->whereIn('selection_id', $selection);
         }
+    }
+
+    public function scopeFiltered(Builder $query)
+    {
+        $query->when(request('filters.brands'), function (Builder $q) {
+            $q->whereIn('brand_id', request('filters.brands'));
+        })->when(request('filters.price'), function (Builder $q) {
+            $q->whereBetween('price', [
+                request('filters.price.from', 0) * 100,
+                request('filters.price.to', 100000) * 100
+            ]);
+        });
     }
 
     public function setCategory($id)
@@ -266,7 +284,7 @@ class Product extends Model
 
     public function StrLimit($str, $limit)
     {
-        return str_limit(wp_strip_all_tags(htmlspecialchars_decode($str)), $limit);
+        return STR::limit(wp_strip_all_tags(htmlspecialchars_decode($str)), $limit);
     }
 
     public function StrForTurbo($str)

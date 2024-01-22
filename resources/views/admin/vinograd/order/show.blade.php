@@ -247,7 +247,7 @@
                         <td> {{$other_order->cost}} бел. руб</td>
                         <td>{{$other_order->customer['name']}}</td>
                         <td>{{$other_order->admin_note}}</td>
-                        <td>{!! $other_order->statusName($other_order->current_status) !!}</td>
+                        <td>{!! $other_order->statuses->name($other_order->current_status) !!}</td>
                         <td>
                             <div class="btn-group" id="nav">
                                 <a class="btn btn-outline-secondary btn-sm" href="{{route('orders.show', ['order' => $other_order->id])}}" role="button"><i class="fa fa-eye"></i></a>
@@ -285,7 +285,8 @@
                     @foreach ($order->statuses_json as $status)
                         <tr>
                             <td>{{getRusDate($status['created_at'])}}</td>
-                            <td>{!! $order::statusName($status['value']) !!}</td>
+                            <td>{!! $order->statuses->name($status['value']) !!}</td>
+{{--                            <td>{!! $order::statusName($status['value']) !!}</td>--}}
                         </tr>
                     @endforeach
                     </tbody>
@@ -296,7 +297,8 @@
 
 </div>
 <div class="col-md-6">
-    @if($statusesList)
+    @if($order->statuses->allowedTransitions)
+{{--    @if($statusesList)--}}
         <div class="card card-outline card-primary">
             <div class="card-header">
                 <h3 class="card-title">Управление статусами</h3>
@@ -307,7 +309,8 @@
                 <div class="input-group">
                     <select name="status" class="custom-select" id="inputGroupSelect04">
                         <option selected disabled hidden>Выбрать статус</option>
-                        @foreach($statusesList as $key => $value)
+                        @foreach($order->statuses->allowedTransitions as $key => $value)
+{{--                        @foreach($statusesList as $key => $value)--}}
                             <option value="{{$key}}">{{$value}}</option>
                         @endforeach
                     </select>
@@ -340,7 +343,7 @@
     @endif
 </div>
 <div class="col-md-6">
-    @if($statusesList)
+    @if($order->statuses->allowedTransitions)
     <div class="card card-outline card-primary">
         <div class="card-header">
             <h3 class="card-title">Выбрать валюту</h3>

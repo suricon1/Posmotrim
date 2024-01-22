@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\Vinograd;
 
 use App\Models\Vinograd\DeliveryMethod;
 use App\Models\Vinograd\Order\Order;
-use App\Models\Vinograd\Order\Status;
+use App\Status\Status;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use App\UseCases\OrderService;

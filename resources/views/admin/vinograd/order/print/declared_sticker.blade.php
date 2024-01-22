@@ -45,7 +45,7 @@
 @endsection
 
 @section('content')
-    <div class="row p-2" style="width: 71%; background-color: #ffffff">
+    <div class="row p-2" style="width: 71%; background-color: #ffffff; margin: 0 auto;">
         <div class="col-5">
             <p class="text-center"> Отправитель</p>
             <span class="mr-2">ОТ КОГО:</span>

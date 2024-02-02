@@ -6,9 +6,9 @@ use App\UseCases\ImageService;
 use App\UseCases\Size;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Storage;
-use Validator;
 
 class AppAjaxController extends Controller
 {

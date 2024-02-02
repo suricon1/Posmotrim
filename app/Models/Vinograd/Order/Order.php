@@ -7,6 +7,7 @@ use App\Models\Vinograd\QueryBuilder\OrderQueryBuilder;
 use App\Models\Vinograd\User;
 use App\Status\OrderState;
 use App\Status\Status;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -55,9 +56,16 @@ class Order extends Model
 
     public $customerData;
 
-    public function getStatusesAttribute(): OrderState
+//    public function getStatusesAttribute(): OrderState
+//    {
+//        return Status::createStatus((int)$this->current_status, $this);
+//    }
+
+    public function statuses(): Attribute
     {
-        return Status::createStatus((int) $this->current_status, $this);
+        return Attribute::make(
+            get: fn() => Status::createStatus((int)$this->current_status, $this)
+        );
     }
 
     public function newEloquentBuilder($query): OrderQueryBuilder
@@ -91,6 +99,7 @@ class Order extends Model
     }
 
 /////////////////
+///
     public function getWeight(): int
     {
         return $this->items->map(function ($item) {
@@ -100,12 +109,13 @@ class Order extends Model
 
     public function getTotalCost($delivery = false): int
     {
-        if(!isset($this->delivery['weight'])) {
+        if (!isset($this->delivery['weight'])) {
             return $this->cost + $this->delivery['cost'];
         }
         $delivery = $delivery ?: DeliveryMethod::find($this->delivery['method_id']);
         return $this->cost + $delivery->getDeliveryCost($this->delivery['weight']);
     }
+
 //////////
 
     public function canBePaid(): bool
@@ -155,16 +165,16 @@ class Order extends Model
 
     public function isMailed()
     {
-        if($this->delivery['method_id'] == 2 || $this->delivery['method_id'] == 5 || $this->delivery['method_id'] == 6) {
+        if ($this->delivery['method_id'] == 2 || $this->delivery['method_id'] == 5 || $this->delivery['method_id'] == 6) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function isAllowedDateBuild() :bool
+    public function isAllowedDateBuild(): bool
     {
-        if($this->isSent() || $this->isCancelled() || $this->isCancelledByCustomer()) {
+        if ($this->isSent() || $this->isCancelled() || $this->isCancelledByCustomer()) {
             return false;
         }
         return true;
@@ -215,7 +225,7 @@ class Order extends Model
 
     public function setPrintCount()
     {
-        $this->print_count = $this->print_count  ? $this->print_count+1 : 1;
+        $this->print_count = $this->print_count ? $this->print_count + 1 : 1;
     }
 
     public function setDateBuild($date_build)
@@ -235,7 +245,7 @@ class Order extends Model
         $data = !isset($status) ? 'completed_at' : 'created_at';
 //        $data = !$status ? 'completed_at' : 'created_at';
         $query->where($data, '>=', $dateRange['from']);
-        if($dateRange['to']){
+        if ($dateRange['to']) {
             $query->where($data, '<=', $dateRange['to']);
         }
         return $query;
@@ -250,7 +260,7 @@ class Order extends Model
 
     public function scopeWhereStatus($query, $status)
     {
-        if(is_array($status)){
+        if (is_array($status)) {
             return $query->whereIn('current_status', $status);
         }
         return $status
@@ -286,29 +296,9 @@ class Order extends Model
 
     public function getCompletedAtAttribute($value)
     {
-        if($value){
-            return  getRusDate($value);
+        if ($value) {
+            return getRusDate($value);
         }
         return '---';
     }
-
-    ##########################
-
-//    public static function statusLabel($status): string
-//    {
-//        switch ($status) {
-//            case Product::IS_DRAFT:
-//                $class = 'label label-default';
-//                break;
-//            case Product::IS_PUBLIC:
-//                $class = 'label label-success';
-//                break;
-//            default:
-//                $class = 'label label-default';
-//        }
-//
-//        return Html::tag('span', Arr::get(self::statusList(), $status), [
-//            'class' => 'badge ' . $class,
-//        ]);
-//    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use \App\Status\Status;
+use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('getRusDate'))
  {
@@ -82,7 +83,7 @@ if (! function_exists('is_admin'))
 {
     function is_admin()
     {
-       return Auth::check() && Auth::user()->role == 3 ? true : false;
+        return Auth::check() && Auth::user()->role == 3 ? true : false;
     }
 }
 

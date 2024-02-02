@@ -14,15 +14,17 @@ class DeliveryRequest extends FormRequest
 
     public function rules()
     {
-        return [
+        return
+        [
             'name' =>'required|string|max:255',
             'content'   =>  'required|string',
-            'slug' =>  [
-                'nullable',
-                'string',
-                Rule::unique('vinograd_delivery_methods')->ignore($this->delivery),
-            ]
+            'slug'        =>
+                [
+                    'nullable',
+                    'string',
+                    'max:255',
+                    Rule::unique('vinograd_delivery_methods')->ignore($this->delivery)
+                ]
         ];
     }
-
 }

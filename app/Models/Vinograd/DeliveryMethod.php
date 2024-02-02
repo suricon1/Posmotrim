@@ -2,14 +2,14 @@
 
 namespace App\Models\Vinograd;
 
+use App\Models\Traits\HasSlug;
 use App\Models\Vinograd\Order\Order;
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class DeliveryMethod extends Model
 {
-    use Sluggable;
+    use HasSlug;
 
     const IS_DRAFT = 0;
     const IS_PUBLIC = 1;
@@ -20,14 +20,6 @@ class DeliveryMethod extends Model
     public $timestamps = false;
     protected $fillable = ['name', 'content', 'slug', 'cost', 'price', 'status', 'min_weight', 'max_weight'];
 
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'name'
-            ]
-        ];
-    }
 
     public function scopeActive($query)
     {

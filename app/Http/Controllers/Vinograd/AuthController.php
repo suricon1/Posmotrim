@@ -9,7 +9,7 @@ use App\Mail\Auth\VerifyMail;
 use App\Models\Vinograd\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {

@@ -2,13 +2,14 @@
 
 namespace App\Models\Vinograd;
 
+use App\Models\Traits\HasSlug;
 use App\Models\Traits\ImageServais;
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
-    use Sluggable, ImageServais;
+    use HasSlug;
+    use ImageServais;
 
     const IS_DRAFT = 0;
     const IS_PUBLIC = 1;
@@ -18,15 +19,6 @@ class Page extends Model
     protected $fillable = ['title','name', 'slug', 'content', 'meta_desc', 'meta_key'];
 
     const IMAGE_WATERMARK = 'img/logo/watermark-vinograd-blog.png';
-
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'name'
-            ]
-        ];
-    }
 
     public function scopeActive($query)
     {

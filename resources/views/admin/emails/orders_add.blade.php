@@ -1,15 +1,15 @@
-@component('mail::message')
+<x-mail::message>
 
-@component('mail::panel')
-    # Поступил новый заказ
-@endcomponent
+<x-mail::panel>
+# Поступил новый заказ
+</x-mail::panel>
 
-@component('mail::panel')
-    <strong>Доставка:</strong><br>
-    <small>{{$order->delivery['method_name']}}</small>
-@endcomponent
+<x-mail::panel>
+<strong>Доставка:</strong><br>
+<small>{{$order->delivery['method_name']}}</small>
+</x-mail::panel>
 
-@component('mail::table')
+<x-mail::table>
 | Название                                                                             | Кол-во                  | Цена за шт           |  Стоимость                      |
 | :----------------------------------------------------------------------------------- |------------------------:| --------------------:| -------------------------------:|
 @foreach($order->items as $item)
@@ -18,10 +18,10 @@
 | <hr>                                                                                 |<hr>                     |<hr>                  |<hr>                             |
 | <strong>Стоимость доставки:</strong>                                                 |                         |                      |{{$order->delivery['cost']}} руб |
 | <strong>Сумма к оплате:</strong>                                                     |                         |                      |{{$order->getTotalCost()}} руб   |
-@endcomponent
+</x-mail::table>
 
-@component('mail::button', ['url' => route('orders.show', $order->id)])
+<x-mail::button :url="$url">
 Смотреть в админке
-@endcomponent
+</x-mail::button>
 
-@endcomponent
+</x-mail::message>

@@ -6,9 +6,9 @@ use App\Http\Requests\Vinograd\CheckoutRequest;
 use App\Models\Vinograd\DeliveryMethod;
 use App\UseCases\CartService;
 use App\UseCases\OrderService;
-use Auth;
 use App\Http\Controllers\Controller;
-use View;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 
 class CheckoutController extends Controller
 {

@@ -6,8 +6,8 @@ use App\Jobs\ContentProcessing;
 use App\Jobs\SitemapVinograd;
 use App\Models\Blog\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
-use View;
 
 class CategorysController extends AppController
 {
@@ -51,16 +51,14 @@ class CategorysController extends AppController
         return redirect()->route('blog.categorys.index');
     }
 
-    public function edit($id)
+    public function edit(Category $category)
     {
         return view('admin.blog.category.edit', [
-            'category' => Category::find($id)]);
+            'category' => $category]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        $category = Category::find($id);
-
         $this->validate($request, [
             'name' =>  'required|max:100',
             'title' =>  'required|max:255',
@@ -86,9 +84,9 @@ class CategorysController extends AppController
         return redirect()->route('blog.categorys.index');
     }
 
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        Category::find($id)->delete();
+        $category->delete();
 
         dispatch(new SitemapVinograd());
         cache()->delete('siteMapHTML');

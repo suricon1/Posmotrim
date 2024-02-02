@@ -14,7 +14,7 @@
 
     <div class="col">
         {{Form::open([
-          'route'	=> 'posts.store',
+          'route'	=> 'blog.posts.store',
           'files'	=>	true
       ])}}
 

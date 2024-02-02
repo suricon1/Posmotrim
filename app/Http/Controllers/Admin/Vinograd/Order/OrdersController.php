@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Admin\Vinograd\Order;
 
 use App\Http\Requests\Admin\Vinograd\Order\SendReplyMailRequest;
+use App\Mail\Admin\OrderAddMail;
 use App\Models\Vinograd\Currency;
 use App\Models\Vinograd\DeliveryMethod;
 use App\Models\Vinograd\Order\Order;
 use App\Models\Vinograd\Order\OrderItem;
+use App\Notifications\OrderCustomerMail;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use App\UseCases\OrderService;
 use Illuminate\Http\Request;
-use Validator;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class OrdersController extends AppOrdersController
 {
@@ -46,6 +49,10 @@ class OrdersController extends AppOrdersController
         $order = Order::findOrFail($id);
         $items = OrderItem::getOrderSortedByItems($order);
         $quantityByModifications = OrderItem::getQuantityByModifications($items);
+//
+//        $order->notify(new OrderCustomerMail());
+//        Mail::to(config('main.admin_email'))->send(new OrderAddMail($order));
+//        dump('123');
 
         return view('admin.vinograd.order.show', [
             'order' => $order,

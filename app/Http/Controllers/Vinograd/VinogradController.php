@@ -15,7 +15,6 @@ use App\Models\Vinograd\Slider;
 use App\Http\Controllers\Controller;
 use App\Repositories\ProductRepository;
 use App\UseCases\LookService;
-use Cookie;
 use Illuminate\Http\Request;
 
 class VinogradController extends Controller

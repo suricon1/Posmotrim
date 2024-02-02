@@ -18,10 +18,10 @@ use App\Repositories\CorrespondenceRepository;
 use App\Repositories\ItemRepository;
 use App\Repositories\ModificationRepository;
 use App\Repositories\OrderRepository;
-use Auth;
-use DB;
 use Illuminate\Http\Request;
-use Mail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class OrderService
 {

@@ -30,9 +30,9 @@
                         <td>{{$category->slug}}</td>
                         <td>
                             <div class="btn-group" id="nav">
-                                <a href="{{route('blog.categorys.edit', $category->id)}}" class="btn btn-outline-success btn-sm"
+                                <a href="{{route('blog.categorys.edit', $category)}}" class="btn btn-outline-success btn-sm"
                                    role="button"><i class="fa fa-pencil"></i></a>
-                                {{Form::open(['route'=>['blog.categorys.destroy', $category->id], 'method'=>'delete'])}}
+                                {{Form::open(['route'=>['blog.categorys.destroy', $category], 'method'=>'delete'])}}
                                 <button onclick="return confirm('Подтвердите удаление страны!')" type="submit"
                                         class="btn btn-outline-danger btn-sm"><i class="fa fa-remove"></i></button>
                                 {{Form::close()}}

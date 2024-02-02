@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\Vinograd;
 use App\Http\Requests\Admin\Vinograd\Delivery\DeliveryRequest;
 use App\Models\Vinograd\DeliveryMethod;
 use App\Http\Controllers\Controller;
-use View;
+use Illuminate\Support\Facades\View;
 
 class DeliverysController extends Controller
 {
@@ -29,7 +29,7 @@ class DeliverysController extends Controller
 
     public function store(DeliveryRequest $request)
     {
-        $method = DeliveryMethod::create($request);
+        DeliveryMethod::create($request);
         return redirect()->route('deliverys.index');
     }
 
@@ -39,32 +39,30 @@ class DeliverysController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show (DeliveryMethod $delivery)
     {
         //
     }
 
-    public function edit($id)
+    public function edit(DeliveryMethod $delivery)
     {
         return view('admin.vinograd.deliveryMethod.edit', [
-            'delivery' => DeliveryMethod::find($id)
+            'delivery' => $delivery
         ]);
     }
 
-    public function update(DeliveryRequest $request, $id)
+    public function update(DeliveryRequest $request, DeliveryMethod $delivery)
     {
-        $delivery = DeliveryMethod::find($id);
         $delivery->edit($request);
 
         return redirect()->route('deliverys.index');
     }
 
-    public function destroy($id)
+    public function destroy(DeliveryMethod $delivery)
     {
-        DeliveryMethod::find($id)->remove();
+        $delivery->remove();
         return redirect()->route('deliverys.index');
     }
-
 
     public function toggle($id)
     {

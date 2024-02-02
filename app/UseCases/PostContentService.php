@@ -2,8 +2,8 @@
 
 namespace App\UseCases;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Storage;
 use Illuminate\Database\Eloquent\Model;
 
 class PostContentService
@@ -78,9 +78,9 @@ class PostContentService
             Storage::makeDirectory($this->model->getContentPath());
         }
 
-        $url = str_replace('https', 'http', $url); //   Почему то не работает с https, возможно из за ssl сертификатов. Временный костыль.
         $image = new ImageService(new Size($width.'x'.$height));
-        $image->routeUrlImageSave($url, $src, $this->model->getImageWatermark());
+        $image->routeImageSave($path, $src, $this->model->getImageWatermark());
+//        $image->routeUrlImageSave($url, $src, $this->model->getImageWatermark()); // Если возникнет нужда грузить внешние фото
 
         if(Storage::exists($path)){
             Storage::delete($path);

@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Admin\Blog;
 
 use App\Models\Vinograd\Comment;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use View;
+use Illuminate\Support\Facades\View;
 
 class CommentsController extends AppController
 {

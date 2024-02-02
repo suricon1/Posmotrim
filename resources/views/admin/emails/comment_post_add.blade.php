@@ -7,7 +7,7 @@
 <p><strong>Статья:</strong> - <small>{{Html::link(route('blog.post', ['slug' => $comment->post->slug]), $comment->post->name)}}</small></p>
 <p><strong>Комментарий:</strong> - <small>{{$comment->text}}</small></p>
 
-@component('mail::button', ['url' => route('comments.index')])
+@component('mail::button', ['url' => route('blog.comments.index')])
     Смотреть в админке
 @endcomponent
 

@@ -4,10 +4,9 @@ namespace App\Models\Vinograd;
 
 use App\Models\Meta;
 use App\Models\Traits\GalleryServais;
-//use App\Models\Traits\HasSlug;
+use App\Models\Traits\HasSlug;
 use App\Models\Traits\ImageServais;
 use Illuminate\Database\Eloquent\Model;
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Str;
 
@@ -15,8 +14,7 @@ class Product extends Model
 {
     use ImageServais;
     use GalleryServais;
-    use Sluggable;
-    //use HasSlug;
+    use HasSlug;
 
     const IS_DRAFT = 0;
     const IS_PUBLIC = 1;
@@ -72,15 +70,6 @@ class Product extends Model
     public function adminModifications()
     {
         return $this->hasMany(Modification::class);
-    }
-
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'name'
-            ]
-        ];
     }
 
     public function scopeActive($query)

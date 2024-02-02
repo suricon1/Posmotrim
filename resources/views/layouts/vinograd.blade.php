@@ -31,7 +31,7 @@
                                     @if($userWishlistItemsCount)
                                     <div class="wishlist-items">
                                         <div class="wishlist-quantity-box" data-toggle="tooltip" data-placement="top" title="Избранное">
-                                            <a href="{{route('vinograd.cabinet.wishlist.ingex')}}">
+                                            <a href="{{route('vinograd.cabinet.wishlist.index')}}">
                                                 <i class="fa fa-heart-o"><span class="wishlist-quantity">{{$userWishlistItemsCount}}</span></i>
                                             </a>
                                         </div>
@@ -84,7 +84,7 @@
                                                         <li><a href="{{ route('dashboard.sorts') }}">Админка</a></li>
                                                         @endadmin
                                                         <li><a href="{{route('vinograd.cabinet.home')}}">Кабинет</a></li>
-                                                        <li><a href="{{route('vinograd.cabinet.wishlist.ingex')}}">Избранное</a></li>
+                                                        <li><a href="{{route('vinograd.cabinet.wishlist.index')}}">Избранное</a></li>
 {{--                                                        <li><a href="cart.html">Shopping cart</a></li>--}}
 {{--                                                        <li><a href="checkout.html">Checkout</a></li>--}}
 

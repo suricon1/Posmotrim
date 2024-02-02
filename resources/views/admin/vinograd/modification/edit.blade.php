@@ -9,7 +9,7 @@
 @section('content')
 
     <div class="col">
-        {!! Form::open(['route' => ['modifications.update', $modification->id], 'method' => 'put']) !!}
+        {!! Form::open(['route' => ['modifications.update', $modification->id], 'method' => 'patch']) !!}
         <div class="form-group">
             <label for="name">Название (В меню)</label>
             <input type="text" class="form-control" id="name" placeholder="" name="name" value="{{old('name', $modification->name)}}">

@@ -2,7 +2,7 @@
 
 namespace App\UseCases;
 
-use Image;
+use Intervention\Image\Facades\Image;
 
 class ImageService
 {

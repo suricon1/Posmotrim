@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Blog;
 
 use App\Http\Controllers\Controller;
-use View;
+use Illuminate\Support\Facades\View;
 
 class AppController extends Controller
 {

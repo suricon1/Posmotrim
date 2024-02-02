@@ -5,7 +5,7 @@ namespace App\Models\Traits;
 use App\UseCases\ImageService;
 use App\UseCases\Size;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Str;
 
 trait GalleryServais
 {
@@ -92,7 +92,7 @@ trait GalleryServais
 
     private function getFilename($path, $file)
     {
-        $filename = '/'.str_random(10) . '.' . $file->extension();
+        $filename = '/'.Str::random(10) . '.' . $file->extension();
         if (Storage::exists($path . $filename)) return $this->getFilename($path, $file);
 
         if(!Storage::exists($path)){

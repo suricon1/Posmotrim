@@ -15,9 +15,9 @@
     <div class="col">
 
         {{Form::open([
-            'route'	=>	['posts.update', $post->id],
+            'route'	=>	['blog.posts.update', $post],
             'files'	=>	true,
-            'method'	=>	'put'
+            'method'	=>	'patch'
         ])}}
 
         <div class="card card-default collapsed-card">

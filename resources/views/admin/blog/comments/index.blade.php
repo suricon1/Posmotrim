@@ -29,7 +29,7 @@
                             @else
                                 <a class="btn btn-outline-success btn-sm" href="{{route('vinograd.comments.toggle', ['id' => $comment->id])}}" role="button"><i class="fa fa-thumbs-o-up"></i></a>
                             @endif
-                            <a href="{{route('vinograd.comments.edit', ['id' => $comment->id])}}" class="btn btn-outline-primary btn-sm" role="button"><i class="fa fa-pencil"></i></a>
+                            <a href="{{route('blog.comments.edit', $comment)}}" class="btn btn-outline-primary btn-sm" role="button"><i class="fa fa-pencil"></i></a>
                             {{Form::open(['route'=>['vinograd.comments.destroy', $comment->id], 'method'=>'delete'])}}
                             <button onclick="return confirm('Подтвердите удаление комментария!')" type="submit" class="btn btn-outline-danger btn-sm"><i class="fa fa-remove"></i></button>
                             {{Form::close()}}

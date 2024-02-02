@@ -2,13 +2,13 @@
 
 namespace App\Models\Vinograd;
 
+use App\Models\Traits\HasSlug;
 use App\Models\Traits\ImageServais;
 use Illuminate\Database\Eloquent\Model;
-use Cviebrock\EloquentSluggable\Sluggable;
-
 class Category extends Model
 {
-    use Sluggable, ImageServais;
+    use HasSlug;
+    use ImageServais;
 
     const DIR_CONTENT_IMAGE_NAME = 'content';
     const IMAGE_WATERMARK =    'img/logo/logo_vinograd.png';
@@ -75,15 +75,6 @@ class Category extends Model
     public static function getRipeningDays($key)
     {
         return self::$ripeningDays[$key];
-    }
-
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'name'
-            ]
-        ];
     }
 
     public static function getSortArr()

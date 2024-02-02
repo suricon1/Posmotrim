@@ -90,15 +90,15 @@
                                                 <td>{{getRusDate($order->created_at)}}</td>
                                                 <td style="color: snow">{!! $order->statuses->name() !!}</td>
 {{--                                                <td style="color: snow">{!! $order->statusName($order->current_status) !!}</td>--}}
-                                                <td>{{currency($order->getTotalCost($user->delivery))}} {{signature()}}</td>
+                                                <td>{{currency($order->getTotalCost())}} {{signature()}}</td>
                                                 <td>
                                                     <div class="btn-group" id="nav">
                                                         <a class="view" href="{{route('vinograd.cabinet.order.view', ['order_id' => $order->id])}}">Посмотреть</a>
-{{--                                                        @if($order->isNew())--}}
-{{--                                                        {{Form::open(['route'=>['vinograd.cabinet.order.destroy', $order->id]])}}--}}
-{{--                                                        <button onclick="return confirm('Подтвердите отмену заказа!')" type="submit" class="btn btn-danger">Отменить</button>--}}
-{{--                                                        {{Form::close()}}--}}
-{{--                                                        @endif--}}
+                                                        @if($order->isNew())
+                                                        {{Form::open(['route'=>['vinograd.cabinet.order.destroy', $order->id]])}}
+                                                        <button onclick="return confirm('Подтвердите отмену заказа!')" type="submit" class="btn btn-danger">Отменить</button>
+                                                        {{Form::close()}}
+                                                        @endif
                                                     </div>
                                                 </td>
                                             </tr>
@@ -125,16 +125,21 @@
                                             <p>Для удобства при работе с сайтом Вы можете сохранить свои контакты для автоматического заполнения формы заказа.</p>
                                             <p>При оформлении заказа эти данные можно будет изменить на любые другие.</p>
                                         </div>
+{{--                                        {{dd($user)}}--}}
                                         <div class="account-login-form">
                                             {!! Form::open(['route'	=> ['vinograd.cabinet.delivery.update', $user->id]]) !!}
                                                 <label><i class="fa fa-asterisk text-danger"></i> Фамилия Имя Отчество</label>
-                                                <input name="delivery[first_name]" type="text" value="{{old('delivery[first_name]', $user->delivery['first_name'])}}">
+                                                <input name="delivery[first_name]" type="text"
+                                                       value="{{old('delivery.first_name', isset($user->delivery['first_name']) ? $user->delivery['first_name'] : '')}}">
                                                 <label><i class="fa fa-asterisk text-danger"></i> Индекс</label>
-                                                <input name="delivery[index]" type="text" value="{{old('delivery[index]', $user->delivery['index'])}}">
+                                                <input name="delivery[index]" type="text"
+                                                       value="{{old('delivery[index]', (isset($user->delivery['index'])) ? $user->delivery['index'] : '')}}">
                                                 <label><i class="fa fa-asterisk text-danger"></i> Адрес</label>
-                                                <input name="delivery[address]" type="text" value="{{old('delivery[address]', $user->delivery['address'])}}">
+                                                <input name="delivery[address]" type="text"
+                                                       value="{{old('delivery[address]', isset($user->delivery['address']) ? $user->delivery['address'] : '')}}">
                                                 <label>Контактный телефон</label>
-                                                <input name="delivery[phone]" type="text" value="{{old('delivery[phone]', $user->delivery['phone'])}}">
+                                                <input name="delivery[phone]" type="text"
+                                                       value="{{old('delivery[phone]', isset($user->delivery['phone']) ? $user->delivery['phone'] : '')}}">
                                                 <div class="button-box">
                                                     <button type="submit" class="default-btn">Сохранить</button>
                                                 </div>

@@ -2,29 +2,20 @@
 
 namespace App\Models\Blog;
 
+use App\Models\Traits\HasSlug;
 use App\Models\Traits\ImageServais;
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use Sluggable, ImageServais;
+    use ImageServais;
+    use HasSlug;
 
     const IMAGE_WATERMARK =    'img/logo/logo_vinograd.png';
 
     protected $table = 'vinograd_blog_category';
     public $timestamps = false;
     protected $fillable = ['name','title', 'slug', 'content', 'meta_key', 'meta_desc'];
-
-//==================================
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'name'
-            ]
-        ];
-    }
 
     //======== Relationships ================
     public function posts()

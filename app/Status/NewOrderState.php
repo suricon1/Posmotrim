@@ -11,6 +11,7 @@ final class NewOrderState extends OrderState
         Status::SENT,
         Status::COMPLETED,
         Status::CANCELLED,
+        Status::CANCELLED_BY_CUSTOMER,
         Status::PRELIMINARY,
         Status::FORMED
     ];

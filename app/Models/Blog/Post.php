@@ -5,16 +5,18 @@ namespace App\Models\Blog;
 use App\Models\Meta;
 use App\Models\Site\User;
 use App\Models\Traits\GalleryServais;
+use App\Models\Traits\HasSlug;
 use App\Models\Traits\ImageServais;
 use App\Models\Vinograd\Comment;
-use Auth;
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class Post extends Model
 {
-    use Sluggable, ImageServais, GalleryServais;
+    use ImageServais;
+    use GalleryServais;
+    use HasSlug;
 
     const IS_DRAFT = 0;
     const IS_PUBLIC = 1;
@@ -36,14 +38,6 @@ class Post extends Model
     ];
 
 //==================================
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'name'
-            ]
-        ];
-    }
 
 //======== Relationships ================
     public function author()

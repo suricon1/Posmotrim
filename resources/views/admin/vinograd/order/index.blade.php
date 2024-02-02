@@ -193,9 +193,9 @@
 <script src="{{ asset('js/daterangepicker.js') }}"></script>
 
 <script>
-const note_url = '{{route('ajax.note.edit')}}';
+const note_url = '{{route('orders.ajax.admin.note.edit')}}';
 const status_url = '{{route('orders.set_ajax_status')}}';
-const build_url = '{{route('ajax.build')}}';
+const build_url = '{{route('orders.ajax.build')}}';
 
 window.addEventListener('DOMContentLoaded', function() {
 

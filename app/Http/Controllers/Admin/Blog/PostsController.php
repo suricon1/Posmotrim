@@ -8,11 +8,10 @@ use App\Jobs\ImageProcessing;
 use App\Jobs\SitemapVinograd;
 use App\Models\Blog\Post;
 use App\Models\Blog\Category;
-use App\UseCases\PostContentService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Validator;
-use View;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 
 class PostsController extends AppController
 {
@@ -53,7 +52,7 @@ class PostsController extends AppController
         dispatch(new SitemapVinograd());
         cache()->delete('siteMapHTML');
 
-        return redirect()->route('posts.index');
+        return redirect()->route('blog.posts.index');
     }
 
 //=========== Edit =============================
@@ -69,10 +68,8 @@ class PostsController extends AppController
     }
 
 //=========== Update =============================
-    public function update(PostRequest $request, $id)
+    public function update(PostRequest $request, Post $post)
     {
-        $post = Post::find($id);
-
         $post->edit($request);
 //        $post->setTags($request->get('tags'));
         $post->toggleStatus($request->get('status'));
@@ -85,7 +82,7 @@ class PostsController extends AppController
         dispatch(new SitemapVinograd());
         cache()->delete('siteMapHTML');
 
-        return redirect()->route('posts.index');
+        return redirect()->route('blog.posts.index');
     }
 
     public function contentEditable(Request $request)
@@ -110,7 +107,7 @@ class PostsController extends AppController
     public function destroy($id)
     {
         Post::find($id)->remove();
-        return redirect()->route('posts.index');
+        return redirect()->route('blog.posts.index');
     }
 
     //=========== Toggle =============================
@@ -123,7 +120,7 @@ class PostsController extends AppController
     }
 
     //=========== ImageServis =============================
-    public function imageServis(Request $request, Model $post)
+    public function imageServis(Request $request, Post $post)
     {
         try {
             $post->uploadImage($request->file('image'));

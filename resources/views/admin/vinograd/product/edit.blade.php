@@ -17,7 +17,7 @@
         {{Form::open([
             'route'	=>	['products.update', $product->id],
             'files'	=>	true,
-            'method'	=>	'put',
+            'method'	=>	'patch',
             'id' => 'uploadImages',
             'data-redirect' => route('products.index')
         ])}}

@@ -527,8 +527,8 @@ P.S.
     <script>
         const order_id = {{$order->id}};
 
-        const print_url = '{{route('ajax.print.order')}}';
-        const build_url = '{{route('ajax.build')}}';
+        const print_url = '{{route('orders.print.ajax.print.order')}}';
+        const build_url = '{{route('orders.ajax.build')}}';
 
         window.addEventListener('DOMContentLoaded', function() {
 

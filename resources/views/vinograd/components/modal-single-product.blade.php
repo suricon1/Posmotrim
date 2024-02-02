@@ -138,7 +138,7 @@
                                             </div>
                                         </li>
                                     @empty
-                                        <p class="text-danger">Нет в наличии</p>
+                                        {{config('main.empty_text')}}
                                     @endforelse
                                 </ul>
                             </div>

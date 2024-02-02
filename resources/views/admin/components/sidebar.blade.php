@@ -92,7 +92,7 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="{{route('posts.index')}}" class="nav-link{{$post_active ?? ''}}">
+                    <a href="{{route('blog.posts.index')}}" class="nav-link{{$post_active ?? ''}}">
                         <p>Посты</p>
                     </a>
                 </li>
@@ -102,7 +102,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('comments.index')}}" class="nav-link{{$blog_comment_active ?? ''}}">
+                    <a href="{{route('blog.comments.index')}}" class="nav-link{{$blog_comment_active ?? ''}}">
                         <p>Комментарии
                             @if($new_comment_post)
                                 <span class="badge badge-danger right">{{$new_comment_post}}</span>

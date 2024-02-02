@@ -10,7 +10,7 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <a href="{{route('posts.create')}}" class="btn btn-success">Добавить новую статью</a>
+                <a href="{{route('blog.posts.create')}}" class="btn btn-success">Добавить новую статью</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -43,17 +43,17 @@
                                 <td>
                                     <div class="btn-group" id="nav">
                                         @if($post->status == 1)
-                                            <a class="btn btn-outline-warning btn-sm" href="{{route('posts.toggle', ['id' => $post->id])}}" role="button"><i class="fa fa-lock"></i></a>
+                                            <a class="btn btn-outline-warning btn-sm" href="{{route('blog.posts.toggle', ['id' => $post->id])}}" role="button"><i class="fa fa-lock"></i></a>
                                         @else
-                                            <a class="btn btn-outline-success btn-sm" href="{{route('posts.toggle', ['id' => $post->id])}}" role="button"><i class="fa fa-thumbs-o-up"></i></a>
+                                            <a class="btn btn-outline-success btn-sm" href="{{route('blog.posts.toggle', ['id' => $post->id])}}" role="button"><i class="fa fa-thumbs-o-up"></i></a>
                                         @endif
-                                        <a class="btn btn-outline-primary btn-sm" href="{{route('posts.edit', $post)}}" role="button"><i class="fa fa-pencil"></i></a>
+                                        <a class="btn btn-outline-primary btn-sm" href="{{route('blog.posts.edit', $post)}}" role="button"><i class="fa fa-pencil"></i></a>
                                         @if($post->status != 1)
                                             <a class="btn btn-outline-secondary btn-sm" href="{{route('blog.post', ['slug' => $post->slug])}}" role="button" target="_blank">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         @endif
-                                        {{Form::open(['route'=>['posts.destroy', $post->id], 'method'=>'delete'])}}
+                                        {{Form::open(['route'=>['blog.posts.destroy', $post->id], 'method'=>'delete'])}}
                                         <button onclick="return confirm('Подтвердите удаление Статьи!')" type="submit" class="btn btn-outline-danger btn-sm"><i class="fa fa-remove"></i></button>
                                         {{Form::close()}}
                                     </div>

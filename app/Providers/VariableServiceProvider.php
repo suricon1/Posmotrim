@@ -2,10 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\Vinograd\Order\Order;
 use App\UseCases\OrderService;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use View;
 
 class VariableServiceProvider extends ServiceProvider
 {

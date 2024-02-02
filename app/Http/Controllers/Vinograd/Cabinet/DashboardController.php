@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Vinograd\Cabinet;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Vinograd\UserDeliveryRequest;
-use App\Models\Vinograd\Order\Status;
-use App\UseCases\StatusService;
+use App\Status\Status;
 use App\Models\Site\User;
 use App\Models\Vinograd\Order\Order;
-use Auth;
-use View;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 
 class DashboardController extends Controller
 {
@@ -35,20 +34,23 @@ class DashboardController extends Controller
         return view('cabinet.order_view', ['order' => $order]);
     }
 
-    public function destroy (StatusService $statusService, $order_id)
+    public function destroy (Order $order)
     {
         try {
-            $statusService->setStatus($order_id, Status::CANCELLED_BY_CUSTOMER);
+            if(!$order->user_id || $order->user_id != Auth::id()) {
+                throw new \RuntimeException('Такого заказа не существует!');
+            }
+            $order->statuses->transitionTo(Status::createStatus(Status::CANCELLED_BY_CUSTOMER, $order));
+            $order->save();
             return redirect()->back();
         } catch  (\RuntimeException $e) {
             return redirect()->route('vinograd.cabinet.home')->withErrors([$e->getMessage()]);
         }
     }
 
-    public function update(UserDeliveryRequest $request, $id)
+    public function update(UserDeliveryRequest $request)
     {
-        $user = User::find($id);
-
+        $user = Auth::user();
         $user->edit($request->all());
         return redirect(route('vinograd.cabinet.home'));
     }

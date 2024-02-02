@@ -14,7 +14,7 @@ use App\Models\Vinograd\WishlistItem;
 use App\Repositories\ProductRepository;
 use App\UseCases\CartService;
 use App\UseCases\LookService;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

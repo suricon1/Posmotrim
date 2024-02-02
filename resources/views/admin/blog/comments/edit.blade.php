@@ -9,7 +9,7 @@
 @section('content')
 
     <div class="col">
-        {!! Form::open(['route' => ['comments.update', $comment->id], 'method' => 'put']) !!}
+        {!! Form::open(['route' => ['blog.comments.update', $comment->id], 'method' => 'patch']) !!}
         <div class="form-group">
             <label for="text">Текст</label>
             <textarea name="text" id="text" class="form-control">{{$comment->text}}</textarea>

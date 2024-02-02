@@ -7,7 +7,7 @@ use App\Status\Status;
 use App\UseCases\OrderService;
 use App\UseCases\StatusService;
 use Illuminate\Http\Request;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class OrdersTreckCodeController extends AppOrdersController
 {
@@ -62,7 +62,7 @@ EOD;
             $statusService->setStatus($request->order_id, Status::SENT, $request->track_code);
             $OrderService->sendCodeMail($order, $request->track_code);
             return [
-                'success' => $order->statusName(Status::SENT),
+                'success' => $order->statuses->name(Status::SENT),
                 'info' => $this->textInfo($order, $request->track_code)
             ];
         } catch  (\RuntimeException $e) {

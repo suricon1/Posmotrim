@@ -4,9 +4,7 @@ namespace App\Models\Traits;
 
 use App\UseCases\ImageService;
 use App\UseCases\Size;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Storage;
-use Image;
+use Storage;
 
 trait ImageServais
 {

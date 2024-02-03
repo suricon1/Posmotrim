@@ -13,6 +13,7 @@ use App\Http\Controllers\Vinograd\CompareController;
 use App\Http\Controllers\Vinograd\ContactController;
 use App\Http\Controllers\Vinograd\SearchController;
 use App\Http\Controllers\Vinograd\VinogradController;
+use App\Http\Middleware\CartEmpty;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['as' => 'vinograd.'], function() {
@@ -102,7 +103,7 @@ Route::group(['as' => 'vinograd.'], function() {
         });
     });
 
-    Route::group(['prefix'=>'checkout', 'as' => 'checkout.'], function() {
+    Route::group(['middleware' => 'cart_empty', 'prefix'=>'checkout', 'as' => 'checkout.'], function() {
         Route::controller(CheckoutController::class)->group(function () {
             Route::get('/delivery', 'delivery')->name('delivery');
             Route::get('/delivery/{delivery_slug}', 'deliveryForm')->name('deliveryForm');

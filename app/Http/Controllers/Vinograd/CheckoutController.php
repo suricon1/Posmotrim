@@ -7,8 +7,6 @@ use App\Models\Vinograd\DeliveryMethod;
 use App\UseCases\CartService;
 use App\UseCases\OrderService;
 use App\Http\Controllers\Controller;
-use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
@@ -20,21 +18,13 @@ class CheckoutController extends Controller
     public function __construct(CartService $cartService, OrderService $service)
     {
         $this->cartService = $cartService;
-        $this->middleware(function (Request $request, Closure $next) {
-            if (!$this->cartService->getCart()->getItems()){
-                return redirect()->route('vinograd.category')->withErrors(['error' => 'Корзина пуста.']);
-            }
-            return $next($request);
-        });
-
         $this->service = $service;
         View::share ('cart', $cartService->getCart());
     }
 
     public function delivery()
     {
-        return view('vinograd.checkout.delivery',
-            [
+        return view('vinograd.checkout.delivery', [
                 'deliverys' => DeliveryMethod::active()->filterCost($this->cartService->getCart()->getCost()->getTotal())->orderBy('sort')->get(),
                 'cart' => $this->cartService->getCart()
             ]);

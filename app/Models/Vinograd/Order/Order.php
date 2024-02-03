@@ -99,7 +99,7 @@ class Order extends Model
     }
 
 /////////////////
-///
+
     public function getWeight(): int
     {
         return $this->items->map(function ($item) {
@@ -211,7 +211,7 @@ class Order extends Model
         return round(($this->cost * 100) / $totalCost, 1);
     }
 
-    public function routeNotificationForMail($notification) //TODO
+    public function routeNotificationForMail($notification)
     {
         return $this->customer['email'];
     }

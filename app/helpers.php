@@ -1,5 +1,6 @@
 <?php
 
+use App\Filter\FilterManager;
 use \App\Status\Status;
 use Illuminate\Support\Facades\Auth;
 
@@ -242,5 +243,13 @@ if (! function_exists('flash'))
     function flash()
     {
         return app(App\Support\Flash\Flash::class);
+    }
+}
+
+if (! function_exists('filters'))
+{
+    function filters()
+    {
+        return app(FilterManager::class)->items();
     }
 }

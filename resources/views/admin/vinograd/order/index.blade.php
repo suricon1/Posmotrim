@@ -248,10 +248,7 @@ window.addEventListener('DOMContentLoaded', function() {
                                 .then (data => {
                                     if(data.success) {
                                         this.badge.innerHTML = data.success;
-                                        this.alert.innerHTML = 'Статус изменен.';
-                                        if(data.info){
-                                            this.alert.insertAdjacentHTML('afterend', data.info);
-                                        }
+                                        this.alert.innerHTML = !data.info ? '<h4>Статус изменен.</h4>' : '<p>Статус изменен.</p>' + data.info;
                                     } else if(data.errors){
                                         if (this.alert.querySelector(".errors") !== null) {
                                             this.alert.querySelector(".errors").innerHTML = get_list(data.errors);

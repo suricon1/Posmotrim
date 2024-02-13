@@ -12,7 +12,8 @@ class LookService
     {
         if(!$arToBasket = json_decode(Cookie::get('look'))) return false;
 
-        return Product::with('modifications.property')
+        return Product::select('id', 'slug', 'name')
+            ->with('modifications.property')
             ->whereIn('id', $arToBasket)
             ->orderBy(new Expression('FIELD(id,' . implode(',', array_reverse($arToBasket)) . ')'))
             ->get();

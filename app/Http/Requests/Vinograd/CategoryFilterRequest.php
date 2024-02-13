@@ -16,13 +16,15 @@ class CategoryFilterRequest extends FormRequest
         return [
             //'selection' => 'nullable|required_without:country',
             //'country' => 'nullable|required_without:selection',
-            'selection.*' => [
+            'filters.selection.*' => [
                 'integer',
-                'regex:/^[1-9][0-9]*$/iu'
+                'regex:/^[1-9][0-9]*$/iu',
+                'exists:vinograd_selections,id'
             ],
-            'country.*' => [
+            'filters.country.*' => [
                 'integer',
-                'regex:/^[1-9][0-9]*$/iu'
+                'regex:/^[1-9][0-9]*$/iu',
+                'exists:vinograd_countrys,id'
             ]
         ];
     }
@@ -31,11 +33,13 @@ class CategoryFilterRequest extends FormRequest
     {
         return [
             //'selection.required_without' => 'Необходимо выбрать селекционера',
-            'selection.*.integer' => 'Не чуди',
-            'selection.*.regex' => 'Не чуди',
+            'filters.selection.*.integer' => 'Не чуди',
+            'filters.selection.*.regex' => 'Не чуди',
+            'filters.selection.*.exists' => 'Не чуди',
             //'country.required_without' => 'Необходимо выбрать страну селекции',
-            'country.*.integer' => 'Не чуди',
-            'country.*.regex' => 'Не чуди'
+            'filters.country.*.integer' => 'Не чуди',
+            'filters.country.*.regex' => 'Не чуди',
+            'filters.country.*.exists' => 'Не чуди'
         ];
     }
 

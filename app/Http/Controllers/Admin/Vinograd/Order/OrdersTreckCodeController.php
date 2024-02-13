@@ -33,7 +33,7 @@ class OrdersTreckCodeController extends AppOrdersController
             $phone = $order->customer['phone'];
             return
 <<<EOD
-    <div>
+    <div style="background-color: white; color: black; padding: 10px;">
         <h4>Для Вайбера</h4>
         <p>тел: $phone</p>
         <p>Здравствуйте.</p>

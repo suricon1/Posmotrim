@@ -29,6 +29,7 @@ class CacheServiceProvider extends ServiceProvider
             cache()->delete('categorys_category');
             cache()->delete('categorys_selection');
             cache()->delete('categorys_country');
+            cache()->forget('home_page');
         };
 
         Product::created($func);
@@ -55,6 +56,7 @@ class CacheServiceProvider extends ServiceProvider
             cache()->delete('categorys_category');
             cache()->delete('categorys_selection');
             cache()->delete('categorys_country');
+            cache()->forget('home_page');
         };
 
         Category::created($func);

@@ -6,8 +6,10 @@ use App\Models\Meta;
 use App\Models\Traits\GalleryServais;
 use App\Models\Traits\HasSlug;
 use App\Models\Traits\ImageServais;
+use App\Models\Vinograd\QueryBuilder\ProductQueryBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -36,6 +38,11 @@ class Product extends Model
         'meta' => 'array',
         'props' => 'array'
     ];
+
+    public function newEloquentBuilder($query): ProductQueryBuilder
+    {
+        return new ProductQueryBuilder($query);
+    }
 
     public function category()
     {
@@ -72,6 +79,8 @@ class Product extends Model
         return $this->hasMany(Modification::class);
     }
 
+//----------- scope --------------------
+
     public function scopeActive($query)
     {
         return $query->where('status', 0);
@@ -96,7 +105,7 @@ class Product extends Model
             : $query->orderBy('existence', 'desc')->orderBy('name', 'asc');
     }
 
-    public function scopeCategory($query, $request, $category)
+    public function scopeCategory(Builder $query, $request, $category)
     {
         if ($category){
             $query->where('vinograd_products.' . $category->category_field . '_id', $category->id);
@@ -116,31 +125,35 @@ class Product extends Model
         return $query;
     }
 
-    public function scopeCategoryCountry($query, $country)
+    public function scopeCategoryCountry(Builder $query, $country)
     {
         if ($country){
             return $query->whereIn('selection_id', $country);
         }
+        return $query;
     }
 
-    public function scopeCategorySelection($query, $selection)
+    public function scopeCategorySelection(Builder $query, $selection)
     {
         if ($selection){
             return $query->whereIn('selection_id', $selection);
         }
+        return $query;
     }
 
     public function scopeFiltered(Builder $query)
     {
-        $query->when(request('filters.brands'), function (Builder $q) {
-            $q->whereIn('brand_id', request('filters.brands'));
-        })->when(request('filters.price'), function (Builder $q) {
-            $q->whereBetween('price', [
-                request('filters.price.from', 0) * 100,
-                request('filters.price.to', 100000) * 100
-            ]);
-        });
+        return app(Pipeline::class)
+            ->send($query)
+            ->through(filters())
+            ->thenReturn();
+
+//        foreach (filters() as $filter) {
+//            $query = $filter->apply($query);
+//        }
     }
+
+//----------- end scope ---------------------------------------------
 
     public function setCategory($id)
     {
@@ -274,17 +287,5 @@ class Product extends Model
     public function StrLimit($str, $limit)
     {
         return STR::limit(wp_strip_all_tags(htmlspecialchars_decode($str)), $limit);
-    }
-
-    public function StrForTurbo($str)
-    {
-        $str = preg_replace('/\&nbsp\;/', ' ', $str);
-        $str = preg_replace("/\&mdash\;/", "—", $str);
-        $str = preg_replace('/\&ndash\;/', '—', $str);
-        $str = preg_replace('/\&deg\;/', '<sup>o</sup>', $str);
-        $str = preg_replace('/\&laquo\;/', '«', $str);
-        $str = preg_replace('/\&raquo\;/', '»', $str);
-
-        return $str;
     }
 }

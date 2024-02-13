@@ -10,11 +10,14 @@ use App\Models\Blog\Category as BlogCategory;
 use App\Models\Vinograd\Comment;
 use App\Models\Vinograd\Country;
 use App\Models\Vinograd\Page;
+use App\Models\Vinograd\Product;
 use App\Models\Vinograd\Selection;
 use App\Models\Vinograd\Slider;
 use App\Http\Controllers\Controller;
 use App\Repositories\ProductRepository;
 use App\UseCases\LookService;
+use Cookie;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class VinogradController extends Controller
@@ -73,18 +76,12 @@ class VinogradController extends Controller
         return view('vinograd.category', $this->temp($request, $page, $category));
     }
 
-    public function categoryFilter(CategoryFilterRequest $request, $page = '')
+    public function categoryFilter(CategoryFilterRequest $request)
     {
-        $selections = $request->selection
-            ? Selection::with('productsActive.modifications.property')->whereIn('id', $request->selection)->get()
-            : [];
-        $countrys = $request->country
-            ? Country::with('productsActive.modifications.property')->whereIn('id', $request->country)->get()
-            : [];
+        $products = Product::getFilteredProducts();
 
         return view('vinograd.filter', [
-            'selections' => $selections,
-            'countrys' => $countrys
+            'products' => $products,
         ]);
     }
 

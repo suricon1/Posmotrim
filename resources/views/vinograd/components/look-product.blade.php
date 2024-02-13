@@ -13,36 +13,7 @@
                     @foreach($looks as $product)
                         <div class="col-md-3 col-lg-3 col-sm-4 col-xs-12">
 
-{{--                            @php $modifications = $product->getModifications(); @endphp--}}
-{{--                            @include('vinograd.components.single-product-item', ['product' => $product, 'modifications' => $modifications])--}}
                             @include('vinograd.components.single-product-item', ['product' => $product])
-
-{{--                            <div class="single-product mb-25">--}}
-{{--                                <div class="product-img img-full">--}}
-{{--                                    <a href="{{route('vinograd.product', ['slug' => $product->slug])}}">--}}
-{{--                                        <img src="{{ asset($product->getImage('400x400')) }}" alt="">--}}
-{{--                                    </a>--}}
-{{--                                    <div class="product-action">--}}
-{{--                                        <ul>--}}
-{{--                                            --}}{{--<li><a href="#open-modal" data-toggle="modal" title="Quick view"><i class="fa fa-search"></i></a></li>--}}
-{{--                                            <li><a href="#" class="open-modal" data-product-id="{{$product->id}}" title="Quick view"><i class="fa fa-search"></i></a></li>--}}
-{{--                                            <li><a href="{{route('vinograd.cabinet.wishlist.add', ['id' => $product->id])}}" title="Whishlist"><i class="fa fa-heart-o"></i></a></li>--}}
-{{--                                            <li><a href="single-product.html#" title="Compare"><i class="fa fa-refresh"></i></a></li>--}}
-{{--                                        </ul>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div class="product-content">--}}
-{{--                                    <h2><a href="{{route('vinograd.product', ['slug' => $product->slug])}}">{{ $product->name }}</a></h2>--}}
-{{--                                    <div class="product-price">--}}
-{{--                                        <div class="price-box">--}}
-{{--                                            <span class="regular-price">$70.00</span>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="add-to-cart">--}}
-{{--                                            <a href="single-product.html#">Add To Cart</a>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
 
                         </div>
                     @endforeach

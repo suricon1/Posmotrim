@@ -32,7 +32,7 @@ Route::group(['as' => 'vinograd.'], function() {
         Route::get('/country/{slug}/page-{page}.html', 'country')->where(['slug'=>'[a-z0-9_-]*', 'page'=>'[0-9]*'])->name('category.country.page');
         Route::get('/selection/{slug}.html', 'selection')->name('category.selection');
         Route::get('/selection/{slug}/page-{page}.html', 'selection')->where(['slug'=>'[a-z0-9_-]*', 'page'=>'[0-9]*'])->name('category.selection.page');
-        Route::post('/category_filter.html', 'categoryFilter')->name('category.filter');
+        Route::get('/category_filter.html', 'categoryFilter')->name('category.filter');
     });
 
     Route::controller(CompareController::class)->group(function () {

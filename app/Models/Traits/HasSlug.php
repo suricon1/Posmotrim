@@ -16,13 +16,12 @@ trait HasSlug
 
     protected function makeSlug(): void
     {
-        //dd(Str::of($this->{$this->slugform()})->slug()->value());
         if(!$this->{$this->slugColumn()}){
             $slug = $this->slugUnique(
 
                 Str::of($this->{$this->slugForm()})
                     ->slug()
-                    //->value()
+                    ->value()
             );
             $this->{$this->slugColumn()} = $slug;
         }

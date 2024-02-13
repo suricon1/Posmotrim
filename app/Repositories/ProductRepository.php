@@ -6,7 +6,6 @@ use App\Models\Vinograd\Category;
 use App\Models\Vinograd\Modification;
 use App\Models\Vinograd\Order\Order;
 use App\Models\Vinograd\Product;
-use Cache;
 use Cookie;
 
 class ProductRepository
@@ -43,11 +42,12 @@ class ProductRepository
 
     public function getProductsByCategory($request, $categorys)
     {
-        foreach ($categorys as $category)
-        {
-            $products[$category->slug] = $this->getSortProductByModifications($request, null, $category, 10);
-        }
-        return $products;
+        return cache()->remember('home_page', 30*24*60, function () use($request, $categorys) {
+            foreach ($categorys as $category) {
+                $products[$category->slug] = $this->getSortProductByModifications($request, null, $category, 10);
+            }
+            return $products;
+        });
     }
 
     public function getSimilarOnChunks($props)
@@ -56,8 +56,7 @@ class ProductRepository
             return false;
         }
 
-        $products = Product::
-            select('id', 'slug', 'name')
+        $products = Product::select('id', 'slug', 'name')
             ->with('modifications.property')
             ->whereIn('id', $props['similar'])
             ->active()
@@ -145,42 +144,14 @@ class ProductRepository
     public static function getAllCategorysOfCountProducts()
     {
         return cache()->remember('categorys_category', 30*24*60, function () {
-            return Product::
-            leftJoin('vinograd_categorys AS category', function ($join) {
-                $join->on('vinograd_products.category_id', '=', 'category.id');
-            })->
-            selectRaw('category.id, category.name, category.slug, COUNT(`vinograd_products`.`id`) AS `category_count`')->
-            where('vinograd_products.status', 0)->
-            groupBy('category.name', 'category.id', 'category.slug')->
-            get();
-        });
-    }
-
-    public static function getAllCountrysOfCountProducts()
-    {
-        return cache()->remember('categorys_country', 30*24*60, function () {
-            return Product::
-                leftJoin('vinograd_countrys AS country', function ($join) {
-                    $join->on('vinograd_products.country_id', '=', 'country.id');
-                })->
-                selectRaw('country.id, country.name, country.slug, COUNT(`vinograd_products`.`id`) AS `country_count`')->
-                where('vinograd_products.status', 0)->
-                groupBy('country.name', 'country.id', 'country.slug')->
-                get();
-        });
-    }
-
-    public static function getAllSelectionsOfCountProducts()
-    {
-        return cache()->remember('categorys_selection', 30*24*60, function () {
-            return Product::
-                leftJoin('vinograd_selections AS selection', function ($join) {
-                    $join->on('vinograd_products.selection_id', '=', 'selection.id');
-                })->
-                selectRaw('selection.id, selection.name, selection.slug, COUNT(`vinograd_products`.`id`) AS `selection_count`')->
-                where('vinograd_products.status', 0)->
-                groupBy('selection.name', 'selection.id', 'selection.slug')->
-                get();
+            return Product::leftJoin('vinograd_categorys AS category', function ($join) {
+                        $join->on('vinograd_products.category_id', '=', 'category.id');
+                    })
+                ->selectRaw('category.id, category.name, category.slug, COUNT(`vinograd_products`.`id`) AS `count`')
+                ->where('vinograd_products.status', 0)
+                ->groupBy('category.name', 'category.id', 'category.slug')
+                ->get()
+                ->toArray();
         });
     }
 

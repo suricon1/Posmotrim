@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->getLooksProduct();
-        $this->siteSidebar();
+//        $this->siteSidebar();
         $this->adminSidebar();
         $this->paginationPattern();
     }
@@ -61,14 +61,14 @@ class AppServiceProvider extends ServiceProvider
     }
 
     //  Сайт Бар на сайте
-    private function siteSidebar()
-    {
-        view()->composer('vinograd.components.left_sidebar', function($view) {
-            //$view->with('featured', ProductRepository::getFeatured());
-            $view->with('countrys', ProductRepository::getAllCountrysOfCountProducts());
-            $view->with('selections', ProductRepository::getAllSelectionsOfCountProducts());
-        });
-    }
+//    private function siteSidebar()
+//    {
+//        view()->composer('vinograd.components.left_sidebar', function($view) {
+//            //$view->with('featured', ProductRepository::getFeatured());
+//            //$view->with('countrys', ProductRepository::getAllCountrysOfCountProducts());
+//            //$view->with('selections', ProductRepository::getAllSelectionsOfCountProducts());
+//        });
+//    }
 
     //  Сайт Бар в админке
     private function adminSidebar()

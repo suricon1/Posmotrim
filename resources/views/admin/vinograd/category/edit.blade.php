@@ -10,7 +10,7 @@
 
     <div class="col">
         <h2>Раздел - <small class="text-muted">{{$category::TITLE}}</small></h2>
-        {!! Form::open(['route' => ['categorys.update', $category->id], 'method' => 'put']) !!}
+        {!! Form::open(['route' => ['categorys.update', $category->id], 'method' => 'patch']) !!}
         {!! Form::hidden('model', $model) !!}
         <div class="form-group">
             <label for="name">Название (В меню)</label>

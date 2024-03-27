@@ -81,31 +81,31 @@ class Product extends Model
 
 //----------- scope --------------------
 
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('status', 0);
     }
 
-    public function scopeGetByStatus($query, $status)
+    public function scopeGetByStatus(Builder $query, $status): Builder
     {
         return $query->where('status', $status);
     }
 
-    public function scopeRipening($query, $request)
+    public function scopeRipening(Builder $query, $request): Builder
     {
         return $request->get('ripening_by')
             ? $query->where('ripening', $request->get('ripening_by'))
             : $query;
     }
 
-    public function scopeSort($query, $sort)
+    public function scopeSort(Builder $query, $sort): Builder
     {
         return $sort
             ? $query->orderBy(key($sort), $sort[key($sort)])->orderBy('name', 'asc')
             : $query->orderBy('existence', 'desc')->orderBy('name', 'asc');
     }
 
-    public function scopeCategory(Builder $query, $request, $category)
+    public function scopeCategory(Builder $query, $request, $category): Builder
     {
         if ($category){
             $query->where('vinograd_products.' . $category->category_field . '_id', $category->id);
@@ -125,7 +125,7 @@ class Product extends Model
         return $query;
     }
 
-    public function scopeCategoryCountry(Builder $query, $country)
+    public function scopeCategoryCountry(Builder $query, $country): Builder
     {
         if ($country){
             return $query->whereIn('selection_id', $country);
@@ -133,7 +133,7 @@ class Product extends Model
         return $query;
     }
 
-    public function scopeCategorySelection(Builder $query, $selection)
+    public function scopeCategorySelection(Builder $query, $selection): Builder
     {
         if ($selection){
             return $query->whereIn('selection_id', $selection);
@@ -141,7 +141,7 @@ class Product extends Model
         return $query;
     }
 
-    public function scopeFiltered(Builder $query)
+    public function scopeFiltered(Builder $query): Builder
     {
         return app(Pipeline::class)
             ->send($query)

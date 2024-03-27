@@ -142,7 +142,11 @@
                                     <div class="form-group mb-0">
                                         <div class="input-group input-group-sm">
                                             <div class="input-group-prepend">
-                                              <span class="input-group-text">
+{{--                                              <span class="input-group-text{{ $order->dateBuildBg() }}">--}}
+                                              <span @class([
+                                                    'input-group-text',
+                                                    'bg-warning' => $order->isDateBuild()
+                                                ])>
                                                 <i class="fa fa-calendar"></i>
                                               </span>
                                             </div>
@@ -173,8 +177,25 @@
                                 </div>
                             </td>
                         </tr>
-
                     @endforeach
+                    @if(request('build'))
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button type="button" class="btn btn-info print">
+                                    Распечатать
+{{--                                    <i class="fa fa-print"></i>--}}
+{{--                                    {{request('build')}}--}}
+                                </button>
+                            </td>
+                            <td></td>
+                        </tr>
+                    @endif
                     </tbody>
                 </table>
             </div>
@@ -196,6 +217,9 @@
 const note_url = '{{route('orders.ajax.admin.note.edit')}}';
 const status_url = '{{route('orders.set_ajax_status')}}';
 const build_url = '{{route('orders.ajax.build')}}';
+const date_print_url = '{{route('orders.print.ajax.orders.build')}}';
+
+const date = '{{request('build')}}';
 
 window.addEventListener('DOMContentLoaded', function() {
 
@@ -285,6 +309,37 @@ window.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    const print_button = document.querySelector(".print");
+    if (print_button !== null) {
+        print_button.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            let data = {
+                date: date
+            }
+            getData(data, date_print_url)
+                .then(data => {
+                    if (data.success) {
+                        const printCSS = '<link rel="stylesheet" href="/css/adminlte.min.css">';
+                        const windowPrint = window.open('','','left=50,top=50,width=1000,height=800,toolbar=0,scrollbars=1,status=0');
+                        windowPrint.document.write(printCSS);
+                        windowPrint.document.write(data.success.print_order);
+                        windowPrint.document.close();
+                        windowPrint.focus();
+                        windowPrint.print();
+                        windowPrint.close();
+
+                    } else if (data.errors) {
+                        errors_list(data.errors);
+                    } else {
+                        errors_list('Неизвестная ошибка. Повторите попытку, пожалуйста!');
+                    }
+                }).catch((xhr) => {
+                console.log(xhr);
+            });
+        });
+    }
+
     function errors_list(data) {
         $(function() {
             toastr.error(get_list(data));
@@ -371,7 +426,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 applyLabel: 'Принять',
                 cancelLabel: 'Отмена',
                 invalidDateLabel: 'Выберите дату',
-                daysOfWeek: ['Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс', 'Пн'],
+                daysOfWeek: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
                 monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
                 firstDay: 1
             }

@@ -10,7 +10,7 @@ format: 'DD.MM YYYY',
 applyLabel: 'Принять',
 cancelLabel: 'Отмена',
 invalidDateLabel: 'Выберите дату',
-daysOfWeek: ['Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс', 'Пн'],
+daysOfWeek: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
 monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
 firstDay: 1
 }
@@ -37,6 +37,11 @@ getData(data, build_url)
 .then(data => {
 if(data.success) {
 toastr.success('ok');
+if(newDate) {
+$(item).prev().children('.input-group-text').addClass('bg-warning');
+} else {
+$(item).prev().children('.input-group-text').removeClass('bg-warning');
+}
 }else if(data.errors){
 errors_list(data.errors);
 }else{

@@ -43,4 +43,11 @@ class Slider extends Model
         $this->deleteImages();
         $this->delete();
     }
+
+    public static function getSliders()
+    {
+        return cache()->remember('slider', 30*24*60, function () {
+            return self::all();
+        });
+    }
 }

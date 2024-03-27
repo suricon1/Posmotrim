@@ -152,10 +152,14 @@
                 "paging": true,
                 "lengthChange": true,
                 "searching": true,
-                "ordering": true,
+
+                //  сортировка по первому столбцу: включение/выключение
+                "ordering": false,
+                // "aaSorting": [[ 0, "asc" ]],
+                // "ordering": true,
+
                 "info": false,
                 "stateSave": true,
-                "aaSorting": [[ 0, "asc" ]],
                 "iDisplayLength": 20,
                 "aLengthMenu": [[ 10, 20, 50, 100 ,-1],[10,20,50,100,"все"]],
 

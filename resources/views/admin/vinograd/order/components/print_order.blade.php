@@ -13,33 +13,33 @@
                 <tr>
                     <th>Название</th>
                     <th>Кол-во</th>
-                    <th>Цена за шт.</th>
+                    <th>Цена</th>
                     <th>Всего</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($items as $item)
                     <tr>
-                        <td>
+                        <td style="font-size: 130%;">
                             {{$item->product_name}}<br>
                             <strong>{{$item->modification_name}}</strong>
                         </td>
-                        <td>{{$item->quantity}} шт.</td>
-                        <td>{{$item->price}} бел. руб</td>
-                        <td>{{$item->getCost()}} бел. руб</td>
+                        <td style="font-size: 130%;">{{$item->quantity}} шт.</td>
+                        <td>{{$item->price}} р</td>
+                        <td>{{$item->getCost()}} р</td>
                     </tr>
                 @endforeach
                 <tr>
-                    <th>Всего</th>
-                    <td>
+{{--                    <th>Всего</th>--}}
+                    <td colspan="2" style="font-size: 130%;" class="pt-4">
                         @foreach ($quantityByModifications as $name => $value)
                             <p>{{$name}}: <strong>{{$value}}</strong> шт</p>
                         @endforeach
                     </td>
-                    <td>Итоговая стоимость:</td>
-                    <td>
-                        <strong>{{$order->getTotalCost()}}</strong> бел. руб <br>
-                        ({{mailCurr($currency, $order->getTotalCost())}} {{$currency->sign}})
+{{--                    <td>Итого:</td>--}}
+                    <td  colspan="2" class="pt-4">
+                        Итого: <strong>{{$order->getTotalCost()}}</strong> р <br>
+{{--                        ({{mailCurr($currency, $order->getTotalCost())}} {{$currency->sign}})--}}
                     </td>
                 </tr>
                 </tbody>

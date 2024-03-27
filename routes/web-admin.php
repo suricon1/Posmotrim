@@ -80,7 +80,7 @@ Route::middleware(['admin'])->group(callback: function () {
                 Route::get('/orders/merge/{order_id}/{merge_order_id}', 'merge')->name('orders.merge');
                 Route::get('/orders/repeat_order_create/{order_id}', 'repeatCreate')->name('orders.repeat.create');
 
-                Route::get('/ajax/build', 'setBuildDate')->name('orders.ajax.build');//TODO
+                Route::get('/ajax/build', 'setBuildDate')->name('orders.ajax.build');
             });
 
             Route::controller(ProductsController::class)->group(function () {
@@ -184,7 +184,9 @@ Route::middleware(['admin'])->group(callback: function () {
                         Route::get('/print/small_package_sticker/{id}', 'smallPackageSticker')->name('small_package_sticker');
                         Route::get('/print/small_package_sticker_2/{id}', 'smallPackageSticker_2')->name('small_package_sticker_2');
 
-                        Route::get('/ajax/ajax_print_order', 'ajaxOrder')->name('ajax.print.order');//TODO
+                        Route::get('/ajax/ajax_print_order', 'ajaxOrder')->name('ajax.print.order');
+
+                        Route::get('/ajax/ajax_print_build', 'ajaxOrdersBuildDate')->name('ajax.orders.build');
                     });
                 });
             });

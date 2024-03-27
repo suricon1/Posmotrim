@@ -114,6 +114,17 @@ class Post extends Model
     }
 //============ End Actions ===========================
 
+    public static function getPostForHome()
+    {
+        return cache()->remember('posts_home', 24*60, function () {
+            return self::select('id', 'slug', 'name', 'date_add')
+                ->orderByDesc('view')
+                ->active()
+                ->take(6)
+                ->get();
+        });
+    }
+
     public function setTags($ids)
     {
         $this->tags()->sync($ids);

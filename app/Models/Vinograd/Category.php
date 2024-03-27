@@ -86,6 +86,15 @@ class Category extends Model
         return $arr;
     }
 
+    public static function getAllActiveCategories()
+    {
+        return cache()->remember('all_categories', 30*24*60, function () {
+            return self::select('id', 'slug', 'name')
+                ->active()
+                ->get();
+        });
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class)->orderBy('name');

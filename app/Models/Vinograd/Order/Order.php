@@ -5,7 +5,6 @@ namespace App\Models\Vinograd\Order;
 use App\Models\Vinograd\DeliveryMethod;
 use App\Models\Vinograd\QueryBuilder\OrderQueryBuilder;
 use App\Models\Vinograd\User;
-use App\Status\OrderState;
 use App\Status\Status;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -183,6 +182,11 @@ class Order extends Model
     public function isTrackCode(): bool
     {
         return $this->track_code !== null;
+    }
+
+    public function isDateBuild(): bool
+    {
+        return $this->date_build !== null;
     }
 
     public function isCreatedByAdmin(): bool

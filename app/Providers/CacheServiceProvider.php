@@ -8,6 +8,7 @@ use App\Models\Vinograd\Country;
 use App\Models\Vinograd\Modification;
 use App\Models\Vinograd\Product;
 use App\Models\Vinograd\Selection;
+use App\Models\Vinograd\Slider;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class CacheServiceProvider extends ServiceProvider
@@ -18,6 +19,7 @@ class CacheServiceProvider extends ServiceProvider
         $this->productEvent ();
         $this->modificationEvent ();
         $this->categoryEvent ();
+        $this->sliderEvent ();
     }
 
     private function productEvent ()
@@ -57,6 +59,7 @@ class CacheServiceProvider extends ServiceProvider
             cache()->delete('categorys_selection');
             cache()->delete('categorys_country');
             cache()->forget('home_page');
+            cache()->forget('all_categories');
         };
 
         Category::created($func);
@@ -70,5 +73,16 @@ class CacheServiceProvider extends ServiceProvider
         Selection::created($func);
         Selection::updated($func);
         Selection::deleted($func);
+    }
+
+    private function sliderEvent ()
+    {
+        $func = function() {
+            cache()->delete('slider');
+        };
+
+        Slider::created($func);
+        Slider::updated($func);
+        Slider::deleted($func);
     }
 }

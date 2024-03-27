@@ -47,6 +47,16 @@ class Status
         ];
     }
 
+    public static function orderEditable()
+    {
+        return [
+            self::NEW,
+            self::PAID,
+            self::PRELIMINARY,
+            self::FORMED
+        ];
+    }
+
     public static function statusColor(int $status): string
     {
         switch ($status) {

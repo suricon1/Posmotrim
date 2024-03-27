@@ -17,7 +17,6 @@ use App\Http\Controllers\Controller;
 use App\Repositories\ProductRepository;
 use App\UseCases\LookService;
 use Cookie;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class VinogradController extends Controller
@@ -31,13 +30,13 @@ class VinogradController extends Controller
 
     public function index(Request $request)
     {
-        $categorys = Category::active()->get();
+        $categorys = Category::getAllActiveCategories();
 
         return view('vinograd.index', [
             'products' => $this->productRep->getProductsByCategory($request, $categorys),
-            'sliders' => Slider::all(),
+            'sliders' => Slider::getSliders(),
             'categorys' => $categorys,
-            'posts' => Post::orderByDesc('view')->active()->take(6)->get()
+            'posts' => Post::getPostForHome()
         ]);
     }
 

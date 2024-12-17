@@ -3,16 +3,10 @@
 namespace App\Http\Requests\Admin\Vinograd\Order;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Route;
 
 class OrdersTreckCodeRequest extends FormRequest
 {
-//    public function authorize()
-//    {
-//        return true;
-//    }
-
-    //protected $redirect =
-
     public function rules()
     {
         return [
@@ -31,6 +25,9 @@ class OrdersTreckCodeRequest extends FormRequest
     protected function getRedirectUrl()
     {
         $url = $this->redirector->getUrlGenerator();
-        return $url->route('orders.track_code_form', $this->order_id);
+        if (Route::currentRouteName() == 'orders.sent.status.mail') {
+            return $url->route('orders.track_code_form', $this->order_id);
+        }
+        return $url->previous();
     }
 }

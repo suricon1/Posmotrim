@@ -8,24 +8,16 @@ use App\Status\Status;
 use App\UseCases\OrderService;
 use App\UseCases\StatusService;
 use Illuminate\Http\Request;
+use RuntimeException;
 
 class OrdersTreckCodeController extends AppOrdersController
 {
-    public function setTrackCode(Request $request, OrderService $service)
+    public function setTrackCode(OrdersTreckCodeRequest $request, OrderService $service)
     {
-        $this->validate($request, [
-            'track_code' => ['required', 'regex:/^([A-Za-z]{2}[0-9]{9}(BY|by))$|^([A-Za-z]{3}[0-9]{14})$/'],
-            'order_id' => 'required|exists:vinograd_orders,id'
-        ],[
-            'track_code.regex' => 'Код должен иметь формат: для почты - "VV380205975BY", для Boxberry - "BBU17340054869422"'
-        ]);
-
-        //$data = $request->validated();
-
         try {
             $service->setTrackCode($request->order_id, $request->track_code);
             return redirect()->route('orders.show', $request->order_id);
-        } catch  (\RuntimeException $e) {
+        } catch  (RuntimeException $e) {
             return redirect()->route('orders.show', $request->order_id)->withErrors([$e->getMessage()]);
         }
     }
@@ -58,7 +50,7 @@ EOD;
                 'success' => $order->statuses->name(Status::SENT),
                 'info' => $this->textInfo($order, $request->track_code)
             ];
-        } catch  (\RuntimeException $e) {
+        } catch  (RuntimeException $e) {
             return ['errors' => [$e->getMessage()]];
         }
     }
@@ -70,7 +62,7 @@ EOD;
             $statusService->setStatus($request->order_id, Status::SENT, $request->track_code);
             $OrderService->sendCodeMail($order, $request->track_code);
             return redirect()->route('orders.show', $request->order_id)->with('status', $this->textInfo($order, $request->track_code));
-        } catch  (\RuntimeException $e) {
+        } catch  (RuntimeException $e) {
             return redirect()->route('orders.show', $order->id)->withErrors([$e->getMessage()]);
         }
     }

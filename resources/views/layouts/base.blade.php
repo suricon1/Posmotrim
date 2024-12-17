@@ -31,6 +31,10 @@
     </style>
     <script data-ad-client="ca-pub-2733726119160750" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
+    <!-- Yandex.RTB -->
+    <script>window.yaContextCb=window.yaContextCb||[]</script>
+    <script src="https://yandex.ru/ads/system/context.js" async></script>
+
 </head>
 <body>
 <!--[if lt IE 8]>

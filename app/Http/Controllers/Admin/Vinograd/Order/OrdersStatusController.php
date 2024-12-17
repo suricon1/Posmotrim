@@ -19,9 +19,7 @@ class OrdersStatusController extends AppOrdersController
 
         $order = Order::findOrFail($request->order_id);
         if ($request->status == Status::SENT){
-            return view('admin.vinograd.order.add_treck_code', [
-                'order' => $order
-            ]);
+            return redirect()->route('orders.track_code_form', $order);
         }
         try {
             $statusService->setStatus($request->order_id, $request->status);

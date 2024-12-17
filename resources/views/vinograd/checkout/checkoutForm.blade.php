@@ -67,71 +67,33 @@
 
         {!! Form::open(['route'	=> 'vinograd.checkout.checkout']) !!}
         {!! Form::hidden('delivery[method]', $delivery->id) !!}
+        <div class="your-order mb-3">
+            <h3>{{$delivery->name}}</h3>
+            {!! $delivery->content !!}
+        </div>
         <div class="row">
-
             <div class="col-lg-6 col-12">
                 <div class="checkbox-form">
-                    <h3>Доставка<br><small>{{$delivery->name}}</small></h3>
+{{--                    <h3>Доставка<br><small>{{$delivery->name}}</small></h3>--}}
                     <div class="row">
 
-                        @if($delivery->isMailed())
-                        <div class="col-md-12">
-                            <div class="checkout-form-list">
-                                <label>Фамилия Имя Отчество (Необходимо для заполнения почтовой формы) <span class="required">*</span></label>
-                                <input placeholder="" type="text" name="customer[name]" class="form-control{{ $errors->first('customer.name') ? ' is-invalid' : '' }}" value="{{ old('customer.name', $user && $user->delivery ? $user->delivery['first_name'] : '') }}" id="customer[name]">
-                                <div class="invalid-feedback" id="invalid-customer[name]">
-                                    {{ $errors->first('customer.name') ? $errors->first('customer.name') : '' }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="checkout-form-list">
-                                <label>Индекс Вашей почты <span class="required">*</span></label>
-                                <input placeholder="" type="text" name="delivery[index]" class="form-control{{ $errors->first('delivery.index') ? ' is-invalid' : '' }}" value="{{ old('delivery.index', $user && $user->delivery ? $user->delivery['index'] : '') }}" id="delivery[index]">
-                                <div class="invalid-feedback" id="invalid-delivery[index]">
-                                    {{ $errors->first('delivery.index') ? $errors->first('delivery.index') : '' }}
-                                </div>
-                            </div>
-                        </div>
-                        @else
-                        <div class="col-md-12">
-                            <div class="checkout-form-list">
-                                <label>Имя <span class="required">*</span></label>
-                                <input placeholder="" type="text" name="customer[name]" class="form-control{{ $errors->first('customer.name') ? ' is-invalid' : '' }}" value="{{ old('customer.name', $user && $user->delivery ? $user->delivery['first_name'] : '') }}" id="customer[name]">
-                                <div class="invalid-feedback" id="invalid-customer[name]">
-                                    {{ $errors->first('customer.name') ? $errors->first('customer.name') : '' }}
-                                </div>
-                            </div>
-                        </div>
-                        @endif
+                        @include('vinograd.checkout.deliveryForms.' . $delivery->slug)
 
-                        @if(!$delivery->isPickup())
                         <div class="col-md-12">
                             <div class="checkout-form-list">
-                                <label>Адрес <span class="required">*</span></label>
-                                <input placeholder="" type="text" name="delivery[address]" class="form-control{{ $errors->first('delivery.address') ? ' is-invalid' : '' }}" value="{{ old('delivery.address', $user && $user->delivery ? $user->delivery['address'] : '') }}" id="delivery[address]">
-                                <div class="invalid-feedback" id="invalid-delivery[address]">
-                                    {{ $errors->first('delivery.address') ? $errors->first('delivery.address') : '' }}
-                                </div>
-                            </div>
-                        </div>
-                        @endif
-
-                        <div class="col-md-6">
-                            <div class="checkout-form-list">
-                                <label>Ваш Email - адрес <span class="required">*</span></label>
-                                <input name="customer[email]" placeholder="" type="email" class="form-control{{ $errors->first('customer.email') ? ' is-invalid' : '' }}" value="{{ old('customer.email', $user ? $user->email : '') }}" id="customer[email]">
-                                <div class="invalid-feedback" id="invalid-customer[email]">
-                                    {{ $errors->first('customer.email') ? $errors->first('customer.email') : '' }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="checkout-form-list">
-                                <label>Либо Телефон <span class="required">*</span></label>
+                                <label><span class="required">*</span> Номер телефона</label>
                                 <input type="text" name="customer[phone]" class="form-control{{ $errors->first('customer.phone') ? ' is-invalid' : '' }}" value="{{ old('customer.phone', $user && $user->delivery ? $user->delivery['phone'] : '') }}" id="customer[phone]">
                                 <div class="invalid-feedback" id="invalid-customer[phone]">
                                     {{ $errors->first('customer.phone') ? $errors->first('customer.phone') : '' }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="checkout-form-list">
+                                <label>Ваш Email - адрес</label>
+                                <input name="customer[email]" placeholder="" type="email" class="form-control{{ $errors->first('customer.email') ? ' is-invalid' : '' }}" value="{{ old('customer.email', $user ? $user->email : '') }}" id="customer[email]">
+                                <div class="invalid-feedback" id="invalid-customer[email]">
+                                    {{ $errors->first('customer.email') ? $errors->first('customer.email') : '' }}
                                 </div>
                             </div>
                         </div>
@@ -141,6 +103,10 @@
                                     <label>Примечение к заказу</label>
                                     <textarea name="note" id="checkout-mess" cols="30" rows="10" placeholder="Примечания о Вашем заказе."></textarea>
                                 </div>
+                            </div>
+                            <div class="order-button-payment">
+                                <input type="hidden" name="delivery[slug]" value="{{ $delivery->slug }}">
+                                <input value="Заказать" type="submit">
                             </div>
                         </div>
                     </div>
@@ -195,9 +161,6 @@
                             </tr>
                             </tfoot>
                         </table>
-                    </div>
-                    <div class="order-button-payment">
-                        <input value="Заказать" type="submit">
                     </div>
                 </div>
             </div>

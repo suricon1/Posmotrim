@@ -157,19 +157,19 @@
         <div class="text-center mt-5">
             <a class="btn btn-success btn-lg btn-block" href="{{route('vinograd.category')}}" role="button">Перейти в каталог</a>
         </div>
-        <div class="banner-area mt-5">
-            <div class="row">
-                <div class="col">
-                    @include('components.reklama.google_index_one')
-                </div>
+{{--        <div class="banner-area mt-5">--}}
+{{--            <div class="row">--}}
+{{--                <div class="col">--}}
+{{--                    @include('components.reklama.google_index_one')--}}
+{{--                </div>--}}
 {{--                <div class="col-md-6">--}}
 {{--                    @include('components.reklama.google_index_bottom_1')--}}
 {{--                </div>--}}
 {{--                <div class="col-md-6">--}}
 {{--                    @include('components.reklama.google_index_bottom_2')--}}
 {{--                </div>--}}
-            </div>
-        </div>
+{{--            </div>--}}
+{{--        </div>--}}
 
     </div>
 @endsection

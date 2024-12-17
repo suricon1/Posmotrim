@@ -168,7 +168,7 @@
                                         @endif
                                     @endif
                                     <a class="btn btn-outline-secondary btn-sm" href="{{route('orders.show', $order->id)}}" role="button"><i class="fa fa-eye"></i></a>
-                                    @if($order->isSent() && $order->isTrackCode())
+                                    @if($order->isSent() && $order->isTrackCode() && !$order->isBoxberrySent())
                                         <a class="btn btn-outline-info btn-sm" href="{{config('main.tracking_post')}}{{$order->track_code}}" role="button" target="_blank"><i class="fa fa-truck"></i></a>
                                     @endif
 {{--                                    {{Form::open(['route'=>['orders.destroy', $order->id], 'method'=>'delete'])}}--}}

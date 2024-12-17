@@ -91,7 +91,8 @@ class OrderPrintsController extends AppOrdersController
                     'quantityByModifications' => $quantityByModifications,
                     'currency' => Currency::where('code', $order->currency)->first()
                 ])->render();
-                $print_order .= '<hr>';
+                $print_order .= '<div class="border border-dark"></div>';
+
             }
             return [
                 'success' => [

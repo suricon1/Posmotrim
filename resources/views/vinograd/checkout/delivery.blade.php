@@ -22,10 +22,10 @@
         <div class="card">
             <a href="{{route('vinograd.checkout.deliveryForm', ['delivery_slug' => $delivery->slug])}}">
                 <img src="{{Storage::url('pics/img/'.$delivery->slug.'.jpg')}}" alt="{{$delivery->name}} черенков и саженцев винограда.">
-                <div class="card-body">
-                    <h4 class="card-title">{{$delivery->name}}</h4>
-                    {!! $delivery->content !!}
-                </div>
+{{--                <div class="card-body">--}}
+{{--                    <h4 class="card-title">{{$delivery->name}}</h4>--}}
+{{--                    {!! $delivery->content !!}--}}
+{{--                </div>--}}
             </a>
         </div>
 

@@ -19,7 +19,7 @@
                 <tr>
                     <th>Картинка</th>
                     <th>Название</th>
-                    <th>Тексе</th>
+                    <th>Текст</th>
                     <th>slug</th>
                     <th>Действия</th>
                 </tr>
@@ -41,9 +41,9 @@
                                     <a class="btn btn-outline-success btn-sm" href="{{route('deliverys.toggle', ['id' => $delivery->id])}}" role="button"><i class="fa fa-thumbs-o-up"></i></a>
                                 @endif
                                 <a class="btn btn-outline-primary btn-sm" href="{{route('deliverys.edit', $delivery->id)}}" role="button"><i class="fa fa-pencil"></i></a>
-                                {{Form::open(['route'=>['deliverys.destroy', $delivery->id], 'method'=>'delete'])}}
-                                <button onclick="return confirm('Подтвердите удаление Статьи!')" type="submit" class="btn btn-outline-danger btn-sm"><i class="fa fa-remove"></i></button>
-                                {{Form::close()}}
+{{--                                {{Form::open(['route'=>['deliverys.destroy', $delivery->id], 'method'=>'delete'])}}--}}
+{{--                                <button onclick="return confirm('Подтвердите удаление Статьи!')" type="submit" class="btn btn-outline-danger btn-sm"><i class="fa fa-remove"></i></button>--}}
+{{--                                {{Form::close()}}--}}
                             </div>
                         </td>
                     </tr>

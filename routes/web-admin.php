@@ -150,6 +150,7 @@ Route::middleware(['admin'])->group(callback: function () {
                 Route::controller(OrdersTreckCodeController::class)->group(function () {
                     Route::post('/set-ajax-treck_code', 'setAjaxTreckCode')->name('set_ajax_treck_code');
                     Route::post('/set_track_code/{order_id}', 'setTrackCode')->name('set.track_code');
+                    Route::get('/track_code_form/{order}', 'trackCodeForm')->name('track_code_form');
                     Route::post('/sent-status-mail', 'sentStatusMail')->name('sent.status.mail');
                 });
 

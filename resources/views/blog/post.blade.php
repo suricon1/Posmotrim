@@ -51,8 +51,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-{{--                                    @include('components.reklama.google_contents')--}}
-                                    @include('components.reklama.google_index_bottom_1')
+                                    @include('components.reklama.yandex_blog_post_list')
                                 </div>
                             </div>
                             @endif
@@ -121,9 +120,9 @@
                 </div>
             </div>
         </div>
-        <div class="">
-            @include('components.reklama.google_related')
-        </div>
+{{--        <div class="">--}}
+{{--            @include('components.reklama.google_related')--}}
+{{--        </div>--}}
         <a name="comments"></a>
         <div class="comments-area mt-80" id="parent_coment">
             @if(count($comments) > 0)

@@ -171,6 +171,11 @@ class Order extends Model
         }
     }
 
+    public function isBoxberrySent ()
+    {
+        return $this->delivery['method_id'] == 7;
+    }
+
     public function isAllowedDateBuild(): bool
     {
         if ($this->isSent() || $this->isCancelled() || $this->isCancelledByCustomer()) {
@@ -224,6 +229,10 @@ class Order extends Model
     {
         if ($code) {
             $this->track_code = $code;
+
+            if($this->isBoxberrySent()) {
+                $this->admin_note = $this->admin_note . ' ' . $code;
+            }
         }
     }
 

@@ -143,14 +143,15 @@ class Product extends Model
 
     public function scopeFiltered(Builder $query): Builder
     {
-        return app(Pipeline::class)
-            ->send($query)
-            ->through(filters())
-            ->thenReturn();
+//        return app(Pipeline::class)
+//            ->send($query)
+//            ->through(filters())
+//            ->thenReturn();
 
-//        foreach (filters() as $filter) {
-//            $query = $filter->apply($query);
-//        }
+        foreach (filters() as $filter) {
+            $query = $filter->apply($query);
+        }
+        return $query;
     }
 
 //----------- end scope ---------------------------------------------

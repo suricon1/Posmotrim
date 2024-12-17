@@ -27,6 +27,22 @@
 
 <div class="sidebar-layout mb-5">
     <div class="category-menu">
+        <div class="sidebar-banner single-banner my-2">
+            <div class="banner-img">
+                <!-- Yandex.RTB R-A-13332647-1 -->
+                <div id="yandex_rtb_R-A-13332647-1"></div>
+                <script>
+                    window.yaContextCb.push(() => {
+                        Ya.Context.AdvManager.render({
+                            "blockId": "R-A-13332647-1",
+                            "renderTo": "yandex_rtb_R-A-13332647-1"
+                        })
+                    })
+                </script>
+
+                {{--            @include('components.reklama.google_left_sitebar')--}}
+            </div>
+        </div>
         <div class="category-heading">
             <h2 class="categories-toggle"><span>Категории</span> &#9013;</h2>
         </div>
@@ -55,9 +71,20 @@
     </div>
 </div>
 <div class="sidebar-layout mb-5">
-    <div class="sidebar-banner single-banner">
-        <div class="banner-img">
-            @include('components.reklama.google_left_sitebar')
-        </div>
-    </div>
+{{--    <div class="sidebar-banner single-banner">--}}
+{{--        <div class="banner-img">--}}
+{{--            <!-- Yandex.RTB R-A-13332647-1 -->--}}
+{{--            <div id="yandex_rtb_R-A-13332647-1"></div>--}}
+{{--            <script>--}}
+{{--                window.yaContextCb.push(() => {--}}
+{{--                    Ya.Context.AdvManager.render({--}}
+{{--                        "blockId": "R-A-13332647-1",--}}
+{{--                        "renderTo": "yandex_rtb_R-A-13332647-1"--}}
+{{--                    })--}}
+{{--                })--}}
+{{--            </script>--}}
+
+{{--            @include('components.reklama.google_left_sitebar')--}}
+{{--        </div>--}}
+{{--    </div>--}}
 </div>

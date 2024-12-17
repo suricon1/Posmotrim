@@ -45,6 +45,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -68,6 +69,26 @@
 
     @yield('category-content')
     @include('vinograd.components.look-product')
+
+        <div class="about-us-area-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <!-- Yandex.RTB R-A-13332647-2 -->
+                        <div id="yandex_rtb_R-A-13332647-2"></div>
+                        <script>
+                            window.yaContextCb.push(() => {
+                                Ya.Context.AdvManager.render({
+                                    "blockId": "R-A-13332647-2",
+                                    "renderTo": "yandex_rtb_R-A-13332647-2",
+                                    "type": "feed"
+                                })
+                            })
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 @endsection
 

@@ -2,6 +2,7 @@
 
 namespace App\Models\Vinograd;
 
+use App\Casts\PriceCast;
 use App\Models\Meta;
 use App\Models\Traits\GalleryServais;
 use App\Models\Traits\HasSlug;
@@ -36,7 +37,8 @@ class Product extends Model
 
     protected $casts = [
         'meta' => 'array',
-        'props' => 'array'
+        'props' => 'array',
+        'price' => PriceCast::class
     ];
 
     public function newEloquentBuilder($query): ProductQueryBuilder

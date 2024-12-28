@@ -56,7 +56,8 @@ class ProductRepository
             return false;
         }
 
-        $products = Product::select('id', 'slug', 'name')
+        $products = Product::query()
+            ->select('id', 'slug', 'name')
             ->with('modifications.property')
             ->whereIn('id', $props['similar'])
             ->active()
@@ -132,7 +133,8 @@ class ProductRepository
                 $join->on('vinograd_products.id', '=', 'modifications.product_id')
                     ->where('modifications.quantity', '>', 0);
             })->
-            selectRaw('vinograd_products.id, vinograd_products.name, vinograd_products.slug, vinograd_products.description, COUNT(`modifications`.`id`) AS `existence`')->
+            selectRaw('vinograd_products.id, vinograd_products.name, vinograd_products.slug, vinograd_products.description,
+                                                                Case COUNT(`modifications`.`id`) When 0 Then 0 Else 1 END AS `existence`')->
             active()->
             groupBy('vinograd_products.id', 'vinograd_products.name', 'vinograd_products.slug', 'vinograd_products.description', 'vinograd_products.ripening')->
             ripening($request)->

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Models\Vinograd\Order;
-
 class CustomerData
 {
     public $phone;

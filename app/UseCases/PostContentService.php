@@ -135,7 +135,7 @@ class PostContentService
             $this->i ++;
             $this->contents[$this->i] = $match['headerText'];
             if ($this->i % 3 == 0){
-                return view('components.reklama.yandex_blog_post_text')->render().'<h2><a name="'.$this->i.'"></a>'.$match['headerText'].'</h2>';
+                return view('components.reklama.yandex_blog_post_text_' . $this->i)->render().'<h2><a name="'.$this->i.'"></a>'.$match['headerText'].'</h2>';
             }
             return '<h2><a name="'.$this->i.'"></a>'.$match['headerText'].'</h2>';
         }, $model->content);

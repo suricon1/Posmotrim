@@ -33,8 +33,7 @@
                                 @forelse($product->modifications as $modification)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>
-                                            {{$modification->property->name}} - <strong>{{currency($modification->price)}} {{signature()}}</strong><br>
-                                            В наличии - <strong>{{$modification->quantity}}</strong> шт.
+                                            {{$modification->property->name}} - <strong>{{currency($modification->price)}} {{signature()}}</strong>
                                         </span>
                                         {{Form::open(['route'=>['vinograd.cart.add'], 'class' => 'add-quantity', 'data-action' => 'add-to-cart'])}}
                                         {{Form::hidden('product_id', $product->id)}}

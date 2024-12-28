@@ -24,6 +24,29 @@
     @endif
 @endsection
 
+@section('header-style')
+    .product-dropdown {
+    position: relative;
+    display: inline-block;
+    }
+
+    .product-dropdown-content {
+    display: none;
+    position: absolute;
+    top: -20%;
+    left: 90%;
+    background-color: #f1f1f1;
+    min-width: 240px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+    }
+
+    .product-dropdown:hover .product-dropdown-content {
+    display: block;
+    }
+@endsection
+
 @section('breadcrumb-content')
     @if($category)
         <li><a href="{{route('vinograd.category')}}">Каталог сортов винограда</a></li>

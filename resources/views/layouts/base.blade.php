@@ -29,7 +29,7 @@
         }
         @yield('header-style')
     </style>
-    <script data-ad-client="ca-pub-2733726119160750" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+{{--    <script data-ad-client="ca-pub-2733726119160750" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>--}}
 
     <!-- Yandex.RTB -->
     <script>window.yaContextCb=window.yaContextCb||[]</script>

@@ -1,4 +1,4 @@
-<!-- Yandex.RTB R-A-13332647-3 -->
+<!-- Yandex.RTB R-A-13332647-3 -3-->
 <div id="yandex_rtb_R-A-13332647-3"></div>
 <script>
     window.yaContextCb.push(() => {

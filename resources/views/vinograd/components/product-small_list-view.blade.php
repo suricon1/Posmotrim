@@ -5,14 +5,19 @@
             @foreach($products as $product)
                 <tr>
                     <td class="plantmore-product-thumbnail">
-                        <div class="row">
+                        <div class="row text-left">
                             <div class="col-md-6">
                                 <a href="{{route('vinograd.product', ['slug' => $product->slug])}}">
-                                    <img src="{{asset($product->getImage('100x100'))}}" width="100">
+                                    <img src="{{asset($product->getImage('100x100'))}}" width="100" alt="{{$product->name}}">
                                 </a>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 d-flex align-items-center product-dropdown">
                                 <a href="{{route('vinograd.product', ['slug' => $product->slug])}}"><h4 class="mt-2">{{$product->name}}</h4></a>
+                                @if($product->description)
+                                <div class="product-dropdown-content">
+                                    {!! $product->description !!}
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </td>

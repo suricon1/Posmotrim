@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Support\ValueObjects;
-
 
 use App\Support\Traits\Makeable;
 use InvalidArgumentException;

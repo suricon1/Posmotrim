@@ -18,13 +18,13 @@ class Status
     const PRELIMINARY = 7;
     const FORMED = 8;
 
-    public $value;
-    public $created_at;
+//    public $value;
+//    public $created_at;
 
-    public function __construct($value, $created_at)
+    public function __construct(public $value, public $created_at)
     {
-        $this->value = $value;
-        $this->created_at = $created_at;
+//        $this->value = $value;
+//        $this->created_at = $created_at;
     }
 
     public static function createStatus (int $status, Order $order): OrderState

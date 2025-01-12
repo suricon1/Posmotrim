@@ -19,12 +19,7 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot(CartService $service)
+    public function boot(CartService $service): void
     {
         view()->composer('layouts.vinograd-left', function($view) use ($service) {
             $view->with('categorys', ProductRepository::getAllCategorysOfCountProducts());
@@ -41,12 +36,7 @@ class AppServiceProvider extends ServiceProvider
         $this->paginationPattern();
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(Cart::class, function () {
             return new Cart(new SessionStorage('cart'), new SimpleCost());
@@ -85,14 +75,14 @@ class AppServiceProvider extends ServiceProvider
     {
         view()->composer('components.pagination', function($view) {
             $view->with('pattern', [
-                '~/page-\d+\.html\?page=1~',
-                '~/page-\d+\.html\?page=(\d+)~',
-                '~.html\?page=1~',
-                '~.html\?page=(\d+)~',
-                '~/page-\d+\?page=1~',
-                '~/page-\d+\?page=(\d+)~',
-                '~\?page=1~',
-                '~\?page=(\d+)~'
+                '~\/page-\d+\.html\?page=1$~',
+                '~\/page-\d+\.html\?page=(\d+)~',
+                '~\.html\?page=1$~',
+                '~\.html\?page=(\d+)~',
+                '~\/page-\d+\?page=1$~',
+                '~\/page-\d+\\?page=(\d+)~',
+                '~\\?page=1$~',
+                '~\\?page=(\d+)~'
             ]);
             $view->with('replace', [
                 '.html',

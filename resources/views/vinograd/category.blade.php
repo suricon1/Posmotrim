@@ -205,7 +205,8 @@
 
             </div>
             <div class="product-pagination">
-                {{$products->links('components.pagination', ['param' => $param])}}
+{{--                {{$products->links('components.pagination', ['param' => $param])}}--}}
+                {{$products->onEachSide(1)->links('components.pagination', ['param' => $param])}}
             </div>
         </div>
     </div>

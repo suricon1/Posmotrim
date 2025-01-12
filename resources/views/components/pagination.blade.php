@@ -22,6 +22,9 @@
                         <li class="active"><span>{{ $page }}</span></li>
                     @else
                         <li><a class="page-link" href="{{ preg_replace($pattern, $replace, $url) }}{{$param}}">{{ $page }}</a></li>
+                        @if($page == 10)
+                            {{dd($url, preg_replace($pattern, $replace, $url))}}
+                        @endif
                     @endif
                 @endforeach
             @endif

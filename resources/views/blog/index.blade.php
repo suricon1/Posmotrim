@@ -109,17 +109,16 @@
             <div class="w-100"></div>
             @endif
 
-{{--            @if($loop->iteration % 4 == 0)--}}
-{{--                    <div class="col-md-12">--}}
-{{--                        @include('components.reklama.google_blog_post_text')--}}
-{{--                    </div>--}}
-{{--                    <div class="col-md-6">--}}
-{{--                        @include('components.reklama.google_index_bottom_1')--}}
-{{--                    </div>--}}
-{{--                    <div class="col-md-6">--}}
-{{--                        @include('components.reklama.google_index_bottom_2')--}}
-{{--                    </div>--}}
-{{--            @endif--}}
+            @if($loop->iteration % 4 == 0)
+                    <div class="col-md-12">
+                        @include('components.reklama.yandex_blog_post_text_12')
+                    </div>
+            @endif
+            @if($loop->iteration % 8 == 0)
+                    <div class="col-md-12">
+                        @include('components.reklama.yandex_blog_post_text_18')
+                    </div>
+            @endif
 
             @endforeach
         </div>

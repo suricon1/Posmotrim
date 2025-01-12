@@ -10,7 +10,9 @@
 
 @section('left-content')
 
-    <div class="contact-address-area">
+    @include('components.reklama.yandex_blog_post_text_15')
+
+    <div class="contact-address-area mt-4">
         <div class="container">
             <div class="row">
                 <div class="col-12">
